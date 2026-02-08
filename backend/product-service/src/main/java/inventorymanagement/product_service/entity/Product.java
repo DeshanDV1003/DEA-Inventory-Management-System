@@ -9,26 +9,26 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String productId;
+    private Long productId;
     private String productName;
     private String productDescription;
-    private String productCategoryId;
+    private Long productCategoryId;
 
     public Product() {
     }
 
-    public Product(String productId, String productName, String productDescription, String productCategoryId) {
+    public Product(Long productId, String productName, String productDescription, Long productCategoryId) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productCategoryId = productCategoryId;
     }
 
-    public String getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
@@ -48,11 +48,11 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public String getProductCategoryId() {
+    public Long getProductCategoryId() {
         return productCategoryId;
     }
 
-    public void setProductCategoryId(String productCategoryId) {
+    public void setProductCategoryId(Long productCategoryId) {
         this.productCategoryId = productCategoryId;
     }
 
