@@ -1,68 +1,56 @@
 package inventorymanagement.product_service.entity;
 
 import jakarta.persistence.*;
-import java.lang.annotation.Target;
 
 @Entity
-@Table(name = "tblProdcut")
+@Table(name = "tblProduct")
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
-    private String productName;
-    private String productDescription;
-    private Long productCategoryId;
+    private int ProductId;
+    private String ProductName;
+    private String ProductDescription;
+    private String CategoryId;
 
     public Product() {
     }
 
-    public Product(Long productId, String productName, String productDescription, Long productCategoryId) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.productCategoryId = productCategoryId;
+    public Product(int productId, String productName, String productDescription, String categoryId) {
+        ProductId = productId;
+        ProductName = productName;
+        ProductDescription = productDescription;
+        CategoryId = categoryId;
     }
 
-    public Long getProductId() {
-        return productId;
+    public int getProductId() {
+        return ProductId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProductId(int productId) {
+        ProductId = productId;
     }
 
     public String getProductName() {
-        return productName;
+        return ProductName;
     }
 
     public void setProductName(String productName) {
-        this.productName = productName;
+        ProductName = productName;
     }
 
     public String getProductDescription() {
-        return productDescription;
+        return ProductDescription;
     }
 
     public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+        ProductDescription = productDescription;
     }
 
-    public Long getProductCategoryId() {
-        return productCategoryId;
+    public String getCategoryId() {
+        return CategoryId;
     }
 
-    public void setProductCategoryId(Long productCategoryId) {
-        this.productCategoryId = productCategoryId;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", productDescription='" + productDescription + '\'' +
-                ", productCategoryId=" + productCategoryId +
-                '}';
+    public void setCategoryId(String categoryId) {
+        CategoryId = categoryId;
     }
 }
