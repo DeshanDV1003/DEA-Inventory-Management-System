@@ -2,7 +2,7 @@ spring:
   application:
     name: product-service
   datasource:
-    url: jdbc:mysql://localhost:3306/ProductDB
+    url: jdbc:mysql://mysql-db:3306/ProductDB
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: root
