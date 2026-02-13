@@ -23,7 +23,6 @@ public class Product {
         this.categoryId = categoryId;
     }
 
-    // Getters and Setters
     public Long getProductId() {
         return productId;
     }

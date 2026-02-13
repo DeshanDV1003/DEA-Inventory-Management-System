@@ -11,8 +11,8 @@ public class MyAPIConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Student API")
+                        .title("Product API")
                         .version("1.0")
-                        .description("Student API desc"));
+                        .description("Product API desc"));
     }
 }
