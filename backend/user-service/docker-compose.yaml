@@ -2,12 +2,12 @@ services:
   # MySQL Database
   mysql-db:
     image: mysql:8.0
-    container_name: mysql-product-container
+    container_name: mysql-user-container
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ProductDB
+      MYSQL_DATABASE: UserDB
     ports:
-      - "3306"  # External:Internal (avoid conflict with local MySQL)
+      - "3307:3306"  # External:Internal (avoid conflict with local MySQL)
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
@@ -18,17 +18,17 @@ services:
       timeout: 5s
       retries: 5
 
-  # Product Service
-  product-service:
+  # User Service
+  user-service:
     build: .
-    container_name: product-service
+    container_name: user-service
     depends_on:
       mysql-db:
         condition: service_healthy
     ports:
-      - "8070:8070"
+      - "8071:8071"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/ProductDB?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/UserDB?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     networks:
