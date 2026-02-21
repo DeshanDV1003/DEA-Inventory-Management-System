@@ -1,14 +1,14 @@
 package inventorymanagement.user_service.dto;
 
-public class AuthResponse {
+public class AuthResponseDto {
     private String token;
     private String username;
     private String userType;
 
-    public AuthResponse() {
+    public AuthResponseDto() {
     }
 
-    public AuthResponse(String token, String username, String userType) {
+    public AuthResponseDto(String token, String username, String userType) {
         this.token = token;
         this.username = username;
         this.userType = userType;

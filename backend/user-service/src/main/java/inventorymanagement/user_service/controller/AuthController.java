@@ -1,8 +1,8 @@
 package inventorymanagement.user_service.controller;
 
-import inventorymanagement.user_service.dto.AuthResponse;
-import inventorymanagement.user_service.dto.LoginRequest;
-import inventorymanagement.user_service.dto.RegisterRequest;
+import inventorymanagement.user_service.dto.AuthResponseDto;
+import inventorymanagement.user_service.dto.LoginRequestDto;
+import inventorymanagement.user_service.dto.RegisterRequestDto;
 import inventorymanagement.user_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class AuthController {
 
     // Register endpoint
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequestDto request) {
         try {
             String message = userService.registerUser(request);
             return ResponseEntity.ok(message);
@@ -28,9 +28,9 @@ public class AuthController {
 
     // Login endpoint
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto request) {
         try {
-            AuthResponse response = userService.loginUser(request);
+            AuthResponseDto response = userService.loginUser(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();

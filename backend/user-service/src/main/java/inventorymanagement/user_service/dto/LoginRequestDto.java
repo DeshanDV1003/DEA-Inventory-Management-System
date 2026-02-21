@@ -1,13 +1,13 @@
 package inventorymanagement.user_service.dto;
 
-public class LoginRequest {
+public class LoginRequestDto {
     private String username;
     private String password;
 
-    public LoginRequest() {
+    public LoginRequestDto() {
     }
 
-    public LoginRequest(String username, String password) {
+    public LoginRequestDto(String username, String password) {
         this.username = username;
         this.password = password;
     }

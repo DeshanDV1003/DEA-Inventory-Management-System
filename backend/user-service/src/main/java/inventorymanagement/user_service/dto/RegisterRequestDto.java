@@ -1,6 +1,6 @@
 package inventorymanagement.user_service.dto;
 
-public class RegisterRequest {
+public class RegisterRequestDto {
     private String username;
     private String password;
     private String fullName;
@@ -11,10 +11,10 @@ public class RegisterRequest {
     private Long companyId;
     private Long warehouseId;
 
-    public RegisterRequest() {
+    public RegisterRequestDto() {
     }
 
-    public RegisterRequest(String username, String password, String fullName, String designation, String email, String phone, String userType, Long companyId, Long warehouseId) {
+    public RegisterRequestDto(String username, String password, String fullName, String designation, String email, String phone, String userType, Long companyId, Long warehouseId) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;

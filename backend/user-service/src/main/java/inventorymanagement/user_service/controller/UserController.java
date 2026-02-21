@@ -1,7 +1,7 @@
 package inventorymanagement.user_service.controller;
 
 import inventorymanagement.user_service.entity.User;
-import inventorymanagement.user_service.service.UserService;
+import inventorymanagement.user_service.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 @RequestMapping(value="api")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping(value ="users")
     public List<User> getAllProducts() {
