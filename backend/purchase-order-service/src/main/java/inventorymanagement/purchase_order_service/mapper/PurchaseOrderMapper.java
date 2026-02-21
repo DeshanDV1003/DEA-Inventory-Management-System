@@ -1,0 +1,79 @@
+package inventorymanagement.purchase_order_service.mapper;
+
+import inventorymanagement.purchase_order_service.dto.PurchaseOrderDetailDto;
+import inventorymanagement.purchase_order_service.dto.PurchaseOrderRequestDto;
+import inventorymanagement.purchase_order_service.dto.PurchaseOrderResponseDto;
+import inventorymanagement.purchase_order_service.entity.PurchaseOrder;
+import inventorymanagement.purchase_order_service.entity.PurchaseOrderDetail;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class PurchaseOrderMapper {
+    /**
+     * Maps a PurchaseOrderRequest DTO to a PurchaseOrder Entity.
+     */
+    public static PurchaseOrder mapToEntity(PurchaseOrderRequestDto request) {
+        if (request == null) {
+            return null;
+        }
+
+        PurchaseOrder order = new PurchaseOrder();
+        order.setCompanyId(request.getCompanyId());
+        order.setSupplierId(request.getSupplierId());
+        order.setWarehouseId(request.getWarehouseId());
+        order.setPoNumber(request.getPoNumber());
+
+        // Setting default metadata
+        order.setDate(LocalDateTime.now());
+        order.setStatus("CREATED");
+
+        // Map the list of items
+        if (request.getItems() != null) {
+            List<PurchaseOrderDetail> details = request.getItems().stream()
+                    .map(itemDto -> mapToDetailEntity(itemDto, order))
+                    .collect(Collectors.toList());
+            order.setDetails(details);
+        }
+
+        return order;
+    }
+
+    /**
+     * Maps a PurchaseOrder Entity to a PurchaseOrderResponse DTO.
+     */
+    public static PurchaseOrderResponseDto mapToResponse(PurchaseOrder order) {
+        if (order == null) {
+            return null;
+        }
+
+        PurchaseOrderResponseDto response = new PurchaseOrderResponseDto();
+        response.setId(order.getId());
+        response.setPoNumber(order.getPoNumber());
+        response.setStatus(order.getStatus());
+        response.setDate(order.getDate());
+
+        // Map the items back to DTOs
+        if (order.getDetails() != null) {
+            List<PurchaseOrderDetailDto> itemDtos = order.getDetails().stream()
+                    .map(detail -> new PurchaseOrderDetailDto(detail.getProductId(), detail.getQuantity()))
+                    .collect(Collectors.toList());
+            response.setItems(itemDtos);
+        }
+
+        return response;
+    }
+
+    /**
+     * Helper method to map a detail item DTO to an entity and link it to the parent order.
+     */
+    private static PurchaseOrderDetail mapToDetailEntity(PurchaseOrderDetailDto dto, PurchaseOrder order) {
+        PurchaseOrderDetail detail = new PurchaseOrderDetail();
+        detail.setProductId(dto.getProductId());
+        detail.setQuantity(dto.getQuantity());
+        // This line is crucial for JPA to link the detail back to the header
+        detail.setPurchaseOrder(order);
+        return detail;
+    }
+}
