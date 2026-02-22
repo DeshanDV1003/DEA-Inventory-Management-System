@@ -5,34 +5,25 @@ import inventorymanagement.user_service.dto.LoginRequestDto;
 import inventorymanagement.user_service.dto.RegisterRequestDto;
 import inventorymanagement.user_service.entity.User;
 import inventorymanagement.user_service.repository.UserRepository;
+import inventorymanagement.user_service.service.UserService;
 import inventorymanagement.user_service.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private JwtUtil jwtUtil;
 
-    public void insertUser(User user){
-        userRepository.save(user);
-    }
-    public User getUserById(Long id){
-        return userRepository.getUserById(id);
-    }
-    public List<User> getUsers(){
-        return userRepository.findAll();
-    }
-    public void deleteUserById(Long id){
-        userRepository.deleteById(id);
-    }
-
-    // Register new user
+    @Override
     public String registerUser(RegisterRequestDto request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Username already exists");
@@ -48,7 +39,7 @@ public class UserServiceImpl {
         return "User registered successfully";
     }
 
-    // Login user
+    @Override
     public AuthResponseDto loginUser(LoginRequestDto request) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
@@ -62,7 +53,7 @@ public class UserServiceImpl {
         return new AuthResponseDto(token, user.getUsername(), user.getUserType());
     }
 
-    // Validate token (for other services to call)
+    @Override
     public boolean validateToken(String token) {
         return jwtUtil.validateToken(token);
     }

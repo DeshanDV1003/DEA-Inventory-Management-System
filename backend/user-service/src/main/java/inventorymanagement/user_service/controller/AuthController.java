@@ -15,7 +15,6 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    // Register endpoint
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequestDto request) {
         try {
@@ -26,7 +25,6 @@ public class AuthController {
         }
     }
 
-    // Login endpoint
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto request) {
         try {
@@ -37,11 +35,9 @@ public class AuthController {
         }
     }
 
-    // Validate token endpoint (for other services)
     @GetMapping("/validate")
     public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String token) {
         try {
-            // Remove "Bearer " prefix
             if (token.startsWith("Bearer ")) {
                 token = token.substring(7);
             }
