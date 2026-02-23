@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping(value="api")
+@RequestMapping(value="api/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping(value ="products")
+    @GetMapping
     public List<Product> getAllProducts() {
         return productService.findAllProducts();
     }
@@ -24,13 +24,13 @@ public class ProductController {
     }
 
     @DeleteMapping("deleteProduct")
-    public String delete(@RequestBody Long id) {
+    public String delete(@RequestBody Integer id) {
         productService.deleteProduct(id);
         return "The product with id: " + id + " has been deleted";
     }
 
     @GetMapping("getproduct")
-    public Product getProduct(Long id) {
+    public Product getProduct(@RequestParam Integer id) {
         return productService.findProductById(id);
     }
 }
