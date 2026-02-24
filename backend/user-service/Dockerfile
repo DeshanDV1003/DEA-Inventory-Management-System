@@ -1,14 +1,11 @@
-# Use Java 21 base image
-FROM eclipse-temurin:21-jre-jammy
-
-# Set working directory
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy the jar file
-COPY target/*.jar app.jar
-
-# Expose port
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8071
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
