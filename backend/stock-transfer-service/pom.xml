@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>inventorymanagement</groupId>
-	<artifactId>department-service</artifactId>
+	<artifactId>stock-transfer-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>department-service</name>
 	<description>Department Management Microservice</description>
