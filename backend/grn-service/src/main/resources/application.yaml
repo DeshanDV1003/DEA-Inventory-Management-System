@@ -1,3 +1,21 @@
+server:
+  port: 8086
+
 spring:
-  application:
-    name: grn-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/grn?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+services:
+  po: http://localhost:8081
+  warehouse: http://localhost:8082
+  stock: http://localhost:8083
