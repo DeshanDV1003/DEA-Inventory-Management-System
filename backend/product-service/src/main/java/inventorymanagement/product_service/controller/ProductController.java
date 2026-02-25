@@ -1,5 +1,6 @@
 package inventorymanagement.product_service.controller;
 
+import inventorymanagement.product_service.dto.AddProductRequestDto;
 import inventorymanagement.product_service.entity.Product;
 import inventorymanagement.product_service.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class ProductController {
     }
 
     @PostMapping(value = "addProduct")
-    public String insert(@RequestBody Product product) {
-        productService.saveProduct(product);
+    public String insert(@RequestBody AddProductRequestDto request) {
+        productService.saveProduct(request);
         return "Product added successfully";
     }
 
