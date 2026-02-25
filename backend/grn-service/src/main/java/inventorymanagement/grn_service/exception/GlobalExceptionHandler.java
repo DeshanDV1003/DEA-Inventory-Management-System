@@ -7,9 +7,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
+/*Global exception handler for the GRN service
+This class ensures consistent error responses across the application,
+It intercepts exceptions thrown by controllers and services and converts them into structured API error responses
+ */
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    //Handles resource not found exceptions, Returns HTTP 404
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(NotFoundException ex, HttpServletRequest req) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -23,6 +29,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //Handles bad request exceptions, Returns HTTP 400
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiError> handleBadRequest(BadRequestException ex, HttpServletRequest req) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -36,6 +43,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //Handles validation errors triggered by @Valid, Returns HTTP 400 with validation message
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest req) {
         String msg = ex.getBindingResult().getFieldErrors().stream()
@@ -54,6 +62,7 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //Handles any unexpected system errors, Returns HTTP 500
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleOther(Exception ex, HttpServletRequest req) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(

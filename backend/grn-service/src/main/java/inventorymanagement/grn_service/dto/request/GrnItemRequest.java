@@ -6,22 +6,43 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+/* Request DTO representing a single item inside a GRN
+
+Each GRN can contain multiple items,
+This class holds item level details such as:
+product id,
+requested quantity,
+received quantity,
+unit price,discount amount
+
+Validation ensures required fields are provided end quantity values are not negative
+ */
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class GrnItemRequest {
 
-    @NotNull
+    // Unique identifier of the product
+    @NotNull (message = "Product ID is required")
     private Long productId;
 
-    @NotNull @Min(0)
+    // Quantity requested in the purchase order
+    @NotNull (message = "Requested quantity is required")
+    @Min(value = 0, message = "Requested quantity cannot be negative")
     private Integer requestedQty;
 
-    @NotNull @Min(0)
+    //Quantity actually received in the warehouse
+    @NotNull (message = "Received quantity is required")
+    @Min(value = 0, message = "Received quantity cannot be negative")
     private Integer receivedQty;
 
-    @NotNull
+    //Price per unit of the product
+    @NotNull (message = "Unit price is required")
     private BigDecimal unitPrice;
 
-    private BigDecimal discountAmount; // can be null => treated as 0
+    //Discount amount applied to this item and if null,it will be treated as 0 in calculations
+    private BigDecimal discountAmount;
 }

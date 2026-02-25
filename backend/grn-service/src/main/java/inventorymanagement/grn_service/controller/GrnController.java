@@ -10,6 +10,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/*REST Controller for handling Goods Received Note (GRN) operations.
+*This controller exposes APIs to:
+* create a new GRN,
+* Retrieve a GRN by GRN number,
+* Filter GRNs by company / department / warehouse,
+* Update an existing GRN,
+* Cancel a GRN,
+*
+* Base URL: /api/grns
+*  */
+
 @RestController
 @RequestMapping("/api/grns")
 @RequiredArgsConstructor
@@ -18,19 +29,19 @@ public class GrnController {
 
     private final GrnService grnService;
 
-    // Create GRN
+    // Create GRN, validates input and records received goods and also updates stock quantities
     @PostMapping
     public GrnResponse create(@Valid @RequestBody CreateGrnRequest req) {
         return grnService.create(req);
     }
 
-    // Get by GRN Number
+    // Get by GRN Number(retrieve a GRN by its unique GRN number.)
     @GetMapping("/{grnNumber}")
     public GrnResponse get(@PathVariable String grnNumber) {
         return grnService.getByGrnNumber(grnNumber);
     }
 
-    // Filter
+    // Filter GRNs based on optional parameters: companyId, departmentId, warehouseId
     @GetMapping
     public List<GrnResponse> filter(
             @RequestParam(required = false) Long companyId,
@@ -40,13 +51,13 @@ public class GrnController {
         return grnService.filter(companyId, departmentId, warehouseId);
     }
 
-    // Edit GRN
+    // Edit GRN(update an existing GRN, recalculates totals and adjusts stock differences)
     @PutMapping("/{grnNumber}")
     public GrnResponse update(@PathVariable String grnNumber, @Valid @RequestBody UpdateGrnRequest req) {
         return grnService.update(grnNumber, req);
     }
 
-    // Cancel GRN
+    // Cancel GRN, reverses previously added stock quantities
     @PutMapping("/{grnNumber}/cancel")
     public GrnResponse cancel(@PathVariable String grnNumber, @RequestParam String cancelledBy) {
         return grnService.cancel(grnNumber, cancelledBy);
