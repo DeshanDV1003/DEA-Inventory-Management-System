@@ -1,0 +1,10 @@
+inventorymanagement\product_service\repository\ProductRepository.class
+inventorymanagement\product_service\util\JwtAuthenticationFilter.class
+inventorymanagement\product_service\config\SecurityConfig.class
+inventorymanagement\product_service\service\impl\ProductServiceImpl.class
+inventorymanagement\product_service\controller\ProductController.class
+inventorymanagement\product_service\ProductServiceApplication.class
+inventorymanagement\product_service\util\JwtUtil.class
+inventorymanagement\product_service\entity\Product.class
+inventorymanagement\product_service\service\ProductService.class
+inventorymanagement\product_service\config\MyAPIConfig.class
