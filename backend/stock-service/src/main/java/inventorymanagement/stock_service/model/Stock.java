@@ -6,46 +6,66 @@ import java.time.LocalDateTime;
  * =========================================================
  * Class Name: Stock
  * =========================================================
- * Purpose:
- * This entity represents the stock information of an asset
- * in a specific warehouse. It keeps track of how many units
- * of a particular asset are available in a given warehouse.
  *
- * This class belongs to the Stock Management microservice
- * and does NOT store full Asset or Warehouse objects.
- * Instead, it stores only their IDs to maintain loose
- * coupling between microservices.
+ * Purpose:
+ * ---------------------------------------------------------
+ * This entity represents the stock record of a specific
+ * product stored in a specific warehouse under a company.
+ * It is used by the Stock Management microservice to track
+ * inventory levels and stock thresholds.
+ *
+ * Each stock record is uniquely identified by the
+ * combination of:
+ *   - companyId
+ *   - productId
+ *   - warehouseId
+ *
+ * This ensures that one product has only one stock entry
+ * per warehouse per company.
+ *
+ * =========================================================
+ * Database Mapping:
+ * ---------------------------------------------------------
+ * Table Name : stocks
+ * Unique Key : (company_id, product_id, warehouse_id)
  *
  * =========================================================
  * Data Attributes:
  * ---------------------------------------------------------
- * stockId         : Unique identifier for each stock record.
- * assetId         : ID of the asset (from Asset Service).
- * warehouseId     : ID of the warehouse (from Warehouse Service).
- * quantity        : Total quantity of the asset in the warehouse.
- * reservedQuantity: Quantity reserved for assignments or orders.
- * minThreshold    : Minimum stock level before triggering alerts.
- * lastUpdated     : Timestamp of the last stock update.
+ * stockId          : Primary key of the stock record.
+ * companyId        : ID of the company that owns the stock.
+ * warehouseId      : ID of the warehouse where stock is stored.
+ * productId        : ID of the product being tracked.
+ * quantity         : Current quantity available in stock.
+ * maxStockLevel    : Maximum stock capacity allowed.
+ * minStockLevel    : Minimum stock level before alerting.
+ * reOrderLevel     : Quantity level at which reordering is required.
+ * createdBy        : User who created the stock record.
+ * createdDateTime  : Timestamp when the stock was created.
+ * updatedBy        : User who last updated the stock record.
+ * updatedDateTime  : Timestamp of the last update.
  *
  * =========================================================
- * Methods:
+ * Lifecycle Callbacks:
  * ---------------------------------------------------------
- * updateTimestamp(): Automatically updates the lastUpdated
- *                    field whenever the entity is inserted
- *                    or updated in the database.
+ * @PrePersist
+ *   - Automatically sets createdDateTime when the record
+ *     is first inserted into the database.
  *
- * Getters & Setters:
- * Standard accessor and mutator methods for all attributes.
+ * @PreUpdate
+ *   - Automatically updates updatedDateTime whenever the
+ *     record is modified.
  *
  * =========================================================
  * Design Notes:
  * ---------------------------------------------------------
- * - assetId and warehouseId are stored as simple Long values
- *   instead of foreign key relationships.
- * - This design supports microservice architecture by
- *   avoiding tight coupling with Asset and Warehouse services.
- * - A unique constraint is applied on (assetId, warehouseId)
- *   to prevent duplicate stock records.
+ * - This class is a JPA entity mapped to the "stocks" table.
+ * - It does not maintain foreign key relationships with
+ *   Company, Product, or Warehouse entities to preserve
+ *   loose coupling in a microservice architecture.
+ * - Instead, only their IDs are stored as integer values.
+ * - Business logic is handled in the service layer, not here.
+ *
  * =========================================================
  */
 
@@ -53,76 +73,103 @@ import java.time.LocalDateTime;
 @Table(
         name = "stocks",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"asset_id", "warehouse_id"})
+                @UniqueConstraint(columnNames = {"company_id","product_id", "warehouse_id"})
         }
 )
 public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stockId;
+    private int stockId;
 
-    @Column(name = "asset_id", nullable = false)
-    private Long assetId;
+    @Column(name = "company_id", nullable = false)
+    private int companyId;
 
     @Column(name = "warehouse_id", nullable = false)
-    private Long warehouseId;
+    private int warehouseId;
 
-    @Column(nullable = false)
+    @Column(name = "product_id", nullable = false)
+    private int productId;
+
+    @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Column(name = "reserved_quantity")
-    private int reservedQuantity;
+    @Column(name = "max_stock_level")
+    private int maxStockLevel;
 
-    @Column(name = "min_threshold")
-    private int minThreshold;
+    @Column(name = "min_stock_level")
+    private int minStockLevel;
 
-    @Column(name = "last_updated")
-    private LocalDateTime lastUpdated;
+    @Column(name = "re_order_level")
+    private int reOrderLevel;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_date_time")
+    private LocalDateTime createdDateTime;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_date_time")
+    private LocalDateTime updatedDateTime;
 
     // Constructors
     public Stock() {
     }
 
-    public Stock(Long assetId, Long warehouseId, int quantity, int reservedQuantity, int minThreshold) {
-        this.assetId = assetId;
+    public Stock(int stockId, int companyId, int warehouseId, int productId, int quantity, int maxStockLevel, int minStockLevel, int reOrderLevel, String createdBy, LocalDateTime createdDateTime, String updatedBy, LocalDateTime updatedDateTime) {
+        this.stockId = stockId;
+        this.companyId = companyId;
         this.warehouseId = warehouseId;
+        this.productId = productId;
         this.quantity = quantity;
-        this.reservedQuantity = reservedQuantity;
-        this.minThreshold = minThreshold;
+        this.maxStockLevel = maxStockLevel;
+        this.minStockLevel = minStockLevel;
+        this.reOrderLevel = reOrderLevel;
+        this.createdBy = createdBy;
+        this.createdDateTime = createdDateTime;
+        this.updatedBy = updatedBy;
+        this.updatedDateTime = updatedDateTime;
     }
 
-    // Auto update timestamp
+    // Auto update timestamps
+
     @PrePersist
+    public void updateCreatedTimestamp() {
+        this.createdDateTime = LocalDateTime.now();
+    }
+
     @PreUpdate
-    public void updateTimestamp() {
-        this.lastUpdated = LocalDateTime.now();
+    public void updateUpdatedTimestamp(){
+        this.updatedDateTime = LocalDateTime.now();
     }
 
     // Getters and Setters
 
-    public Long getStockId() {
-        return stockId;
+    public int getCompanyId() {
+        return companyId;
     }
 
-    public void setStockId(Long stockId) {
-        this.stockId = stockId;
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
-    public Long getAssetId() {
-        return assetId;
-    }
-
-    public void setAssetId(Long assetId) {
-        this.assetId = assetId;
-    }
-
-    public Long getWarehouseId() {
+    public int getWarehouseId() {
         return warehouseId;
     }
 
-    public void setWarehouseId(Long warehouseId) {
+    public void setWarehouseId(int warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getQuantity() {
@@ -133,27 +180,67 @@ public class Stock {
         this.quantity = quantity;
     }
 
-    public int getReservedQuantity() {
-        return reservedQuantity;
+    public int getMaxStockLevel() {
+        return maxStockLevel;
     }
 
-    public void setReservedQuantity(int reservedQuantity) {
-        this.reservedQuantity = reservedQuantity;
+    public void setMaxStockLevel(int maxStockLevel) {
+        this.maxStockLevel = maxStockLevel;
     }
 
-    public int getMinThreshold() {
-        return minThreshold;
+    public int getMinStockLevel() {
+        return minStockLevel;
     }
 
-    public void setMinThreshold(int minThreshold) {
-        this.minThreshold = minThreshold;
+    public void setMinStockLevel(int minStockLevel) {
+        this.minStockLevel = minStockLevel;
     }
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
+    public int getReOrderLevel() {
+        return reOrderLevel;
     }
 
-    public void setLastUpdated(LocalDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setReOrderLevel(int reOrderLevel) {
+        this.reOrderLevel = reOrderLevel;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDateTime getUpdatedDateTime() {
+        return updatedDateTime;
+    }
+
+    public void setUpdatedDateTime(LocalDateTime updatedDateTime) {
+        this.updatedDateTime = updatedDateTime;
+    }
+
+    public int getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(int stockId) {
+        this.stockId = stockId;
     }
 }
