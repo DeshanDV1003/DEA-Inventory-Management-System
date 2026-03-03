@@ -31,6 +31,11 @@ public class SupplierServiceImpl implements SupplierService {
     @Value("${services.grn.url:http://localhost:8089}")
     private String grnServiceUrl;
 
+    // company service location; default port is arbitrary and may be overridden via
+    // application properties or environment so the microservice can be run locally
+    @Value("${services.company.url:http://localhost:8082}")
+    private String companyServiceUrl;
+
     @Override
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
         Supplier supplier = mapToEntity(supplierDTO);
@@ -94,6 +99,17 @@ public class SupplierServiceImpl implements SupplierService {
         String url = grnServiceUrl + "/api/grn/" + grnId + "/approve?supplierId=" + supplierId;
         restTemplate.put(url, null);
         return "GRN Approved successfully";
+    }
+
+    @Override
+    public Object getAllCompanies() {
+        String url = companyServiceUrl + "/api/companies";
+        try {
+            return restTemplate.getForObject(url, Object.class);
+        } catch (Exception e) {
+            // if the company service is down or no data available just return empty list
+            return List.of();
+        }
     }
 
     private Supplier mapToEntity(SupplierDTO dto) {

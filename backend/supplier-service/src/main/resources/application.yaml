@@ -25,3 +25,5 @@ services:
     url: http://localhost:8088
   grn:
     url: http://localhost:8089
+  company:
+    url: http://localhost:8082

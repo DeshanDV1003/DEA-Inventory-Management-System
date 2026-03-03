@@ -19,4 +19,11 @@ public interface SupplierService {
     Object getPurchaseOrdersBySupplier(Long supplierId);
 
     Object approveGRN(Long supplierId, Long grnId);
+
+    /**
+     * Fetches a list of companies via the company service.
+     * The returned object is typically a List of simple company representations
+     * (e.g. id/name pairs) and is forwarded directly to the caller.
+     */
+    Object getAllCompanies();
 }

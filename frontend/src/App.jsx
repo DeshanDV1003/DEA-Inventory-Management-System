@@ -3,6 +3,7 @@ import { Plus, Trash2, Edit2, Package, ShoppingCart, CheckCircle2, Search } from
 
 function App() {
     const [suppliers, setSuppliers] = useState([])
+    const [companies, setCompanies] = useState([])                       // available companies for dropdown
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState('')
     const [showForm, setShowForm] = useState(false)
@@ -20,6 +21,7 @@ function App() {
 
     useEffect(() => {
         fetchSuppliers()
+        fetchCompanies()
     }, [])
 
     const fetchSuppliers = async () => {
@@ -34,6 +36,28 @@ function App() {
             setLoading(false)
         }
     }
+
+    const fetchCompanies = async () => {
+        try {
+            const response = await fetch('/api/suppliers/companies')
+            const data = await response.json()
+            setCompanies(data)
+            // if user is already scoped to a company (e.g. after login), default it
+            const userCompanyId = window.USER_COMPANY_ID || ''
+            if (userCompanyId) {
+                setFormData(prev => ({ ...prev, companyId: userCompanyId }))
+            }
+        } catch (error) {
+            console.error('Error fetching companies:', error)
+        }
+    }
+
+    // map of id->name for lookup when rendering rows
+    const companyMap = companies.reduce((acc, c) => {
+        acc[c.id] = c.name
+        return acc
+    }, {})
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -99,7 +123,8 @@ function App() {
 
     const filteredSuppliers = suppliers.filter(s =>
         s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        s.email.toLowerCase().includes(searchTerm.toLowerCase())
+        s.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (companyMap[s.companyId] || '').toLowerCase().includes(searchTerm.toLowerCase())
     )
 
     return (
@@ -120,12 +145,21 @@ function App() {
                     <form onSubmit={handleSubmit}>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
                             <div className="form-group">
-                                <label>Company Name</label>
+                                <label>Supplier Name</label>
                                 <input type="text" name="name" className="form-input" value={formData.name} onChange={handleInputChange} required />
                             </div>
                             <div className="form-group">
+                                <label>Company</label>
+                                <select name="companyId" className="form-input" value={formData.companyId} onChange={handleInputChange} required>
+                                    <option value="">Select a company</option>
+                                    {companies.map(c => (
+                                        <option key={c.id} value={c.id}>{c.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="form-group">
                                 <label>Company ID (Reference)</label>
-                                <input type="number" name="companyId" className="form-input" value={formData.companyId} onChange={handleInputChange} required />
+                                <input type="text" className="form-input" value={formData.companyId} readOnly />
                             </div>
                             <div className="form-group">
                                 <label>Phone Number</label>
@@ -171,6 +205,7 @@ function App() {
                         <tr>
                             <th>ID</th>
                             <th>Supplier Name</th>
+                            <th>Company</th>
                             <th>Contact Info</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -182,6 +217,7 @@ function App() {
                             <tr key={supplier.id}>
                                 <td>#{supplier.id}</td>
                                 <td style={{ fontWeight: '600' }}>{supplier.name}</td>
+                                <td>{companyMap[supplier.companyId] || supplier.companyId}</td>
                                 <td>
                                     <div>{supplier.email}</div>
                                     <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{supplier.phone}</div>

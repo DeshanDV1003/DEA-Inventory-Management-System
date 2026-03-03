@@ -68,4 +68,11 @@ public class SupplierController {
         Object result = supplierService.approveGRN(id, grnId);
         return ResponseEntity.ok(result);
     }
+
+    // new endpoint to retrieve companies list from the company service
+    @GetMapping("/companies")
+    public ResponseEntity<Object> getCompanies() {
+        Object companies = supplierService.getAllCompanies();
+        return ResponseEntity.ok(companies);
+    }
 }
