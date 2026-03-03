@@ -121,4 +121,23 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         PurchaseOrder updatedOrder = purchaseOrderRepository.save(existingOrder);
         return PurchaseOrderMapper.mapToResponse(updatedOrder);
     }
+
+    // Add to PurchaseOrderServiceImpl.java
+
+    @Override
+    @Transactional
+    public PurchaseOrderResponseDto updateOrderStatus(Integer id, String status) {
+        // 1. Find the order
+        PurchaseOrder order = purchaseOrderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Purchase Order not found with ID: " + id));
+
+        // 2. Update only the status and audit fields
+        order.setStatus(status);
+        order.setUpdatedBy("system_user");
+        order.setUpdatedDate(LocalDateTime.now());
+
+        // 3. Save and return
+        PurchaseOrder updatedOrder = purchaseOrderRepository.save(order);
+        return PurchaseOrderMapper.mapToResponse(updatedOrder);
+    }
 }

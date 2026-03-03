@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller: PurchaseOrderController
@@ -52,5 +53,15 @@ public class PurchaseOrderController {
             @PathVariable Integer id,
             @RequestBody PurchaseOrderRequestDto request) {
         return ResponseEntity.ok(purchaseOrderService.updatePurchaseOrder(id, request));
+    }
+
+
+    // only update the status without changing the details in the purchase order.
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<PurchaseOrderResponseDto> changeStatus(
+            @PathVariable Integer id,
+            @RequestBody Map<String, String> body) {
+        String status = body.get("status");
+        return ResponseEntity.ok(purchaseOrderService.updateOrderStatus(id, status));
     }
 }
