@@ -13,4 +13,6 @@ public interface PurchaseOrderService {
     List<PurchaseOrderResponseDto> getAllPurchaseOrders();
 
     void deletePurchaseOrder(Integer id);
+
+    PurchaseOrderResponseDto updatePurchaseOrder(Integer id, PurchaseOrderRequestDto request);
 }

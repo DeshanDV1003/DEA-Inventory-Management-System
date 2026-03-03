@@ -46,4 +46,11 @@ public class PurchaseOrderController {
         purchaseOrderService.deletePurchaseOrder(id);
         return ResponseEntity.ok("Purchase Order deleted successfully.");
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PurchaseOrderResponseDto> updateOrder(
+            @PathVariable Integer id,
+            @RequestBody PurchaseOrderRequestDto request) {
+        return ResponseEntity.ok(purchaseOrderService.updatePurchaseOrder(id, request));
+    }
 }

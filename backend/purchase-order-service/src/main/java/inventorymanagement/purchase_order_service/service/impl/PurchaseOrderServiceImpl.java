@@ -3,6 +3,7 @@ package inventorymanagement.purchase_order_service.service.impl;
 import inventorymanagement.purchase_order_service.dto.PurchaseOrderRequestDto;
 import inventorymanagement.purchase_order_service.dto.PurchaseOrderResponseDto;
 import inventorymanagement.purchase_order_service.entity.PurchaseOrder;
+import inventorymanagement.purchase_order_service.entity.PurchaseOrderDetail;
 import inventorymanagement.purchase_order_service.mapper.PurchaseOrderMapper;
 import inventorymanagement.purchase_order_service.repository.PurchaseOrderRepository;
 import inventorymanagement.purchase_order_service.service.PurchaseOrderService;
@@ -77,5 +78,47 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
             throw new RuntimeException("Cannot delete. Purchase Order not found with ID: " + id);
         }
         purchaseOrderRepository.deleteById(id);
+    }
+
+
+    @Override
+    @Transactional
+    public PurchaseOrderResponseDto updatePurchaseOrder(Integer id, PurchaseOrderRequestDto request) {
+        // 1. Find the existing order
+        PurchaseOrder existingOrder = purchaseOrderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Purchase Order not found with ID: " + id));
+
+        // 2. Update Header Fields
+        existingOrder.setCompanyId(request.getCompanyId());
+        existingOrder.setSupplierId(request.getSupplierId());
+        existingOrder.setWarehouseId(request.getWarehouseId());
+        existingOrder.setPoNumber(request.getPoNumber());
+
+        // Update audit fields
+        existingOrder.setUpdatedBy("system_user");
+        existingOrder.setUpdatedDate(LocalDateTime.now());
+
+        // 3. Handle Items (Simplest way: Clear old items and add new ones)
+        // This works because of orphanRemoval = true in the Entity
+        existingOrder.getDetails().clear();
+
+        if (request.getItems() != null) {
+            request.getItems().forEach(itemDto -> {
+                PurchaseOrderDetail detail = new PurchaseOrderDetail();
+                detail.setProductId(itemDto.getProductId());
+                detail.setQuantity(itemDto.getQuantity());
+                detail.setPurchaseOrder(existingOrder); // Link to parent
+                detail.setCreatedBy(existingOrder.getCreatedBy()); // Keep original creator
+                detail.setCreatedDate(existingOrder.getCreatedDate());
+                detail.setUpdatedBy("system_user");
+                detail.setUpdatedDate(LocalDateTime.now());
+
+                existingOrder.getDetails().add(detail);
+            });
+        }
+
+        // 4. Save and Return
+        PurchaseOrder updatedOrder = purchaseOrderRepository.save(existingOrder);
+        return PurchaseOrderMapper.mapToResponse(updatedOrder);
     }
 }
