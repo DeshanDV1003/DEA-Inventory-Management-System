@@ -44,24 +44,40 @@ public class PurchaseOrderMapper {
      * Maps a PurchaseOrder Entity to a PurchaseOrderResponse DTO.
      */
     public static PurchaseOrderResponseDto mapToResponse(PurchaseOrder order) {
-        if (order == null) {
-            return null;
-        }
+        if (order == null) return null;
 
         PurchaseOrderResponseDto response = new PurchaseOrderResponseDto();
         response.setId(order.getId());
+        response.setCompanyId(order.getCompanyId());
+        response.setSupplierId(order.getSupplierId());
+        response.setWarehouseId(order.getWarehouseId());
         response.setPoNumber(order.getPoNumber());
-        response.setStatus(order.getStatus());
         response.setDate(order.getDate());
+        response.setStatus(order.getStatus());
 
-        // Map the items back to DTOs
+        // Header Audit Fields
+        response.setCreatedBy(order.getCreatedBy());
+        response.setCreatedDate(order.getCreatedDate());
+        response.setUpdatedBy(order.getUpdatedBy());
+        response.setUpdatedDate(order.getUpdatedDate());
+
         if (order.getDetails() != null) {
             List<PurchaseOrderDetailDto> itemDtos = order.getDetails().stream()
-                    .map(detail -> new PurchaseOrderDetailDto(detail.getProductId(), detail.getQuantity()))
-                    .collect(Collectors.toList());
+                    .map(detail -> {
+                        PurchaseOrderDetailDto itemDto = new PurchaseOrderDetailDto();
+                        itemDto.setProductId(detail.getProductId());
+                        itemDto.setQuantity(detail.getQuantity());
+
+                        // Item Audit Fields
+                        itemDto.setCreatedBy(detail.getCreatedBy());
+                        itemDto.setCreatedDate(detail.getCreatedDate());
+                        itemDto.setUpdatedBy(detail.getUpdatedBy());
+                        itemDto.setUpdatedDate(detail.getUpdatedDate());
+
+                        return itemDto;
+                    }).collect(Collectors.toList());
             response.setItems(itemDtos);
         }
-
         return response;
     }
 
