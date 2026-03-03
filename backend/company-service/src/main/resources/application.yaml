@@ -14,11 +14,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-  security:
-    user:
-      name: admin
-      password: admin123
-
 server:
   port: 8071
 

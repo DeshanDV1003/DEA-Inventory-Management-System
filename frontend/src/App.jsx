@@ -3,13 +3,16 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Products from "./pages/Products";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Company from "./pages/Company";
+
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/products" replace />} />
+        <Route path="/" element={<Navigate to="/companies" replace />} />
 
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
@@ -25,8 +28,18 @@ function App() {
           }
         />
 
+        <Route
+          path="/companies"
+          element={<Company />}
+        />
+
+        <Route
+          path="/company"
+          element={<Navigate to="/companies" replace />}
+        />
+
         {/* Catch all */}
-        <Route path="*" element={<Navigate to="/products" replace />} />
+        <Route path="*" element={<Navigate to="/companies" replace />} />
       </Routes>
     </BrowserRouter>
   );

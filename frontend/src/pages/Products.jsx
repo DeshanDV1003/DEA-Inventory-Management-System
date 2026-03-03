@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { getAllProducts, addProduct, deleteProduct } from "../services/api";
 import "./Products.css";
 
@@ -77,18 +77,21 @@ const Products = () => {
           <span>INVNTRY</span>
         </div>
         <nav className="sidebar-nav">
-          <a className="nav-item active">
+          <NavLink to="/products" className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}>
             <span className="nav-icon">☰</span> Products
-          </a>
-          <a className="nav-item">
+          </NavLink>
+          <NavLink to="/companies" className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}>
+            <span className="nav-icon">▦</span> Companies
+          </NavLink>
+          <span className="nav-item">
             <span className="nav-icon">⫙</span> Warehouse
-          </a>
-          <a className="nav-item">
+          </span>
+          <span className="nav-item">
             <span className="nav-icon">☷</span> Suppliers
-          </a>
-          <a className="nav-item">
+          </span>
+          <span className="nav-item">
             <span className="nav-icon">⊞</span> Reports
-          </a>
+          </span>
         </nav>
         <div className="sidebar-footer">
           <div className="user-pill">

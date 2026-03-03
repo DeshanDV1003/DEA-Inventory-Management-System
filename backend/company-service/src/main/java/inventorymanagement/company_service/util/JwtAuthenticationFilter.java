@@ -1,4 +1,4 @@
-package inventorymanagement.product_service.util;
+package inventorymanagement.company_service.util;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

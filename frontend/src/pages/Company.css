@@ -1,0 +1,208 @@
+.company-search-row {
+  margin: 0 0 1.25rem;
+}
+
+.company-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  max-width: 460px;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #1e1e24;
+  border-radius: 10px;
+  background: #111116;
+}
+
+.company-search-ic {
+  color: #52525b;
+}
+
+.company-search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #f4f4f5;
+  font-size: 0.9rem;
+}
+
+.company-search-box input::placeholder {
+  color: #52525b;
+}
+
+.company-table-wrap {
+  background: #111116;
+  border: 1px solid #1e1e24;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.company-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.company-table th {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #52525b;
+  border-bottom: 1px solid #1e1e24;
+  font-weight: 600;
+}
+
+.company-table td {
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #1a1a20;
+}
+
+.company-table tr:last-child td {
+  border-bottom: none;
+}
+
+.company-table tr:hover {
+  background: #15151c;
+}
+
+.cell-name {
+  font-weight: 600;
+}
+
+.actions-col {
+  width: 120px;
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.icon-btn {
+  background: none;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
+  color: #71717a;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-left: 0.4rem;
+}
+
+.icon-btn:hover {
+  color: #f4f4f5;
+  border-color: #3f3f46;
+}
+
+.icon-btn.danger:hover {
+  color: #f87171;
+  border-color: #f87171;
+}
+
+.company-modal {
+  width: min(760px, 100%);
+  max-width: 760px;
+}
+
+.company-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.company-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.company-field label {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #71717a;
+  font-weight: 600;
+}
+
+.company-field input,
+.company-field select {
+  width: 100%;
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f4f4f5;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.company-field input:focus,
+.company-field select:focus {
+  border-color: #a78bfa;
+}
+
+.company-field input::placeholder {
+  color: #3f3f46;
+}
+
+.company-field-full {
+  grid-column: 1 / -1;
+}
+
+.company-btn-light {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  background: none;
+  color: #a1a1aa;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.company-btn-light:hover {
+  border-color: #3f3f46;
+  color: #f4f4f5;
+}
+
+.company-submit-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #a78bfa;
+  color: #0a0a0f;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.company-submit-btn:hover {
+  background: #8b5cf6;
+}
+
+.company-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal-form .company-form-grid {
+  margin-top: 0.5rem;
+}
+
+.modal-form .modal-actions {
+  margin-top: 1rem;
+}
+
+@media (max-width: 920px) {
+  .company-modal {
+    width: min(560px, 100%);
+    max-width: 560px;
+  }
+
+  .company-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
