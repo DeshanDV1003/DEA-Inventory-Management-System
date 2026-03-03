@@ -11,4 +11,8 @@ public interface AssetRepository extends JpaRepository<Asset, Long> {
     List<Asset> findByCompanyId(Long companyId);
     List<Asset> findByDepartmentId(Long departmentId);
     List<Asset> findByWarehouseId(Long warehouseId);
+    List<Asset> findByIsDeletedFalse();
+    List<Asset> findByWarehouseIdAndIsDeletedFalse(Long warehouseId);
+    List<Asset> findByCompanyIdAndIsDeletedFalse(Long companyId);
+    List<Asset> findByDepartmentIdAndIsDeletedFalse(Long departmentId);
 }

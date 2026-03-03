@@ -27,4 +27,15 @@ public class AssetController {
     public List<Asset> getAll() {
         return assetService.getAllAssets();
     }
+
+    @PutMapping("/update/{id}")
+    public Asset updateAsset(@PathVariable Long id, @RequestBody Asset asset) {
+        return assetService.updateAsset(id, asset);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteAsset(@PathVariable Long id) {
+        assetService.deleteAsset(id);
+        return "Asset with ID " + id + " has been successfully soft-deleted.";
+    }
 }

@@ -24,26 +24,35 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public List<Asset> getAssetsByWarehouse(Long warehouseId) {
-        return assetRepository.findByWarehouseId(warehouseId);
+
+        return assetRepository.findByWarehouseIdAndIsDeletedFalse(warehouseId);
     }
 
     @Override
     public Asset updateAsset(Long id, Asset details) {
-        Asset asset = assetRepository.findById(id).orElseThrow();
+        Asset asset = assetRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Asset not found with id: " + id));
+
         asset.setName(details.getName());
-        asset.setAssetTag(details.getAssetTag());
+        asset.setStatus(details.getStatus());
+        asset.setWarranty(details.getWarranty());
+        asset.setWarehouseId(details.getWarehouseId());
+
         return assetRepository.save(asset);
     }
 
     @Override
     public void deleteAsset(Long id) {
-        Asset asset = assetRepository.findById(id).orElseThrow();
-        asset.setStatus("DELETED");
+        Asset asset = assetRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Asset not found with id: " + id));
+
+        asset.setDeleted(true);
         assetRepository.save(asset);
+
     }
 
     @Override
     public List<Asset> getAllAssets() {
-        return assetRepository.findAll();
+        return assetRepository.findByIsDeletedFalse();
     }
 }
