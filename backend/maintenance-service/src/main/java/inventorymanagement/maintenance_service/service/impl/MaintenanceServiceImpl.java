@@ -19,10 +19,12 @@
 
 package inventorymanagement.maintenance_service.service.impl;
 
+
 import inventorymanagement.maintenance_service.dto.AddMaintenanceRequestDto;
 import inventorymanagement.maintenance_service.dto.MaintenanceResponseDto;
 import inventorymanagement.maintenance_service.entity.Maintenance;
 import inventorymanagement.maintenance_service.entity.MaintenanceStatus;
+import inventorymanagement.maintenance_service.exception.ResourceNotFoundException;
 import inventorymanagement.maintenance_service.repository.MaintenanceRepository;
 import inventorymanagement.maintenance_service.repository.MaintenanceStatusRepository;
 import inventorymanagement.maintenance_service.service.MaintenanceService;
@@ -50,7 +52,8 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         // Find status by ID
         MaintenanceStatus status = maintenanceStatusRepository
                 .findById(request.getStatusId())
-                .orElseThrow(() -> new RuntimeException("Maintenance Status not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Maintenance Status not found with id: " + request.getStatusId()));
 
         // Convert DTO to Entity
         Maintenance maintenance = new Maintenance();
@@ -76,7 +79,8 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     public MaintenanceResponseDto getMaintenanceById(Integer id) {
 
         Maintenance maintenance = maintenanceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Maintenance not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Maintenance not found with id: " + id ));
 
         return mapToResponseDto(maintenance);
     }
@@ -94,6 +98,12 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     // Delete Maintenance record
     @Override
     public void deleteMaintenance(Integer id) {
+
+        if (!maintenanceRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    "Maintenance not found with id: " + id
+            );
+        }
         maintenanceRepository.deleteById(id);
     }
 
