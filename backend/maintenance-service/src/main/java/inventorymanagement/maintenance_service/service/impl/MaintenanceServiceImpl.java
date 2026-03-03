@@ -95,6 +95,38 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                 .collect(Collectors.toList());
     }
 
+    // Update Maintenance record
+    @Override
+    public MaintenanceResponseDto updateMaintenance(Integer id, AddMaintenanceRequestDto request) {
+
+        // Check if maintenance exists
+        Maintenance existingMaintenance = maintenanceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Maintenance not found with id: " + id));
+
+        // Check if status exists
+        MaintenanceStatus status = maintenanceStatusRepository.findById(request.getStatusId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Maintenance Status not found with id: " + request.getStatusId()));
+
+        // Update fields
+        existingMaintenance.setMaintenanceNumber(request.getMaintenanceNumber());
+        existingMaintenance.setCompanyId(request.getCompanyId());
+        existingMaintenance.setWarehouseId(request.getWarehouseId());
+        existingMaintenance.setAssetId(request.getAssetId());
+        existingMaintenance.setDate(request.getDate());
+        existingMaintenance.setCost(request.getCost());
+        existingMaintenance.setDescription(request.getDescription());
+        existingMaintenance.setStatus(status);
+        existingMaintenance.setModifiedDate(LocalDateTime.now());
+
+        // Save updated entity
+        Maintenance updatedMaintenance = maintenanceRepository.save(existingMaintenance);
+
+        return mapToResponseDto(updatedMaintenance);
+    }
+
+
     // Delete Maintenance record
     @Override
     public void deleteMaintenance(Integer id) {

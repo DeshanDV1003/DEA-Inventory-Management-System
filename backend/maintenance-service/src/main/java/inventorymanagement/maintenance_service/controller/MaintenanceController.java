@@ -57,8 +57,8 @@ public class MaintenanceController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    // Get Maintenance by ID
-    // Endpoint: GET /api/v1/maintenances/{id}
+    // Update Maintenance by ID
+    // Endpoint: PUT /api/v1/maintenances/{id}
 
     @GetMapping("/{id}")
     public ResponseEntity<MaintenanceResponseDto> getMaintenanceById(
@@ -80,6 +80,17 @@ public class MaintenanceController {
         );
     }
 
+
+    // Update Maintenance by ID
+    // Endpoint: Update /api/v1/maintenances/{id}
+
+    @PutMapping("/{id}")
+    public MaintenanceResponseDto updateMaintenance(
+            @PathVariable Integer id,
+            @RequestBody AddMaintenanceRequestDto request) {
+
+        return maintenanceService.updateMaintenance(id, request);
+    }
 
     // Delete Maintenance by ID
     // Endpoint: DELETE /api/v1/maintenances/{id}

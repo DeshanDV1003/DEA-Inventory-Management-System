@@ -33,6 +33,10 @@ public interface MaintenanceService {
     // Get all Maintenance records
     List<MaintenanceResponseDto> getAllMaintenances();
 
+
+    // Update existing Maintenance record
+    MaintenanceResponseDto updateMaintenance(Integer id, AddMaintenanceRequestDto request);
+
     // Delete Maintenance by ID
     void deleteMaintenance(Integer id);
 }
