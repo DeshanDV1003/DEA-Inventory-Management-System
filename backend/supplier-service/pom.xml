@@ -69,6 +69,9 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- OpenAPI UI dependency removed to avoid unresolved-version build failure. 
+		     Add back a compatible springdoc version if API documentation is required.
+		     Example: org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0 (check central for valid versions) -->
 	</dependencies>
 
 	<build>
