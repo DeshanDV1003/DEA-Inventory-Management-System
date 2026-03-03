@@ -1,0 +1,137 @@
+/* ── Register Page ──────────────────────────────────────────────────────────── */
+.register-root {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #0a0a0f;
+  color: #e4e4e7;
+}
+
+/* ── Left Panel ─────────────────────────────────────────────────────────────── */
+.register-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 4rem;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0a0a0f 0%, #131320 100%);
+}
+
+.register-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #a78bfa;
+  margin-bottom: 3rem;
+}
+
+.register-tagline h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #f4f4f5;
+}
+
+/* decorative circles */
+.register-decoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── Right Panel ────────────────────────────────────────────────────────────── */
+.register-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 520px;
+}
+
+.register-subtitle {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: #a78bfa;
+  margin-bottom: 0.5rem;
+}
+
+.register-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+/* ── Form ───────────────────────────────────────────────────────────────────── */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.register-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.register-row .field-group {
+  flex: 1;
+}
+
+.register-btn {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background: #a78bfa;
+  color: #0a0a0f;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.register-btn:hover:not(:disabled) {
+  background: #8b5cf6;
+}
+
+.register-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.register-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #71717a;
+}
+
+.register-footer a {
+  color: #a78bfa;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .register-root { flex-direction: column; }
+  .register-left { padding: 2rem; min-height: 25vh; }
+  .register-tagline h1 { font-size: 1.8rem; }
+  .register-row { flex-direction: column; gap: 1.25rem; }
+}
