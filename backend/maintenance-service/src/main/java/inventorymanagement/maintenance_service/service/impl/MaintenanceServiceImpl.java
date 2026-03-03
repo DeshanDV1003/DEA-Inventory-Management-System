@@ -43,9 +43,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     @Autowired
     private MaintenanceStatusRepository maintenanceStatusRepository;
 
-    /*
-     * Create new Maintenance record
-     */
+    // Create new Maintenance record
     @Override
     public MaintenanceResponseDto createMaintenance(AddMaintenanceRequestDto request) {
 
@@ -73,9 +71,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         return mapToResponseDto(savedMaintenance);
     }
 
-    /*
-     * Get Maintenance by ID
-     */
+    // Get Maintenance by ID
     @Override
     public MaintenanceResponseDto getMaintenanceById(Integer id) {
 
@@ -85,9 +81,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
         return mapToResponseDto(maintenance);
     }
 
-    /*
-     * Get all Maintenance records
-     */
+    // Get all Maintenance records
     @Override
     public List<MaintenanceResponseDto> getAllMaintenances() {
 
@@ -97,17 +91,13 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                 .collect(Collectors.toList());
     }
 
-    /*
-     * Delete Maintenance record
-     */
+    // Delete Maintenance record
     @Override
     public void deleteMaintenance(Integer id) {
         maintenanceRepository.deleteById(id);
     }
 
-    /*
-     * Helper method: Convert Entity → ResponseDTO
-     */
+    // Helper method: Convert Entity → ResponseDTO
     private MaintenanceResponseDto mapToResponseDto(Maintenance maintenance) {
 
         return new MaintenanceResponseDto(
