@@ -1,0 +1,36 @@
+services:
+  warehouse-db:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: warehouse_db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - dea-network
+
+  warehouse-backend:
+    build: ./backend/warehouse-service
+    ports:
+      - "8087:8087"
+    depends_on:
+      - warehouse-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://warehouse-db:3306/warehouse_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+    networks:
+      - dea-network
+
+  supplier-frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - warehouse-backend
+    networks:
+      - dea-network
+
+networks:
+  dea-network:
+    driver: bridge
