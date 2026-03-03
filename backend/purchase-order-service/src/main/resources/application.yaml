@@ -1,3 +1,23 @@
 spring:
   application:
     name: purchase-order-service
+
+  datasource:
+    # createDatabaseIfNotExist=true will create the 'po_db' schema automatically if it's missing
+    url: jdbc:mysql://localhost:3306/po_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: "" # Change this to your actual password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # 'update' will create tables the first time and update them if you add new fields later
+      ddl-auto: update
+    show-sql: true # Prints the SQL in the console so you can see what's happening
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+server:
+  port: 8081 # Common practice to use a different port for each service

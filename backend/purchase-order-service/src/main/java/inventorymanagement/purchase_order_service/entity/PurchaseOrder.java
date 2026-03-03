@@ -59,7 +59,7 @@ public class PurchaseOrder {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
-    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PurchaseOrderDetail> details;
 
 
