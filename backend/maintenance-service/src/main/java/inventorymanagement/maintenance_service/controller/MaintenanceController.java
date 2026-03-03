@@ -29,6 +29,7 @@ import inventorymanagement.maintenance_service.service.MaintenanceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class MaintenanceController {
 
     @PostMapping
     public ResponseEntity<MaintenanceResponseDto> createMaintenance(
-            @RequestBody AddMaintenanceRequestDto request) {
+            @Valid @RequestBody AddMaintenanceRequestDto request) {
 
         MaintenanceResponseDto response =
                 maintenanceService.createMaintenance(request);
@@ -57,7 +58,7 @@ public class MaintenanceController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    // Update Maintenance by ID
+    // Get Maintenance by ID
     // Endpoint: PUT /api/v1/maintenances/{id}
 
     @GetMapping("/{id}")
@@ -87,7 +88,7 @@ public class MaintenanceController {
     @PutMapping("/{id}")
     public MaintenanceResponseDto updateMaintenance(
             @PathVariable Integer id,
-            @RequestBody AddMaintenanceRequestDto request) {
+            @Valid @RequestBody AddMaintenanceRequestDto request) {
 
         return maintenanceService.updateMaintenance(id, request);
     }

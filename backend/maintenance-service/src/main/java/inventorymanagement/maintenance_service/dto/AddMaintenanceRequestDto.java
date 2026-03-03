@@ -37,6 +37,7 @@
 
 package inventorymanagement.maintenance_service.dto;
 
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -47,13 +48,29 @@ import java.time.LocalDateTime;
  */
 public class AddMaintenanceRequestDto {
 
+    @NotBlank(message = "Maintenance number is required")
     private String maintenanceNumber;
+
+    @NotNull(message = "Company ID is required")
     private Integer companyId;
+
+    @NotNull(message = "Warehouse ID is required")
     private Integer warehouseId;
+
+    @NotNull(message = "Asset ID is required")
     private Integer assetId;
+
+    @NotNull(message = "Date is required")
     private LocalDateTime date;
+
+    @NotNull(message = "Cost is required")
+    @Positive(message = "Cost must be greater than 0")
     private BigDecimal cost;
+
+    @Size(max = 255, message = "Description cannot exceed 255 characters")
     private String description;
+
+    @NotNull(message = "Status ID is required")
     private Integer statusId;
 
     public AddMaintenanceRequestDto() {
