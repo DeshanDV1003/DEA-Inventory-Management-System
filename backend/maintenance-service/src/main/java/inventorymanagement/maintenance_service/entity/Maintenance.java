@@ -1,61 +1,121 @@
+/*
+ * Maintenance Entity
+ *
+ * This class represents the "maintenances" table in the maintenance_db database.
+ *
+ * Purpose:
+ * - Stores all maintenance records related to assets.
+ * - Each record contains maintenance details such as cost, date, description,
+ *   and references to company, warehouse, asset, and status.
+ *
+ * Database Mapping:
+ * - @Entity tells JPA (Hibernate) that this class is mapped to a database table.
+ * - @Table(name = "maintenances") specifies the exact table name.
+ * - @Id defines the primary key.
+ * - @GeneratedValue(strategy = GenerationType.IDENTITY) enables auto-increment ID.
+ *
+ * Microservice Architecture:
+ * - companyId, warehouseId, and assetId are references to other microservices.
+ * - Only IDs are stored (no direct entity relationship to other services).
+ * - statusId refers to the maintenance_status table inside this service.
+ *
+ * Data Types:
+ * - BigDecimal is used for cost to ensure precision for monetary values.
+ * - LocalDateTime is used for date fields to store date and time.
+ *
+ * Audit Fields:
+ * - createdBy and createdDate store record creation details.
+ * - modifiedBy and modifiedDate store last update information.
+ *
+ * This entity follows JPA standards and supports clean microservice architecture design.
+ */
+
 package inventorymanagement.maintenance_service.entity;
 
-import jakarta.persistence.*; // Imports JPA (Java Persistence API) (Hibernate) annotation @Entity, @Table, @Id, @GeneratedValue
-
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-// Helps to connect java class to thr DB
 
-@Entity // This class represent as a database table spring boot in,/ without it spring not create or map table
-@Table(name = "maintenances") // Set a table name
-public class Maintenance { // Maintenance is a model class that represents the table (1 class = 1 table)
+// This class represents a database table.
+@Entity
 
-    @Id // Primary key of the table
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Database automatically generate the ID
-    private Integer id; // Primary key column (integer -object)
+@Table(name = "maintenances")
+public class Maintenance {
 
-    // Create columns in table
-    @Column(name = "maintenance_number", length = 20, nullable = false)
+    // This field is primary key
+    @Id
+
+    // Primary key is generated automatically
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    // Maintenance unique number (like reference number)
     private String maintenanceNumber;
 
-    @Column(name = "company_id", nullable = false)
+    // Foreign key reference to Company service (microservice ID only)
     private Integer companyId;
 
-    @Column(name ="warehouse_id")
+    // Foreign key reference to Warehouse service
     private Integer warehouseId;
 
-    @Column(name = "asset_id", nullable = false)
+    // Foreign key reference to Asset service
     private Integer assetId;
 
+    // Date and time when maintenance happened
     private LocalDateTime date;
 
-    @Column(precision = 15, scale = 2)
+    // Cost of maintenance (BigDecimal is used for money values)
     private BigDecimal cost;
 
-    @Column(length = 255)
+    // Description/details about the maintenance
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="status_id")
-    private MaintenanceStatus status;
+    // Status ID (foreign key to maintenance_status table)
+    private Integer statusId;
 
-    @Column(name = "created_by", length = 100)
+    // User who created the record
     private String createdBy;
 
-    @Column(name = "created_date", updatable = false)
+    // Date when record was created
     private LocalDateTime createdDate;
 
-    @Column(name = "updated_by", length = 100)
-    private String updatedBy;
+    // User who last modified the record
+    private String modifiedBy;
 
-    @Column(name = "updated_date")
-    private LocalDateTime updatedDate;
+    // Date when record was last updated
+    private LocalDateTime modifiedDate;
 
-    public Maintenance() { // Empty/ Default Constructor
+    // Default constructor
+    // For JPA - (Java Persistence API) Connect java object(classes)
+    public Maintenance() {
     }
 
-    //Getters and Setters
 
+     //Parameterized constructor (Used to create object with all fields.)
+
+    public Maintenance(Integer id, String maintenanceNumber, Integer companyId,
+                       Integer warehouseId, Integer assetId,
+                       LocalDateTime date, BigDecimal cost, String description,
+                       Integer statusId, String createdBy, LocalDateTime createdDate,
+                       String modifiedBy, LocalDateTime modifiedDate) {
+        this.id = id;
+        this.maintenanceNumber = maintenanceNumber;
+        this.companyId = companyId;
+        this.warehouseId = warehouseId;
+        this.assetId = assetId;
+        this.date = date;
+        this.cost = cost;
+        this.description = description;
+        this.statusId = statusId;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.modifiedBy = modifiedBy;
+        this.modifiedDate = modifiedDate;
+    }
+
+
+    //  =================== Getters and Setters   ===================
+    // These methods allow other classes to access and modify private fields.
     public Integer getId() {
         return id;
     }
@@ -120,12 +180,12 @@ public class Maintenance { // Maintenance is a model class that represents the t
         this.description = description;
     }
 
-    public MaintenanceStatus getStatus() {
-        return status;
+    public Integer getStatusId() {
+        return statusId;
     }
 
-    public void setStatus(MaintenanceStatus status) {
-        this.status = status;
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 
     public String getCreatedBy() {
@@ -144,41 +204,19 @@ public class Maintenance { // Maintenance is a model class that represents the t
         this.createdDate = createdDate;
     }
 
-    public String getUpdatedBy() {
-        return updatedBy;
+    public String getModifiedBy() {
+        return modifiedBy;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
-    public LocalDateTime getUpdatedDate() {
-        return updatedDate;
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
     }
 
-    public void setUpdatedDate(LocalDateTime updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
-        this.updatedDate = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedDate = LocalDateTime.now();
-    }
-
-    @Override
-    public String toString() {
-        return "Maintenance{" +
-                "id=" + id +
-                ", maintenanceNumber='" + maintenanceNumber + '\'' +
-                ", cost=" + cost +
-                ", date=" + date +
-                '}';
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 }
-
