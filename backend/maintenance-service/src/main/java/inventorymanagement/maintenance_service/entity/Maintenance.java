@@ -71,7 +71,11 @@ public class Maintenance {
     private String description;
 
     // Status ID (foreign key to maintenance_status table)
-    private Integer statusId;
+    //private Integer statusId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
+    private MaintenanceStatus status;
 
     // User who created the record
     private String createdBy;
@@ -96,7 +100,7 @@ public class Maintenance {
     public Maintenance(Integer id, String maintenanceNumber, Integer companyId,
                        Integer warehouseId, Integer assetId,
                        LocalDateTime date, BigDecimal cost, String description,
-                       Integer statusId, String createdBy, LocalDateTime createdDate,
+                       MaintenanceStatus status, String createdBy, LocalDateTime createdDate,
                        String modifiedBy, LocalDateTime modifiedDate) {
         this.id = id;
         this.maintenanceNumber = maintenanceNumber;
@@ -106,7 +110,7 @@ public class Maintenance {
         this.date = date;
         this.cost = cost;
         this.description = description;
-        this.statusId = statusId;
+        this.status = status;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
         this.modifiedBy = modifiedBy;
@@ -180,12 +184,12 @@ public class Maintenance {
         this.description = description;
     }
 
-    public Integer getStatusId() {
-        return statusId;
+    public MaintenanceStatus getStatus() {
+        return status;
     }
 
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
+    public void setStatus(MaintenanceStatus status) {
+        this.status = status;
     }
 
     public String getCreatedBy() {
