@@ -304,6 +304,13 @@
 
 .modal-form .field-group { display: flex; flex-direction: column; gap: 0.4rem; }
 
+.field-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.field-row .field-group { flex: 1; }
+
 .modal-form label {
   font-size: 0.65rem;
   letter-spacing: 0.15em;
@@ -322,8 +329,19 @@
   transition: border-color 0.2s;
 }
 
-.modal-form input:focus { border-color: #a78bfa; }
+.modal-form input:focus, .modal-form select:focus { border-color: #a78bfa; }
 .modal-form input::placeholder { color: #3f3f46; }
+
+.modal-form select {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f4f4f5;
+  outline: none;
+  transition: border-color 0.2s;
+}
 
 .modal-actions {
   display: flex;

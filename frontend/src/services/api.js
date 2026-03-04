@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const USER_SERVICE = import.meta.env.VITE_USER_SERVICE || "http://localhost:8071";
-const PRODUCT_SERVICE = import.meta.env.VITE_PRODUCT_SERVICE || "http://localhost:8081";
+const USER_SERVICE = import.meta.env.VITE_USER_SERVICE || "http://localhost:8072";
+const PRODUCT_SERVICE = import.meta.env.VITE_PRODUCT_SERVICE || "http://localhost:8082";
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 export const loginUser = (credentials) =>
