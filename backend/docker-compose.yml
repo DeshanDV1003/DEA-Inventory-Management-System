@@ -1,5 +1,4 @@
 services:
-
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -24,9 +23,10 @@ services:
     ports:
       - "8072:8071"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/UserDB
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/userdb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
     depends_on:
       mysql:
         condition: service_healthy
@@ -40,23 +40,48 @@ services:
     ports:
       - "8082:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ProductDB
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/productdb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
     depends_on:
       mysql:
         condition: service_healthy
     networks:
       - inventory-network
+
+  # YOUR SERVICE: Purchase Order Service
+  purchase-order-service:
+    build:
+      context: ./purchase-order-service
+    container_name: purchase-order-service
+    ports:
+      - "8061:8062" # Main API Port
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/po_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - inventory-network
+
   frontend:
     build:
       context: ../frontend
     container_name: frontend
     ports:
       - "3001:3000"
+    environment:
+      VITE_USER_SERVICE: http://localhost:8072
+      VITE_PRODUCT_SERVICE: http://localhost:8082
+      VITE_PO_SERVICE: http://localhost:8061
     depends_on:
       - user-service
       - product-service
+      - purchase-order-service
     networks:
       - inventory-network
 

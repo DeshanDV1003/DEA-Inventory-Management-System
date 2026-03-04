@@ -1,23 +1,42 @@
+#spring:
+#  application:
+#    name: purchase-order-service
+#
+#  datasource:
+#    # createDatabaseIfNotExist=true will create the 'po_db' schema automatically if it's missing
+#    url: jdbc:mysql://localhost:3306/po_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+#    username: root
+#    password: "" # Change this to your actual password
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#  jpa:
+#    hibernate:
+#      # 'update' will create tables the first time and update them if you add new fields later
+#      ddl-auto: update
+#    show-sql: true # Prints the SQL in the console so you can see what's happening
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.MySQLDialect
+#
+#server:
+#  port: 8081 # Common practice to use a different port for each service
+#
+#jwt:
+#  secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+
+
+
 spring:
   application:
     name: purchase-order-service
-
   datasource:
-    # createDatabaseIfNotExist=true will create the 'po_db' schema automatically if it's missing
-    url: jdbc:mysql://localhost:3306/po_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: "" # Change this to your actual password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/po_db}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
   jpa:
     hibernate:
-      # 'update' will create tables the first time and update them if you add new fields later
       ddl-auto: update
-    show-sql: true # Prints the SQL in the console so you can see what's happening
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
 
-server:
-  port: 8081 # Common practice to use a different port for each service
+jwt:
+  secret: ${JWT_SECRET:a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8}
