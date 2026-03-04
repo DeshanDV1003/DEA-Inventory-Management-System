@@ -1,3 +1,20 @@
+/**
+ * GlobalExceptionHandler
+ *
+ * A centralized utility to catch and format errors across the microservice.
+ *
+ * Purpose:
+ * - Intercepts 'MethodArgumentNotValidException' (Validation errors).
+ * - Intercepts 'RuntimeException' (Resource not found/Business errors).
+ *
+ * Response Format:
+ * - Returns a Map of field names and error messages with appropriate HTTP
+ *   status codes (400 Bad Request or 404 Not Found).
+ *
+ * Architecture:
+ * - Uses @RestControllerAdvice to provide global error handling for all Controllers.
+ */
+
 package inventorymanagement.purchase_order_service.exception;
 
 import org.springframework.http.HttpStatus;

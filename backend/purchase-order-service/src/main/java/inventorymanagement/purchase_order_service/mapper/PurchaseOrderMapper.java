@@ -1,3 +1,20 @@
+/**
+ * PurchaseOrderMapper
+ *
+ * A utility class for manual mapping between Entities and DTOs.
+ *
+ * Purpose:
+ * - Handles the heavy lifting of copying values from one object to another.
+ * - Ensures bi-directional links between Header and Details are set correctly.
+ *
+ * Methods:
+ * - mapToEntity: Converts RequestDto to PurchaseOrder entity.
+ * - mapToResponse: Converts PurchaseOrder entity to ResponseDto.
+ *
+ * Architecture:
+ * - Since Lombok/MapStruct is not used, this class ensures mapping logic
+ *   remains centralized and out of the Service layer.
+ */
 package inventorymanagement.purchase_order_service.mapper;
 
 import inventorymanagement.purchase_order_service.dto.PurchaseOrderDetailDto;
