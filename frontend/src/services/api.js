@@ -26,7 +26,7 @@ export const deleteProduct = (id) =>
     data: id,
   });
 
-const COMPANY_BASE = `${COMPANY_SERVICE}/api/companies`;
+const COMPANY_BASE = `${COMPANY_SERVICE}/api/vi/companies`;
 
 export const getAllCompanies = () =>
   axios.get(COMPANY_BASE, authHeader());
