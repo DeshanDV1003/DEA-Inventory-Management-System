@@ -82,10 +82,41 @@ services:
     depends_on:
       - user-service
       - product-service
+      - maintenance-service
       - purchase-order-service
     networks:
       - inventory-network
-
+  maintenance-service:
+    build:
+      context: ./maintenance-service
+    container_name: maintenance-service
+    ports:
+      - "8092:8091"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MaintenanceDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - inventory-network
+  
+  purchase-order-service:
+    build:
+      context: ./purchase-order-service
+    container_name: purchase-order-service
+    ports:
+      - "8062:8061"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/PurchaseOrderDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - inventory-network
 networks:
   inventory-network:
     driver: bridge
