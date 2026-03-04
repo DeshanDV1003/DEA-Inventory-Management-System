@@ -24,7 +24,7 @@ services:
     ports:
       - "8072:8071"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/userdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/userDB
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
@@ -41,7 +41,7 @@ services:
     ports:
       - "8082:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/productdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/productDB
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
