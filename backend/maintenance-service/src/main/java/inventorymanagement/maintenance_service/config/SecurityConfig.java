@@ -26,7 +26,12 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for Postman testing
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Allow all requests
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
+                        .permitAll()
+                        .anyRequest().authenticated() // Allow all requests
                 );
 
         return http.build();
