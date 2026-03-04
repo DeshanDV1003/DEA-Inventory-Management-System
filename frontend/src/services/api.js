@@ -3,7 +3,8 @@ import axios from "axios";
 const USER_SERVICE = import.meta.env.VITE_USER_SERVICE || "http://localhost:8072";
 const PRODUCT_SERVICE = import.meta.env.VITE_PRODUCT_SERVICE || "http://localhost:8082";
 
-const PO_SERVICE = import.meta.env.VITE_PO_SERVICE || "http://localhost:8061";
+const PO_SERVICE = import.meta.env.VITE_PO_SERVICE || "http://localhost:8062";
+const COMPANY_SERVICE = import.meta.env.VITE_COMPANY_SERVICE || "http://localhost:8022";
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 export const loginUser = (credentials) =>
@@ -76,3 +77,16 @@ export const deletePurchaseOrder = (id) =>
         `${PO_SERVICE}/api/v1/purchase-orders/${id}`,
         authHeader()
     );
+
+// ── Companies ─────────────────────────────────────────────────────────────────
+export const getAllCompanies = () =>
+    axios.get(`${COMPANY_SERVICE}/api/v1/companies`, authHeader());
+
+export const addCompany = (data) =>
+    axios.post(`${COMPANY_SERVICE}/api/v1/companies/addCompany`, data, authHeader());
+
+export const updateCompany = (id, data) =>
+    axios.put(`${COMPANY_SERVICE}/api/v1/companies/updateCompany/${id}`, data, authHeader());
+
+export const deleteCompany = (id) =>
+    axios.delete(`${COMPANY_SERVICE}/api/v1/companies/deleteCompany/${id}`, authHeader());
