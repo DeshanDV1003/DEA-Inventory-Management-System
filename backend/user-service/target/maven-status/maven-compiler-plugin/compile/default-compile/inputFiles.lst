@@ -1,0 +1,13 @@
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\config\MyAPIConfig.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\config\SecurityConfig.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\controller\AuthController.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\controller\UserController.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\dto\AuthResponseDto.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\dto\LoginRequestDto.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\dto\RegisterRequestDto.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\entity\User.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\repository\UserRepository.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\service\impl\UserServiceImpl.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\service\UserService.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\UserServiceApplication.java
+D:\Projects\University\DEA 2\DEA-Inventory-Management-System\backend\user-service\src\main\java\inventorymanagement\user_service\util\JwtUtil.java
