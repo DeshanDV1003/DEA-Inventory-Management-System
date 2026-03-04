@@ -1,9 +1,16 @@
 package inventorymanagement.purchase_order_service.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 public class PurchaseOrderDetailDto {
+    @NotNull(message = "Product ID is required for each item")
     private Integer productId;
+
+    @NotNull(message = "Quantity is required")
+    @Min(value = 1, message = "Quantity must be at least 1")
     private Integer quantity;
     private String createdBy;
     private LocalDateTime createdDate;

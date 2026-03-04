@@ -1,8 +1,10 @@
 package inventorymanagement.purchase_order_service.controller;
 
+import inventorymanagement.purchase_order_service.dto.OrderStatusUpdateDto;
 import inventorymanagement.purchase_order_service.dto.PurchaseOrderRequestDto;
 import inventorymanagement.purchase_order_service.dto.PurchaseOrderResponseDto;
 import inventorymanagement.purchase_order_service.service.PurchaseOrderService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +30,7 @@ public class PurchaseOrderController {
     }
 
     @PostMapping
-    public ResponseEntity<PurchaseOrderResponseDto> createOrder(@RequestBody PurchaseOrderRequestDto request) {
+    public ResponseEntity<PurchaseOrderResponseDto> createOrder(@Valid @RequestBody PurchaseOrderRequestDto request) {
         return new ResponseEntity<>(purchaseOrderService.createPurchaseOrder(request), HttpStatus.CREATED);
     }
 
@@ -51,7 +53,7 @@ public class PurchaseOrderController {
     @PutMapping("/{id}")
     public ResponseEntity<PurchaseOrderResponseDto> updateOrder(
             @PathVariable Integer id,
-            @RequestBody PurchaseOrderRequestDto request) {
+            @Valid @RequestBody PurchaseOrderRequestDto request) {
         return ResponseEntity.ok(purchaseOrderService.updatePurchaseOrder(id, request));
     }
 
@@ -60,8 +62,7 @@ public class PurchaseOrderController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<PurchaseOrderResponseDto> changeStatus(
             @PathVariable Integer id,
-            @RequestBody Map<String, String> body) {
-        String status = body.get("status");
-        return ResponseEntity.ok(purchaseOrderService.updateOrderStatus(id, status));
+            @Valid @RequestBody OrderStatusUpdateDto body) {
+        return ResponseEntity.ok(purchaseOrderService.updateOrderStatus(id, body.getStatus()));
     }
 }
