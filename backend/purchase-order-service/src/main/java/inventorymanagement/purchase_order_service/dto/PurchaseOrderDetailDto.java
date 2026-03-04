@@ -1,3 +1,36 @@
+/**
+ * PurchaseOrderDetailDto
+ *
+ * This DTO represents an individual line item (product and quantity)
+ * within a Purchase Order.
+ *
+ * API Usage:
+ * - Nested within PurchaseOrderRequestDto for:
+ *   POST /api/v1/purchase-orders
+ *   PUT /api/v1/purchase-orders/{id}
+ * - Nested within PurchaseOrderResponseDto for:
+ *   GET /api/v1/purchase-orders
+ *
+ * Purpose:
+ * - Transfers granular item data between the client and the server.
+ * - Includes audit fields to provide transparency on when specific line
+ *   items were added or modified.
+ *
+ * Included Fields:
+ * - productId (Reference to the external Product Service).
+ * - quantity (The amount of the product being requested).
+ * - createdBy / updatedBy (Audit tracking for user actions).
+ * - createdDate / updatedDate (Timestamps for record creation and modification).
+ *
+ * Validation:
+ * - @NotNull: Ensures both productId and quantity are provided in the request.
+ * - @Min(1): Enforces business logic that an item must have at least a quantity of 1.
+ *
+ * Architecture:
+ * - Acts as a bridge between the 'po_details' database entity and the JSON API layer.
+ * - Decouples the database internal structure from the data presented to the Frontend.
+ */
+
 package inventorymanagement.purchase_order_service.dto;
 
 import jakarta.validation.constraints.Min;

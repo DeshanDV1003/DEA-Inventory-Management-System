@@ -1,3 +1,22 @@
+/**
+ * PurchaseOrderRequestDto
+ *
+ * Used to receive purchase order data from the client (Frontend/Postman).
+ *
+ * API Usage:
+ * - POST /api/v1/purchase-orders (Create)
+ * - PUT /api/v1/purchase-orders/{id} (Full Update)
+ *
+ * Validation Annotations:
+ * - @NotNull / @NotBlank: Prevents empty or null data from entering the system.
+ * - @NotEmpty: Ensures an order cannot be created without at least one item.
+ * - @Valid: Forces Spring to validate the nested list of PurchaseOrderDetailDto objects.
+ *
+ * Architecture:
+ * - Decouples the API from the Database Entity.
+ * - Only includes fields the user is allowed to set manually.
+ */
+
 package inventorymanagement.purchase_order_service.dto;
 
 import jakarta.validation.Valid;

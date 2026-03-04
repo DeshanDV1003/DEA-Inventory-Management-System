@@ -1,3 +1,20 @@
+/**
+ * PurchaseOrderResponseDto
+ *
+ * This DTO is used to return complete data to the client after an operation.
+ *
+ * Purpose:
+ * - Returns "every single detail" related to a Purchase Order, including IDs and audit data.
+ *
+ * Included Fields:
+ * - All header fields (ID, Company, Supplier, Warehouse, PO Number, Status).
+ * - All audit fields (CreatedBy, CreatedDate, UpdatedBy, UpdatedDate).
+ * - A nested list of PurchaseOrderDetailDto objects.
+ *
+ * Architecture:
+ * - Protects the Entity from being serialized directly (prevents infinite recursion).
+ * - Ensures the Frontend receives a clean, structured JSON object.
+ */
 package inventorymanagement.purchase_order_service.dto;
 
 import java.time.LocalDateTime;
