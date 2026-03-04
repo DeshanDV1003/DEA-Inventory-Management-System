@@ -51,23 +51,6 @@ services:
     networks:
       - inventory-network
 
-  # YOUR SERVICE: Purchase Order Service
-  purchase-order-service:
-    build:
-      context: ./purchase-order-service
-    container_name: purchase-order-service
-    ports:
-      - "8061:8062" # Main API Port
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/po_db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
-    depends_on:
-      mysql:
-        condition: service_healthy
-    networks:
-      - inventory-network
 
   frontend:
     build:
