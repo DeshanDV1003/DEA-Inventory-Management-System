@@ -6,6 +6,7 @@ import inventorymanagement.supplier_service.repository.SupplierRepository;
 import inventorymanagement.supplier_service.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import inventorymanagement.supplier_service.config.MyAPIConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,19 +23,10 @@ public class SupplierServiceImpl implements SupplierService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${services.product.url:http://localhost:8081}")
-    private String productServiceUrl;
+    @Autowired
+    private MyAPIConfig apiConfig;
 
-    @Value("${services.purchase-order.url:http://localhost:8088}")
-    private String poServiceUrl;
-
-    @Value("${services.grn.url:http://localhost:8089}")
-    private String grnServiceUrl;
-
-    // company service location; default port is arbitrary and may be overridden via
-    // application properties or environment so the microservice can be run locally
-    @Value("${services.company.url:http://localhost:8082}")
-    private String companyServiceUrl;
+    // legacy @Value fields removed - URLs now provided by MyAPIConfig
 
     @Override
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
@@ -84,26 +76,26 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Object getProductsBySupplier(Long supplierId) {
-        String url = productServiceUrl + "/api/products/supplier/" + supplierId;
+        String url = apiConfig.getProductServiceUrl() + "/api/v1/products/supplier/" + supplierId;
         return restTemplate.getForObject(url, Object.class);
     }
 
     @Override
     public Object getPurchaseOrdersBySupplier(Long supplierId) {
-        String url = poServiceUrl + "/api/purchase-orders/supplier/" + supplierId;
+        String url = apiConfig.getPoServiceUrl() + "/api/v1/purchase-orders/supplier/" + supplierId;
         return restTemplate.getForObject(url, Object.class);
     }
 
     @Override
     public Object approveGRN(Long supplierId, Long grnId) {
-        String url = grnServiceUrl + "/api/grn/" + grnId + "/approve?supplierId=" + supplierId;
+        String url = apiConfig.getGrnServiceUrl() + "/api/v1/grn/" + grnId + "/approve?supplierId=" + supplierId;
         restTemplate.put(url, null);
         return "GRN Approved successfully";
     }
 
     @Override
     public Object getAllCompanies() {
-        String url = companyServiceUrl + "/api/companies";
+        String url = apiConfig.getCompanyServiceUrl() + "/api/v1/companies";
         try {
             return restTemplate.getForObject(url, Object.class);
         } catch (Exception e) {

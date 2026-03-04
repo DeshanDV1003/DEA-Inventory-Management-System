@@ -27,3 +27,7 @@ services:
     url: http://localhost:8089
   company:
     url: http://localhost:8082
+
+jwt:
+  secret: change-this-secret
+  expiration-ms: 3600000
