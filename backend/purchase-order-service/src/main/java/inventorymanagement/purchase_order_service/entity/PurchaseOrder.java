@@ -1,11 +1,3 @@
-package inventorymanagement.purchase_order_service.entity;
-
-import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-
 /**
  * PurchaseOrder Entity
  *
@@ -36,8 +28,12 @@ import java.util.List;
  * - @Table(name = "po_headers"): Maps the class to the specific database table.
  * - @Id / @GeneratedValue: Defines the primary key strategy.
  */
+package inventorymanagement.purchase_order_service.entity;
 
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "po_headers")

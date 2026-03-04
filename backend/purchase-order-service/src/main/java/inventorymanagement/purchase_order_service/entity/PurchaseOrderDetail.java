@@ -1,9 +1,3 @@
-package inventorymanagement.purchase_order_service.entity;
-
-import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
 /**
  * PurchaseOrderDetail Entity
  *
@@ -25,6 +19,12 @@ import java.time.LocalDateTime;
  * - @JoinColumn(name = "po_header_id"): Specifies the foreign key column name.
  * - @Column(nullable = false): Ensures data integrity for required fields.
  */
+
+package inventorymanagement.purchase_order_service.entity;
+
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "po_details")
