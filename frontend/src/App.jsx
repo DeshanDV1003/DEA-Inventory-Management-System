@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Plus, Trash2, Edit2, Package, ShoppingCart, CheckCircle2, Search } from 'lucide-react'
+import WarehousePage from './Warehouse.jsx'
 
-function App() {
+// supplier page code will be wrapped inside its own component so we can toggle
+function SupplierPage() {
     const [suppliers, setSuppliers] = useState([])
     const [companies, setCompanies] = useState([])                       // available companies for dropdown
     const [loading, setLoading] = useState(true)
@@ -27,7 +29,7 @@ function App() {
     const fetchSuppliers = async () => {
         setLoading(true)
         try {
-            const response = await fetch('/api/suppliers')
+            const response = await fetch('/api/v1/suppliers')
             const data = await response.json()
             setSuppliers(data)
         } catch (error) {
@@ -39,7 +41,7 @@ function App() {
 
     const fetchCompanies = async () => {
         try {
-            const response = await fetch('/api/suppliers/companies')
+            const response = await fetch('/api/v1/suppliers/companies')
             const data = await response.json()
             setCompanies(data)
             // if user is already scoped to a company (e.g. after login), default it
@@ -67,7 +69,7 @@ function App() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const method = selectedSupplier ? 'PUT' : 'POST'
-        const url = selectedSupplier ? `/api/suppliers/${selectedSupplier.id}` : '/api/suppliers'
+        const url = selectedSupplier ? `/api/v1/suppliers/${selectedSupplier.id}` : '/api/v1/suppliers'
 
         try {
             const response = await fetch(url, {
@@ -100,7 +102,7 @@ function App() {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this supplier?')) {
             try {
-                await fetch(`/api/suppliers/${id}`, { method: 'DELETE' })
+                await fetch(`/api/v1/suppliers/${id}`, { method: 'DELETE' })
                 fetchSuppliers()
             } catch (error) {
                 console.error('Error deleting supplier:', error)
@@ -256,6 +258,25 @@ function App() {
                 )}
             </div>
         </div>
+    )
+}
+
+
+function App() {
+    const [view, setView] = useState('suppliers')
+
+    return (
+        <>
+            <header style={{ padding: '1rem', borderBottom: '1px solid var(--border)', marginBottom: '1rem' }}>
+                <button className={view === 'suppliers' ? 'btn btn-primary' : 'btn btn-outline'} onClick={() => setView('suppliers')} style={{ marginRight: '1rem' }}>
+                    Suppliers
+                </button>
+                <button className={view === 'warehouses' ? 'btn btn-primary' : 'btn btn-outline'} onClick={() => setView('warehouses')}>
+                    Warehouses
+                </button>
+            </header>
+            {view === 'suppliers' ? <SupplierPage /> : <WarehousePage />}
+        </>
     )
 }
 
