@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllProducts, addProduct, deleteProduct } from "../services/api";
 import BarcodeScanner from "../components/BarcodeScanner";
+import Sidebar from "../components/Sidebar";
 import "./Products.css";
 
 const Products = () => {
@@ -102,36 +103,7 @@ const Products = () => {
 
   return (
     <div className="products-root">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="sidebar-brand">
-          <span className="brand-icon">⬡</span>
-          <span>INVNTRY</span>
-        </div>
-        <nav className="sidebar-nav">
-          <a className="nav-item active">
-            <span className="nav-icon">☰</span> Products
-          </a>
-          <a className="nav-item">
-            <span className="nav-icon">⫙</span> Warehouse
-          </a>
-          <a className="nav-item">
-            <span className="nav-icon">☷</span> Suppliers
-          </a>
-          <a className="nav-item">
-            <span className="nav-icon">⊞</span> Reports
-          </a>
-        </nav>
-        <div className="sidebar-footer">
-          <div className="user-pill">
-            <div className="user-avatar">{username[0].toUpperCase()}</div>
-            <span>{username}</span>
-          </div>
-          <button className="logout-btn" onClick={handleLogout}>
-            Sign out →
-          </button>
-        </div>
-      </aside>
+      <Sidebar />
 
       {/* Main */}
       <main className="main-content">
