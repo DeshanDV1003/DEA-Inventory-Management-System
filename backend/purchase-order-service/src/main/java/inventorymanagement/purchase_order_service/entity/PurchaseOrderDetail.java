@@ -4,6 +4,28 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * PurchaseOrderDetail Entity
+ *
+ * This entity represents the 'po_details' table. It stores the specific items
+ * associated with a Purchase Order header.
+ *
+ * Purpose:
+ * - Captures the granular details (products and quantities) of a purchase.
+ *
+ * Variables & Data Types:
+ * - Integer id: Primary key (Auto-incremented).
+ * - PurchaseOrder purchaseOrder: The parent header this item belongs to.
+ * - Integer productId: Links to the external Product Service.
+ * - Integer quantity: The amount of product being ordered.
+ * - Audit Fields: Tracking who created/updated this specific line item.
+ *
+ * Annotations used:
+ * - @ManyToOne: Defines the relationship back to the PurchaseOrder header.
+ * - @JoinColumn(name = "po_header_id"): Specifies the foreign key column name.
+ * - @Column(nullable = false): Ensures data integrity for required fields.
+ */
+
 @Entity
 @Table(name = "po_details")
 public class PurchaseOrderDetail {

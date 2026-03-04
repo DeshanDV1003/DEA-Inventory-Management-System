@@ -7,16 +7,34 @@ import java.util.List;
 
 
 /**
- * Model: PurchaseOrder
- * Table: po_headers
+ * PurchaseOrder Entity
  *
- * Description:
- * This model represents the header record for a Purchase Order. It stores
- * primary identification data, administrative links (company, supplier, warehouse),
- * and audit tracking fields (created/updated info).
+ * This entity represents the 'po_headers' table in the database. It acts as the
+ * parent record for any purchase transaction within the system.
  *
- * It maintains a One-to-Many relationship with PurchaseOrderDetail to link
- * specific items to this order header.
+ * Purpose:
+ * - Maps the high-level metadata of a Purchase Order to the database.
+ * - Manages the lifecycle of an order and its relationship with individual items.
+ *
+ * Variables & Data Types:
+ * - Integer id: Primary key (Auto-incremented).
+ * - Integer companyId / supplierId: Links to external services (Company/Supplier).
+ * - String warehouseId: The destination warehouse for the goods.
+ * - Integer poNumber: A unique business identifier for the order.
+ * - LocalDateTime date: The official timestamp of the order placement.
+ * - String status: Current state of the order (CREATED, APPROVED, etc.).
+ * - Audit Fields: createdBy, createdDate, updatedBy, updatedDate (Tracking data).
+ *
+ * Relationships:
+ * - @OneToMany: Linked to PurchaseOrderDetail. Uses 'CascadeType.ALL' so that
+ *   saving or deleting a header automatically manages all its items.
+ * - orphanRemoval = true: Ensures that removing an item from the Java list
+ *   deletes the corresponding row in the database.
+ *
+ * Annotations used:
+ * - @Entity: Marks the class as a JPA entity.
+ * - @Table(name = "po_headers"): Maps the class to the specific database table.
+ * - @Id / @GeneratedValue: Defines the primary key strategy.
  */
 
 
