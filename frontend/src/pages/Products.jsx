@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllProducts, addProduct, deleteProduct } from "../services/api";
+import BarcodeScanner from "../components/BarcodeScanner";
 import "./Products.css";
 
 const Products = () => {
@@ -23,6 +24,12 @@ const Products = () => {
   });
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [showScanner, setShowScanner] = useState(false);
+
+  const handleBarcodeScan = useCallback((barcode) => {
+    setForm((prev) => ({ ...prev, sku: barcode }));
+    setShowScanner(false);
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -237,13 +244,22 @@ const Products = () => {
                 </div>
                 <div className="field-group">
                   <label>SKU</label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="e.g. 1001"
-                    value={form.sku}
-                    onChange={(e) => setForm({ ...form, sku: e.target.value })}
-                  />
+                  <div className="sku-input-row">
+                    <input
+                      type="number"
+                      required
+                      placeholder="e.g. 1001"
+                      value={form.sku}
+                      onChange={(e) => setForm({ ...form, sku: e.target.value })}
+                    />
+                    <button
+                      type="button"
+                      className="scan-btn"
+                      onClick={() => setShowScanner(true)}
+                    >
+                      Scan
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="field-row">
@@ -309,6 +325,14 @@ const Products = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Barcode Scanner */}
+      {showScanner && (
+        <BarcodeScanner
+          onScan={handleBarcodeScan}
+          onClose={() => setShowScanner(false)}
+        />
       )}
 
       {/* Delete Confirm Modal */}
