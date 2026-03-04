@@ -9,6 +9,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { purchaseOrderService } from '../../services/purchaseOrderService';
+import Sidebar from "../../components/Sidebar.jsx";
 
 const DeletePurchaseOrder = () => {
     const { id } = useParams();
@@ -29,6 +30,8 @@ const DeletePurchaseOrder = () => {
     if (!order) return <div className="loader"></div>;
 
     return (
+        <div className="products-root">
+            <Sidebar />
         <div className="modal-overlay">
             <div className="modal confirm-modal">
                 <h2 style={{ color: '#f87171' }}>Delete Purchase Order?</h2>
@@ -50,6 +53,7 @@ const DeletePurchaseOrder = () => {
                     <button className="delete-confirm-btn" onClick={handleConfirmDelete}>Confirm Delete</button>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

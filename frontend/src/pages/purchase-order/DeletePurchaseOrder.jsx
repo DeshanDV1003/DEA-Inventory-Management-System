@@ -28,6 +28,7 @@ import React, { useState, useEffect } from 'react';
 import { purchaseOrderService } from '../../services/purchaseOrderService';
 // import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from "../../components/Sidebar.jsx";
 
 const DeletePurchaseOrder = () => {
     const navigate = useNavigate();
@@ -93,6 +94,8 @@ const DeletePurchaseOrder = () => {
     };
 
     return (
+        <div className="products-root">
+            <Sidebar />
         <div className="form-container">
             <h3>Create New Purchase Order</h3>
             <form onSubmit={handleSubmit}>
@@ -150,6 +153,7 @@ const DeletePurchaseOrder = () => {
                     <button type="submit" className="btn-submit">Save Order</button>
                 </div>
             </form>
+        </div>
         </div>
     );
 };

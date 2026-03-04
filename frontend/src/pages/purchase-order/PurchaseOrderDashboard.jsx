@@ -12,6 +12,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { purchaseOrderService } from '../../services/purchaseOrderService';
+import Sidebar from "../../components/Sidebar.jsx";
 
 const PurchaseOrderDashboard = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const PurchaseOrderDashboard = () => {
 
     return (
         <div className="products-root">
+            <Sidebar />
             <main className="main-content">
                 <header className="page-header">
                     <div>

@@ -27,6 +27,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { purchaseOrderService } from '../../services/purchaseOrderService';
+import Sidebar from "../../components/Sidebar.jsx";
 
 const PurchaseOrderForm = ({ mode }) => {
     const { id } = useParams();
@@ -131,6 +132,8 @@ const PurchaseOrderForm = ({ mode }) => {
     if (loading && mode === 'edit') return <div className="loader"></div>;
 
     return (
+        <div className="products-root">
+            <Sidebar />
         <div className="modal-overlay">
             <div className="modal" style={{ maxWidth: '700px', width: '90%' }}>
                 <header className="modal-header">
@@ -240,6 +243,7 @@ const PurchaseOrderForm = ({ mode }) => {
                     </div>
                 </form>
             </div>
+        </div>
         </div>
     );
 };
