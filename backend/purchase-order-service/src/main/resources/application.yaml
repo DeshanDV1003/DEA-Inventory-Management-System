@@ -20,7 +20,7 @@
 #        dialect: org.hibernate.dialect.MySQLDialect
 #
 #server:
-#  port: 8081 # Common practice to use a different port for each service
+#  port: 8061 # Common practice to use a different port for each service
 #
 #jwt:
 #  secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
