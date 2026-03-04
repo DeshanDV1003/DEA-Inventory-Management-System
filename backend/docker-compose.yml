@@ -6,9 +6,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-data:/var/lib/mysql
     networks:
       - inventory-network
     healthcheck:
@@ -63,3 +64,6 @@ services:
 networks:
   inventory-network:
     driver: bridge
+
+volumes:
+  mysql-data:
