@@ -9,13 +9,14 @@ import PurchaseOrderForm from "./pages/purchase-order/PurchaseOrderForm";
 import DeletePurchaseOrder from "./pages/purchase-order/DeletePurchaseOrder";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import Company from "./pages/Company";
+
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/products" replace />} />
 
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
@@ -31,6 +32,18 @@ function App() {
           }
         />
 
+        <Route
+          path="/companies"
+          element={<Company />}
+        />
+
+        <Route
+          path="/company"
+          element={<Navigate to="/companies" replace />}
+        />
+
+        {/* Catch all */}
+        <Route path="*" element={<Navigate to="/companies" replace />} />
           {/* Protected Purchase Order Routes */}
           <Route path="/purchase-order" element={<ProtectedRoute><PurchaseOrderDashboard /></ProtectedRoute>} />
           <Route path="/purchase-order/list" element={<ProtectedRoute><PurchaseOrderList /></ProtectedRoute>} />
