@@ -1,3 +1,19 @@
+/**
+ * PurchaseOrderServiceImpl
+ *
+ * Contains the core business logic and orchestration for the service.
+ *
+ * Logic Workflow:
+ * 1. Uses PurchaseOrderMapper to convert DTOs to Entities.
+ * 2. Manages audit fields (system_user, timestamp) manually before persistence.
+ * 3. Utilizes @Transactional to ensure that if saving an item fails, the header
+ *    is not saved (Data Atomicity).
+ * 4. Interacts with PurchaseOrderRepository for database communication.
+ *
+ * Key Annotations:
+ * - @Service: Registers this class as a Spring-managed Bean.
+ * - @Transactional: Ensures database integrity during multi-step operations.
+ */
 package inventorymanagement.purchase_order_service.service.impl;
 
 import inventorymanagement.purchase_order_service.dto.PurchaseOrderRequestDto;

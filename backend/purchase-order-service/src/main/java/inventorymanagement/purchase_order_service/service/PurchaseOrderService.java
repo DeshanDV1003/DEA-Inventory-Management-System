@@ -1,3 +1,16 @@
+/**
+ * PurchaseOrderService Interface
+ *
+ * Defines the business contract for the Purchase Order microservice.
+ *
+ * Methods:
+ * - createPurchaseOrder: Logic to save a new PO and its items.
+ * - getPurchaseOrderById: Logic to retrieve a single PO.
+ * - getAllPurchaseOrders: Logic to retrieve all records.
+ * - updatePurchaseOrder: Logic for full record modification.
+ * - updateOrderStatus: Logic for partial update (Patching status only).
+ * - deletePurchaseOrder: Logic to remove an order and its orphans.
+ */
 package inventorymanagement.purchase_order_service.service;
 
 import inventorymanagement.purchase_order_service.dto.PurchaseOrderRequestDto;
