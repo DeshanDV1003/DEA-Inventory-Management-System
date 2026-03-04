@@ -61,7 +61,7 @@ services:
     environment:
       VITE_USER_SERVICE: http://localhost:8072
       VITE_PRODUCT_SERVICE: http://localhost:8082
-      VITE_PO_SERVICE: http://localhost:8061
+      VITE_PO_SERVICE: http://localhost:8062
     depends_on:
       - user-service
       - product-service
