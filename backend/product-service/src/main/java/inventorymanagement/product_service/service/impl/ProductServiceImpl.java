@@ -29,7 +29,10 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(request.getPrice());
         product.setImgPath(request.getImgPath());
         product.setStatus(request.getStatus());
+        product.setCreatedBy(request.getCreatedBy());
         product.setCreatedDate(LocalDateTime.now());
+        product.setModifiedBy(request.getModifiedBy());
+        product.setModifiedDate(LocalDateTime.now());
 
         productRepository.save(product);
     }

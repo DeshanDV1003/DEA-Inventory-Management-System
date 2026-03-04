@@ -9,11 +9,13 @@ public class AddProductRequestDto {
     private String price;
     private String imgPath;
     private String status;
+    private String createdBy;
+    private String modifiedBy;
 
     public AddProductRequestDto() {
     }
 
-    public AddProductRequestDto(Integer warehouseId, Integer companyId, Integer supplierId, String name, Integer sku, String price, String imgPath, String status) {
+    public AddProductRequestDto(Integer warehouseId, Integer companyId, Integer supplierId, String name, Integer sku, String price, String imgPath, String status, String createdBy, String modifiedBy) {
         this.warehouseId = warehouseId;
         this.companyId = companyId;
         this.supplierId = supplierId;
@@ -22,6 +24,8 @@ public class AddProductRequestDto {
         this.price = price;
         this.imgPath = imgPath;
         this.status = status;
+        this.createdBy = createdBy;
+        this.modifiedBy = modifiedBy;
     }
 
     public Integer getWarehouseId() {
@@ -86,5 +90,21 @@ public class AddProductRequestDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 }
