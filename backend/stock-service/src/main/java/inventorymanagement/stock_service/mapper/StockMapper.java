@@ -1,4 +1,4 @@
-package mapper;
+package inventorymanagement.stock_service.mapper;
 
 import inventorymanagement.stock_service.dto.StockRequestDTO;
 import inventorymanagement.stock_service.dto.StockResponseDTO;
@@ -20,7 +20,7 @@ public class StockMapper {
         return stock;
     }
 
-    public StockResponseDTO toDto(Stock stock) {
+    public StockResponseDTO toResponseDTO(Stock stock) {
         StockResponseDTO dto = new StockResponseDTO();
         dto.setStockId(stock.getStockId());
         dto.setCompanyId(stock.getCompanyId());
@@ -35,6 +35,14 @@ public class StockMapper {
         dto.setUpdatedBy(stock.getUpdatedBy());
         dto.setUpdatedDateTime(stock.getUpdatedDateTime());
         return dto;
+    }
+
+    public void updateEntityFromDTO(StockRequestDTO dto, Stock stock) {
+        stock.setQuantity(dto.getQuantity());
+        stock.setMaxStockLevel(dto.getMaxStockLevel());
+        stock.setMinStockLevel(dto.getMinStockLevel());
+        stock.setReOrderLevel(dto.getReOrderLevel());
+        stock.setUpdatedBy(dto.getUpdatedBy());
     }
 
 }

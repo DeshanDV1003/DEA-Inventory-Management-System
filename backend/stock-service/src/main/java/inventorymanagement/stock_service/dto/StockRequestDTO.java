@@ -1,30 +1,40 @@
 package inventorymanagement.stock_service.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 public class StockRequestDTO {
-    private int stockId;
+    @NotNull(message = "Company ID is required")
     private int companyId;
+
+    @NotNull(message = "Warehouse ID is required")
     private int warehouseId;
+
+    @NotNull(message = "Product ID is required")
+    private int productId;
+
+    @Min(value = 0, message = "Quantity cannot be negative" )
     private int quantity;
     private int maxStockLevel;
     private int minStockLevel;
     private int reOrderLevel;
+    private String createdBy;
+    private String updatedBy;
 
-    public StockRequestDTO(int stockId, int companyId, int warehouseId, int quantity, int maxStockLevel, int minStockLevel, int reOrderLevel) {
-        this.stockId = stockId;
+    public StockRequestDTO() {
+    }
+
+    public StockRequestDTO(int companyId, int warehouseId, int productId, int quantity, int maxStockLevel, int minStockLevel, int reOrderLevel, String createdBy, String updatedBy) {
+
         this.companyId = companyId;
         this.warehouseId = warehouseId;
+        this.productId = productId;
         this.quantity = quantity;
         this.maxStockLevel = maxStockLevel;
         this.minStockLevel = minStockLevel;
         this.reOrderLevel = reOrderLevel;
-    }
-
-    public int getStockId() {
-        return stockId;
-    }
-
-    public void setStockId(int stockId) {
-        this.stockId = stockId;
+        this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
     }
 
     public int getCompanyId() {
@@ -41,6 +51,14 @@ public class StockRequestDTO {
 
     public void setWarehouseId(int warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getQuantity() {
@@ -75,16 +93,19 @@ public class StockRequestDTO {
         this.reOrderLevel = reOrderLevel;
     }
 
-    @Override
-    public String toString() {
-        return "StockRequestDTO{" +
-                "stockId=" + stockId +
-                ", companyId=" + companyId +
-                ", warehouseId=" + warehouseId +
-                ", quantity=" + quantity +
-                ", maxStockLevel=" + maxStockLevel +
-                ", minStockLevel=" + minStockLevel +
-                ", reOrderLevel=" + reOrderLevel +
-                '}';
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 }

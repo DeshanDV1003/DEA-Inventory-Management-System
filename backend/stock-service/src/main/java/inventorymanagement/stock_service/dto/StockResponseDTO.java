@@ -131,21 +131,4 @@ public class StockResponseDTO {
         this.updatedDateTime = updatedDateTime;
     }
 
-    @Override
-    public String toString() {
-        return "StockResponseDTO{" +
-                "stockId=" + stockId +
-                ", companyId=" + companyId +
-                ", productId=" + productId +
-                ", warehouseId=" + warehouseId +
-                ", quantity=" + quantity +
-                ", maxStockLevel=" + maxStockLevel +
-                ", minStockLevel=" + minStockLevel +
-                ", reOrderLevel=" + reOrderLevel +
-                ", createdBy='" + createdBy + '\'' +
-                ", createdDateTime=" + createdDateTime +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", updatedDateTime=" + updatedDateTime +
-                '}';
-    }
 }
