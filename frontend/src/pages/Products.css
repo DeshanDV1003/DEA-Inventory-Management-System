@@ -304,6 +304,13 @@
 
 .modal-form .field-group { display: flex; flex-direction: column; gap: 0.4rem; }
 
+.field-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.field-row .field-group { flex: 1; }
+
 .modal-form label {
   font-size: 0.65rem;
   letter-spacing: 0.15em;
@@ -322,8 +329,19 @@
   transition: border-color 0.2s;
 }
 
-.modal-form input:focus { border-color: #a78bfa; }
+.modal-form input:focus, .modal-form select:focus { border-color: #a78bfa; }
 .modal-form input::placeholder { color: #3f3f46; }
+
+.modal-form select {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f4f4f5;
+  outline: none;
+  transition: border-color 0.2s;
+}
 
 .modal-actions {
   display: flex;
@@ -393,3 +411,66 @@
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
+
+/* ── SKU Scan Button ────────────────────────────────────────────────────────── */
+.sku-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sku-input-row input { flex: 1; }
+
+.scan-btn {
+  padding: 0.75rem 1rem;
+  border: 1px solid #a78bfa;
+  border-radius: 8px;
+  background: transparent;
+  color: #a78bfa;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.scan-btn:hover { background: #a78bfa; color: #0a0a0f; }
+
+/* ── Barcode Scanner ────────────────────────────────────────────────────────── */
+.scanner-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.scanner-container {
+  background: #111116;
+  border: 1px solid #27272a;
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.scanner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.scanner-header h3 { font-size: 1rem; font-weight: 700; color: #f4f4f5; }
+
+.scanner-hint {
+  text-align: center;
+  color: #71717a;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
+
+#barcode-reader { border-radius: 8px; overflow: hidden; }
+#barcode-reader video { border-radius: 8px; }

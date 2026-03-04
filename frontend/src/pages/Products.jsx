@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllProducts, addProduct, deleteProduct } from "../services/api";
+import BarcodeScanner from "../components/BarcodeScanner";
 import "./Products.css";
 
 const Products = () => {
@@ -11,9 +12,24 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ name: "", price: "", sku: "" });
+  const [form, setForm] = useState({
+    name: "",
+    price: "",
+    sku: "",
+    warehouseId: "",
+    companyId: "",
+    supplierId: "",
+    imgPath: "",
+    status: "Active",
+  });
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [showScanner, setShowScanner] = useState(false);
+
+  const handleBarcodeScan = useCallback((barcode) => {
+    setForm((prev) => ({ ...prev, sku: barcode }));
+    setShowScanner(false);
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -45,11 +61,27 @@ const Products = () => {
     try {
       await addProduct({
         name: form.name,
-        price: parseFloat(form.price),
-        sku: form.sku,
+        price: form.price,
+        sku: parseInt(form.sku),
+        warehouseId: parseInt(form.warehouseId),
+        companyId: parseInt(form.companyId),
+        supplierId: parseInt(form.supplierId),
+        imgPath: form.imgPath,
+        status: form.status,
+        createdBy: username,
+        modifiedBy: username,
       });
       setShowModal(false);
-      setForm({ name: "", price: "", sku: "" });
+      setForm({
+        name: "",
+        price: "",
+        sku: "",
+        warehouseId: "",
+        companyId: "",
+        supplierId: "",
+        imgPath: "",
+        status: "Active",
+      });
       fetchProducts();
     } catch {
       setError("Failed to add product.");
@@ -139,7 +171,10 @@ const Products = () => {
                   <th>Name</th>
                   <th>SKU</th>
                   <th>Price</th>
+                  <th>Warehouse</th>
+                  <th>Supplier</th>
                   <th>Status</th>
+                  <th>Created By</th>
                   <th></th>
                 </tr>
               </thead>
@@ -152,11 +187,14 @@ const Products = () => {
                     <td className="price">
                       {p.price != null ? `$${Number(p.price).toFixed(2)}` : "—"}
                     </td>
+                    <td>{p.warehouseId || "—"}</td>
+                    <td>{p.supplierId || "—"}</td>
                     <td>
-                      <span className={`badge ${p.status === 1 ? "badge-active" : "badge-inactive"}`}>
-                        {p.status === 1 ? "Active" : "Inactive"}
+                      <span className={`badge ${p.status === "Active" ? "badge-active" : "badge-inactive"}`}>
+                        {p.status || "—"}
                       </span>
                     </td>
+                    <td>{p.createdBy || "—"}</td>
                     <td className="actions">
                       <button
                         className="del-btn"
@@ -191,24 +229,89 @@ const Products = () => {
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
               </div>
-              <div className="field-group">
-                <label>PRICE (USD)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  required
-                  placeholder="0.00"
-                  value={form.price}
-                  onChange={(e) => setForm({ ...form, price: e.target.value })}
-                />
+              <div className="field-row">
+                <div className="field-group">
+                  <label>PRICE (USD)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
+                    placeholder="0.00"
+                    value={form.price}
+                    onChange={(e) => setForm({ ...form, price: e.target.value })}
+                  />
+                </div>
+                <div className="field-group">
+                  <label>SKU</label>
+                  <div className="sku-input-row">
+                    <input
+                      type="number"
+                      required
+                      placeholder="e.g. 1001"
+                      value={form.sku}
+                      onChange={(e) => setForm({ ...form, sku: e.target.value })}
+                    />
+                    <button
+                      type="button"
+                      className="scan-btn"
+                      onClick={() => setShowScanner(true)}
+                    >
+                      Scan
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="field-row">
+                <div className="field-group">
+                  <label>WAREHOUSE ID</label>
+                  <input
+                    type="number"
+                    required
+                    placeholder="e.g. 1"
+                    value={form.warehouseId}
+                    onChange={(e) => setForm({ ...form, warehouseId: e.target.value })}
+                  />
+                </div>
+                <div className="field-group">
+                  <label>COMPANY ID</label>
+                  <input
+                    type="number"
+                    required
+                    placeholder="e.g. 1"
+                    value={form.companyId}
+                    onChange={(e) => setForm({ ...form, companyId: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="field-row">
+                <div className="field-group">
+                  <label>SUPPLIER ID</label>
+                  <input
+                    type="number"
+                    required
+                    placeholder="e.g. 1"
+                    value={form.supplierId}
+                    onChange={(e) => setForm({ ...form, supplierId: e.target.value })}
+                  />
+                </div>
+                <div className="field-group">
+                  <label>STATUS</label>
+                  <select
+                    value={form.status}
+                    onChange={(e) => setForm({ ...form, status: e.target.value })}
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
               </div>
               <div className="field-group">
-                <label>SKU</label>
+                <label>IMAGE PATH</label>
                 <input
-                  placeholder="e.g. WKB-001"
-                  value={form.sku}
-                  onChange={(e) => setForm({ ...form, sku: e.target.value })}
+                  placeholder="e.g. /images/product.png"
+                  value={form.imgPath}
+                  onChange={(e) => setForm({ ...form, imgPath: e.target.value })}
                 />
               </div>
               <div className="modal-actions">
@@ -222,6 +325,14 @@ const Products = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Barcode Scanner */}
+      {showScanner && (
+        <BarcodeScanner
+          onScan={handleBarcodeScan}
+          onClose={() => setShowScanner(false)}
+        />
       )}
 
       {/* Delete Confirm Modal */}
