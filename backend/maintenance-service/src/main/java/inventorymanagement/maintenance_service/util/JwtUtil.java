@@ -1,4 +1,4 @@
-package inventorymanagement.product_service.util;
+package inventorymanagement.maintenance_service.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
