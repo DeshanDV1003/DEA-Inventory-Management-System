@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/warehouses")
+@RequestMapping("/api/v1/warehouses")
 @CrossOrigin(origins = "*")
 public class WarehouseController {
 
@@ -62,5 +62,10 @@ public class WarehouseController {
     @GetMapping("/{id}/stocks")
     public ResponseEntity<Object> getStocks(@PathVariable Long id) {
         return ResponseEntity.ok(warehouseService.getStockByWarehouse(id));
+    }
+
+    @GetMapping("/companies")
+    public ResponseEntity<Object> getCompanies() {
+        return ResponseEntity.ok(warehouseService.getAllCompanies());
     }
 }

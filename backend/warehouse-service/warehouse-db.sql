@@ -1,5 +1,3 @@
--- warehouse database creation script
-
 CREATE DATABASE IF NOT EXISTS warehouse_db;
 USE warehouse_db;
 

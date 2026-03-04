@@ -1,7 +1,6 @@
 package inventorymanagement.warehouse_service.service;
 
 import inventorymanagement.warehouse_service.dto.WarehouseDTO;
-
 import java.util.List;
 
 public interface WarehouseService {
@@ -16,4 +15,5 @@ public interface WarehouseService {
     Object getStockTransfersByWarehouse(Long id);
     Object getGRNsByWarehouse(Long id);
     Object getStockByWarehouse(Long id);
+    Object getAllCompanies();
 }

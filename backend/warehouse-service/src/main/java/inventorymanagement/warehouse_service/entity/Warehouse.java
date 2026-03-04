@@ -44,8 +44,7 @@ public class Warehouse {
     public Warehouse() {
     }
 
-    // getters and setters omitted for brevity but should mirror Supplier.java
-
+    // getters and setters
     public Long getId() {
         return id;
     }
