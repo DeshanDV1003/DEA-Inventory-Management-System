@@ -38,7 +38,6 @@ import java.time.LocalDateTime;
 
 // This class represents a database table.
 @Entity
-
 @Table(name = "maintenances")
 public class Maintenance {
 

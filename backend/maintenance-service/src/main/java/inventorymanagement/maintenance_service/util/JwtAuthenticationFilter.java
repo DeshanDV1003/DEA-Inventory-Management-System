@@ -26,11 +26,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getServletPath();
+
+        // Allow Swagger endpoints without token
+        if (path.startsWith("/swagger-ui") ||
+                path.startsWith("/v3/api-docs") ||
+                path.startsWith("/swagger-resources") ||
+                path.startsWith("/webjars")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+//
         String authHeader = request.getHeader("Authorization");
 
         // If no token, reject early
+//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header");
+//            return;
+//        }
+
+        // For swagger
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header");
+            filterChain.doFilter(request, response);
             return;
         }
 

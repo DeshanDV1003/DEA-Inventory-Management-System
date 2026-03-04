@@ -1,6 +1,6 @@
-package inventorymanagement.product_service.config;
+package inventorymanagement.maintenance_service.config;
 
-import inventorymanagement.product_service.util.JwtAuthenticationFilter;
+import inventorymanagement.maintenance_service.util.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,16 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs",
+                                "/swagger-resources/**",
+                                "/api/v1/maintenances/**"
+                        ).permitAll()
+                        .anyRequest().permitAll()
+                        //.authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
