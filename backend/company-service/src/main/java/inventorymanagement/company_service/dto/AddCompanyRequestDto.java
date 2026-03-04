@@ -27,15 +27,12 @@ public class AddCompanyRequestDto {
     public String getCompanyRegNumber() {
         return companyRegNumber;
     }
-
     public void setCompanyRegNumber(String companyRegNumber) {
         this.companyRegNumber = companyRegNumber;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }

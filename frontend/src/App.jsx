@@ -11,8 +11,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/companies" replace />} />
 
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
