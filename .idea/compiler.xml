@@ -2,11 +2,15 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+<<<<<<< feature/asset-service
       <profile default="true" name="Default" enabled="true" />
+=======
+>>>>>>> dev
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+<<<<<<< feature/asset-service
         <module name="stock-service" />
         <module name="supplier-service" />
         <module name="grn-service" />
@@ -17,11 +21,23 @@
         <module name="asset-service" />
         <module name="company-service" />
         <module name="purchase-order-service" />
+=======
+      </profile>
+      <profile name="Annotation profile for stock-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="stock-service" />
+>>>>>>> dev
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+<<<<<<< feature/asset-service
       <module name="asset-service" options="-parameters" />
       <module name="company-service" options="-parameters" />
       <module name="department-service" options="-parameters" />
@@ -32,6 +48,9 @@
       <module name="stock-service" options="-parameters" />
       <module name="supplier-service" options="-parameters" />
       <module name="warehouse-service" options="-parameters" />
+=======
+      <module name="stock-service" options="-parameters -Xlint:-options" />
+>>>>>>> dev
     </option>
   </component>
 </project>
