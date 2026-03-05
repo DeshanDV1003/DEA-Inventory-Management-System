@@ -11,18 +11,26 @@ import DeletePurchaseOrder from "./pages/purchase-order/DeletePurchaseOrder";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Company from "./pages/Company";
 
-
-
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected route – redirects to /login if no token */}
+        {/* Protected: Company selection (after login) */}
+        <Route
+          path="/companies"
+          element={
+            <ProtectedRoute>
+              <Company />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/company" element={<Navigate to="/companies" replace />} />
+
+        {/* Protected: Products */}
         <Route
           path="/products"
           element={
@@ -32,27 +40,15 @@ function App() {
           }
         />
 
-        <Route
-          path="/companies"
-          element={<Company />}
-        />
+        {/* Protected: Purchase Order Routes */}
+        <Route path="/purchase-order" element={<ProtectedRoute><PurchaseOrderDashboard /></ProtectedRoute>} />
+        <Route path="/purchase-order/list" element={<ProtectedRoute><PurchaseOrderList /></ProtectedRoute>} />
+        <Route path="/purchase-order/create" element={<ProtectedRoute><PurchaseOrderForm mode="create" /></ProtectedRoute>} />
+        <Route path="/purchase-order/edit/:id" element={<ProtectedRoute><PurchaseOrderForm mode="edit" /></ProtectedRoute>} />
+        <Route path="/purchase-order/delete/:id" element={<ProtectedRoute><DeletePurchaseOrder /></ProtectedRoute>} />
 
-        <Route
-          path="/company"
-          element={<Navigate to="/companies" replace />}
-        />
-
-        {/* Catch all */}
-        <Route path="*" element={<Navigate to="/companies" replace />} />
-          {/* Protected Purchase Order Routes */}
-          <Route path="/purchase-order" element={<ProtectedRoute><PurchaseOrderDashboard /></ProtectedRoute>} />
-          <Route path="/purchase-order/list" element={<ProtectedRoute><PurchaseOrderList /></ProtectedRoute>} />
-          <Route path="/purchase-order/create" element={<ProtectedRoute><PurchaseOrderForm mode="create" /></ProtectedRoute>} />
-          <Route path="/purchase-order/edit/:id" element={<ProtectedRoute><PurchaseOrderForm mode="edit" /></ProtectedRoute>} />
-
-          <Route path="/purchase-order/delete/:id" element={<ProtectedRoute><DeletePurchaseOrder /></ProtectedRoute>} />
-          {/* Catch all */}
-        <Route path="*" element={<Navigate to="/products" replace />} />
+        {/* Catch all - redirect to login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
