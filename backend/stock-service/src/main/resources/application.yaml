@@ -3,9 +3,9 @@ spring:
     name: stock-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/StockeDB
+    url: jdbc:mysql://localhost:3306/StockDB
     username: root
-    password: mysql123
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -14,7 +14,7 @@ spring:
     show-sql: true
 
 server:
-  port: 8031
+  port: 8041
 
 jwt:
   secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
