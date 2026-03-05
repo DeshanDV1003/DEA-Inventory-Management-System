@@ -2,15 +2,19 @@ package inventorymanagement.user_service.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+
 @Component
 public class JwtUtil {
-    // IMPORTANT: Use the same secret in both User Service and Product Service
-    private static final String SECRET_KEY = "a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8";
-    private static final long EXPIRATION_TIME = 900000; // 24 hours in milliseconds
+
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+
+    private static final long EXPIRATION_TIME = 900000; // 15 minutes in milliseconds
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
