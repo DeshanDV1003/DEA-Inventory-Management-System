@@ -20,7 +20,7 @@ const Login = () => {
       const res = await loginUser(form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", form.username);
-      navigate("/products");
+      navigate("/companies");
     } catch {
       setError("Invalid username or password.");
     } finally {
