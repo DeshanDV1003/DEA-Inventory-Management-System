@@ -3,7 +3,7 @@ import axios from "axios";
 const USER_SERVICE = import.meta.env.VITE_USER_SERVICE || "http://localhost:8072";
 const PRODUCT_SERVICE = import.meta.env.VITE_PRODUCT_SERVICE || "http://localhost:8082";
 const PO_SERVICE = import.meta.env.VITE_PO_SERVICE || "http://localhost:8062";
-//const COMPANY_SERVICE = import.meta.env.VITE_COMPANY_SERVICE || "http://localhost:8022";
+const COMPANY_SERVICE = import.meta.env.VITE_COMPANY_SERVICE || "http://localhost:8022";
 const STOCK_SERVICE = import.meta.env.VITE_STOCK_SERVICE || "http://localhost:8042";
 const STOCK_TRANSFER_SERVICE = import.meta.env.VITE_STOCK_TRANSFER_SERVICE || "http://localhost:8052";
 const ASSET_SERVICE = import.meta.env.VITE_ASSET_SERVICE || "http://localhost:8012";
@@ -17,11 +17,21 @@ export const loginUser = (credentials) =>
 export const registerUser = (data) =>
   axios.post(`${USER_SERVICE}/api/v1/auth/register`, data);
 
-// ── Products ─────────────────────────────────────────────────────────────────
+// ── Users ─────────────────────────────────────────────────────────────────────
 const authHeader = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 });
 
+export const getAllUsers = () =>
+    axios.get(`${USER_SERVICE}/api/v1/users`, authHeader());
+
+export const addUser = (data) =>
+    axios.post(`${USER_SERVICE}/api/v1/users/addUser`, data, authHeader());
+
+export const deleteUser = (id) =>
+    axios.delete(`${USER_SERVICE}/api/v1/users/deleteUser/${id}`, authHeader());
+
+// ── Products ─────────────────────────────────────────────────────────────────
 export const getAllProducts = () =>
   axios.get(`${PRODUCT_SERVICE}/api/v1/products`, authHeader());
 
@@ -35,65 +45,65 @@ export const deleteProduct = (id) =>
   });
 
 
-// /* ─────────────────────────────────────────────────────────────
-//    PURCHASE ORDER APIs
-// ───────────────────────────────────────────────────────────── */
-//
-// const PO_API_URL = `${PO_SERVICE}/api/v1/purchase-orders`;
-//
-// /* ─────────────────────────────────────────────────────────────
-//    PURCHASE ORDER APIs
-// ───────────────────────────────────────────────────────────── */
-//
-//
-// export const getAllPurchaseOrders = () =>
-//     axios.get(`${PO_SERVICE}/api/v1/purchase-orders`, authHeader());
-//
-// export const getPurchaseOrderById = (id) =>
-//     axios.get(
-//         `${PO_SERVICE}/api/v1/purchase-orders/${id}`,
-//         authHeader()
-//     );
-//
-// export const createPurchaseOrder = (data) =>
-//     axios.post(
-//         `${PO_SERVICE}/api/v1/purchase-orders`,
-//         data,
-//         authHeader()
-//     );
-//
-// export const updatePurchaseOrder = (id, data) =>
-//     axios.put(
-//         `${PO_SERVICE}/api/v1/purchase-orders/${id}`,
-//         data,
-//         authHeader()
-//     );
-//
-// export const updatePurchaseOrderStatus = (id, status) =>
-//     axios.patch(
-//         `${PO_SERVICE}/api/v1/purchase-orders/${id}/status`,
-//         { status },
-//         authHeader()
-//     );
-//
-// export const deletePurchaseOrder = (id) =>
-//     axios.delete(
-//         `${PO_SERVICE}/api/v1/purchase-orders/${id}`,
-//         authHeader()
-//     );
+/* ─────────────────────────────────────────────────────────────
+   PURCHASE ORDER APIs
+───────────────────────────────────────────────────────────── */
 
-//── Companies ─────────────────────────────────────────────────────────────────
-// export const getAllCompanies = () =>
-//     axios.get(`${COMPANY_SERVICE}/api/v1/companies`, authHeader());
-//
-// export const addCompany = (data) =>
-//     axios.post(`${COMPANY_SERVICE}/api/v1/companies/addCompany`, data, authHeader());
-//
-// export const updateCompany = (id, data) =>
-//     axios.put(`${COMPANY_SERVICE}/api/v1/companies/updateCompany/${id}`, data, authHeader());
-//
-// export const deleteCompany = (id) =>
-//     axios.delete(`${COMPANY_SERVICE}/api/v1/companies/deleteCompany/${id}`, authHeader());
+const PO_API_URL = `${PO_SERVICE}/api/v1/purchase-orders`;
+
+/* ─────────────────────────────────────────────────────────────
+   PURCHASE ORDER APIs
+───────────────────────────────────────────────────────────── */
+
+
+export const getAllPurchaseOrders = () =>
+    axios.get(`${PO_SERVICE}/api/v1/purchase-orders`, authHeader());
+
+export const getPurchaseOrderById = (id) =>
+    axios.get(
+        `${PO_SERVICE}/api/v1/purchase-orders/${id}`,
+        authHeader()
+    );
+
+export const createPurchaseOrder = (data) =>
+    axios.post(
+        `${PO_SERVICE}/api/v1/purchase-orders`,
+        data,
+        authHeader()
+    );
+
+export const updatePurchaseOrder = (id, data) =>
+    axios.put(
+        `${PO_SERVICE}/api/v1/purchase-orders/${id}`,
+        data,
+        authHeader()
+    );
+
+export const updatePurchaseOrderStatus = (id, status) =>
+    axios.patch(
+        `${PO_SERVICE}/api/v1/purchase-orders/${id}/status`,
+        { status },
+        authHeader()
+    );
+
+export const deletePurchaseOrder = (id) =>
+    axios.delete(
+        `${PO_SERVICE}/api/v1/purchase-orders/${id}`,
+        authHeader()
+    );
+
+// ── Companies ─────────────────────────────────────────────────────────────────
+export const getAllCompanies = () =>
+    axios.get(`${COMPANY_SERVICE}/api/v1/companies`, authHeader());
+
+export const addCompany = (data) =>
+    axios.post(`${COMPANY_SERVICE}/api/v1/companies/addCompany`, data, authHeader());
+
+export const updateCompany = (id, data) =>
+    axios.put(`${COMPANY_SERVICE}/api/v1/companies/updateCompany/${id}`, data, authHeader());
+
+export const deleteCompany = (id) =>
+    axios.delete(`${COMPANY_SERVICE}/api/v1/companies/deleteCompany/${id}`, authHeader());
 
 
 // ── Stocks ───────────────────────────────────────────────────────────────────
