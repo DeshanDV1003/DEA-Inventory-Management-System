@@ -19,3 +19,7 @@ services:
   po: http://localhost:8081
   warehouse: http://localhost:8082
   stock: http://localhost:8083
+
+jwt:
+  secret: MySuperSecretKey12345
+  expiration: 3600000
