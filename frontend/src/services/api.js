@@ -6,6 +6,7 @@ const PO_SERVICE = import.meta.env.VITE_PO_SERVICE || "http://localhost:8062";
 const COMPANY_SERVICE = import.meta.env.VITE_COMPANY_SERVICE || "http://localhost:8022";
 const STOCK_SERVICE = import.meta.env.VITE_STOCK_SERVICE || "http://localhost:8042";
 const STOCK_TRANSFER_SERVICE = import.meta.env.VITE_STOCK_TRANSFER_SERVICE || "http://localhost:8052";
+const ASSET_SERVICE = import.meta.env.VITE_ASSET_SERVICE || "http://localhost:8012";
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 export const loginUser = (credentials) =>
@@ -139,3 +140,19 @@ export const getTransferDetails = (transferNo) =>
 
 export const createTransfer = (data) =>
     axios.post(`${STOCK_TRANSFER_SERVICE}/api/v1/transfers`, data, authHeader());
+
+// ── Assets ───────────────────────────────────────────────────────────────────
+export const getAllAssets = () =>
+    axios.get(`${ASSET_SERVICE}/api/v1/assets/all`, authHeader());
+
+export const getAssetsByWarehouse = (warehouseId) =>
+    axios.get(`${ASSET_SERVICE}/api/v1/assets/warehouse/${warehouseId}`, authHeader());
+
+export const createAsset = (data) =>
+    axios.post(`${ASSET_SERVICE}/api/v1/assets/add`, data, authHeader());
+
+export const updateAsset = (id, data) =>
+    axios.put(`${ASSET_SERVICE}/api/v1/assets/update/${id}`, data, authHeader());
+
+export const deleteAsset = (id) =>
+    axios.delete(`${ASSET_SERVICE}/api/v1/assets/delete/${id}`, authHeader());
