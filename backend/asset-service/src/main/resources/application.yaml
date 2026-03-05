@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/AssetDB
     username: root
-    password: ${DB_PASSWORD}
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -14,3 +14,6 @@ spring:
 
 server:
   port: 8011
+
+jwt:
+  secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
