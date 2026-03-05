@@ -25,7 +25,7 @@ import java.util.List;
  * - All business rules should be in the Service layer.
  */
 @RestController
-@RequestMapping("/api/transfers")
+@RequestMapping("/api/v1/transfers")
 @CrossOrigin(origins = "*") // you can change to frontend URL later
 public class StockTransferController {
 
