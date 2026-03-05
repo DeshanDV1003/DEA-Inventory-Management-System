@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: maintenance-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/MaintenanceDB
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 8091
+
+jwt:
+  secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
