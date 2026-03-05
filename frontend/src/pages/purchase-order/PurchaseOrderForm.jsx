@@ -1,44 +1,35 @@
-/**
- * PurchaseOrderForm Component
- *
- * This component provides a unified interface for both creating and editing
- * Purchase Orders in the Inventory Management System.
- *
- * Purpose:
- * - Create Mode: Initializes an empty form with one item row.
- * - Edit Mode: Fetches existing data from the backend to pre-populate the form.
- * - Dynamic Form Logic: Allows users to add or remove multiple product line items.
- * - Data Integration: Aggregates information from Product, Supplier, and Company
- *   microservices to populate dropdown menus.
- *
- * Logic Workflow:
- * 1. On mount: Fetches all dropdown data from external service ports (8082, 8083, 8084).
- * 2. If 'edit': Fetches the specific PO record from port 8081.
- * 3. Submission: Validates local state and sends a structured JSON payload
- *    (Header + List of Items) to the PO Service.
- *
- * Variables:
- * - id: The URL parameter used to identify the record in Edit mode.
- * - formData: State object containing companyId, supplierId, warehouseId, poNumber, and items list.
- * - dropdowns: State object containing lists for Companies, Suppliers, and Products.
- */
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { purchaseOrderService } from '../../services/purchaseOrderService';
 import Sidebar from "../../components/Sidebar.jsx";
+import { purchaseOrderService } from '../../services/purchaseOrderService';
+import { getAllProducts, getAllCompanies, getAllSuppliers, getAllWarehouses } from '../../services/api';
+
+// --- DUMMY DATA FOR TESTING (FALLBACKS) ---
+const FALLBACK_DATA = {
+    companies: [
+        { id: 1, name: "Global Logistics Corp" },
+        { id: 2, name: "Tech Manufacturing Ltd" }
+    ],
+    suppliers: [
+        { id: 101, name: "Primary Steel Inc", companyId: 1 },
+        { id: 102, name: "Parts & Tools Co", companyId: 1 },
+        { id: 103, name: "Silicon Valley Chips", companyId: 2 }
+    ],
+    warehouses: [
+        { id: 50, name: "North-East Hub", companyId: 1 },
+        { id: 51, name: "Main Export Port", companyId: 1 },
+        { id: 60, name: "Tech Cleanroom A", companyId: 2 }
+    ],
+    products: [
+        { id: 501, name: "Industrial Girders" },
+        { id: 502, name: "Microchips V8" }
+    ]
+};
 
 const PurchaseOrderForm = ({ mode }) => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    // Helper to include JWT token in cross-service axios calls
-    const authHeader = () => ({
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
-
-    // Form State
     const [formData, setFormData] = useState({
         companyId: '',
         supplierId: '',
@@ -47,12 +38,17 @@ const PurchaseOrderForm = ({ mode }) => {
         items: [{ productId: '', quantity: 1 }]
     });
 
-    // Lists for dropdown selections
-    const [dropdowns, setDropdowns] = useState({
+    // MASTER LISTS (All data from API)
+    const [masterLists, setMasterLists] = useState({
         companies: [],
         suppliers: [],
+        warehouses: [],
         products: []
     });
+
+    // FILTERED LISTS (Only what the user should see based on company selection)
+    const [filteredSuppliers, setFilteredSuppliers] = useState([]);
+    const [filteredWarehouses, setFilteredWarehouses] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -61,189 +57,187 @@ const PurchaseOrderForm = ({ mode }) => {
         loadInitialData();
     }, [id, mode]);
 
+    // const loadInitialData = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const [c, s, w, p] = await Promise.all([
+    //             getAllCompanies().catch(() => ({ data: FALLBACK_DATA.companies })),
+    //             getAllSuppliers().catch(() => ({ data: FALLBACK_DATA.suppliers })),
+    //             getAllWarehouses().catch(() => ({ data: FALLBACK_DATA.warehouses })),
+    //             getAllProducts().catch(() => ({ data: FALLBACK_DATA.products }))
+    //         ]);
+
+    //         setMasterLists({
+    //             companies: c.data,
+    //             suppliers: s.data,
+    //             warehouses: w.data,
+    //             products: p.data
+    //         });
+
+    //         if (mode === 'edit' && id) {
+    //             const res = await purchaseOrderService.getById(id);
+    //             setFormData(res.data);
+    //             // Trigger filtering for edit mode
+    //             filterDependentData(res.data.companyId, s.data, w.data);
+    //         }
+    //     } catch (err) {
+    //         setError("Serious system error. Could not load data.");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    // --- Filtering Logic ---
+    
     const loadInitialData = async () => {
-        setLoading(true);
-        try {
-            // 1. Load Dropdowns from other Microservices
-            const [c, s, p] = await Promise.all([
-                axios.get('http://localhost:8084/api/v1/companies', authHeader()),
-                axios.get('http://localhost:8083/api/v1/suppliers', authHeader()),
-                axios.get('http://localhost:8082/api/v1/products', authHeader())
-            ]);
+    setLoading(true);
+    try {
+        const [c, s, w, p] = await Promise.all([
+            getAllCompanies().catch(() => ({ data: FALLBACK_DATA.companies })),
+            getAllSuppliers().catch(() => ({ data: FALLBACK_DATA.suppliers })),
+            getAllWarehouses().catch(() => ({ data: FALLBACK_DATA.warehouses })),
+            getAllProducts().catch(() => ({ data: FALLBACK_DATA.products }))
+        ]);
 
-            setDropdowns({
-                companies: c.data,
-                suppliers: s.data,
-                products: p.data
-            });
+        // ADD LOGS TO SEE WHAT IS ACTUALLY COMING BACK
+        console.log("Companies received:", c.data);
 
-            // 2. Load existing data if in Edit Mode
-            if (mode === 'edit' && id) {
-                const res = await purchaseOrderService.getById(id);
-                setFormData(res.data);
-            }
-        } catch (err) {
-            setError("Failed to initialize form. Please check if all services are running.");
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
+        setMasterLists({
+            // Use logical OR to ensure it's always an array
+            companies: Array.isArray(c.data) ? c.data : [],
+            suppliers: Array.isArray(s.data) ? s.data : [],
+            warehouses: Array.isArray(w.data) ? w.data : [],
+            products: Array.isArray(p.data) ? p.data : []
+        });
+
+        // ... rest of your code
+    } catch (err) {
+        console.error("Initialization error:", err);
+        setError("Failed to load data.");
+    } finally {
+        setLoading(false);
+    }
+};
+    
+    const filterDependentData = (companyId, suppliers, warehouses) => {
+        const selectedId = parseInt(companyId);
+        setFilteredSuppliers(suppliers.filter(s => s.companyId === selectedId));
+        setFilteredWarehouses(warehouses.filter(w => w.companyId === selectedId));
+    };
+
+    const handleCompanyChange = (e) => {
+        const companyId = e.target.value;
+        // 1. Update form
+        setFormData({ 
+            ...formData, 
+            companyId: companyId,
+            supplierId: '', // Reset these so user doesn't pick wrong combos
+            warehouseId: '' 
+        });
+        // 2. Filter lists
+        filterDependentData(companyId, masterLists.suppliers, masterLists.warehouses);
     };
 
     // --- Dynamic Item Logic ---
-
     const handleItemChange = (index, field, value) => {
         const newItems = [...formData.items];
         newItems[index][field] = value;
         setFormData({ ...formData, items: newItems });
     };
 
-    const addItem = () => {
-        setFormData({
-            ...formData,
-            items: [...formData.items, { productId: '', quantity: 1 }]
-        });
-    };
-
-    const removeItem = (index) => {
-        const newItems = formData.items.filter((_, i) => i !== index);
-        setFormData({ ...formData, items: newItems });
-    };
-
-    // --- Form Submission ---
+    const addItem = () => setFormData({ ...formData, items: [...formData.items, { productId: '', quantity: 1 }] });
+    const removeItem = (index) => setFormData({ ...formData, items: formData.items.filter((_, i) => i !== index) });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
         try {
-            if (mode === 'create') {
-                await purchaseOrderService.create(formData);
-            } else {
-                await purchaseOrderService.update(id, formData);
-            }
+            if (mode === 'create') await purchaseOrderService.create(formData);
+            else await purchaseOrderService.update(id, formData);
             navigate('/purchase-order/list');
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred while saving.");
-        } finally {
-            setLoading(false);
+            setError("Failed to save order. Check database constraints.");
         }
     };
-
-    if (loading && mode === 'edit') return <div className="loader"></div>;
 
     return (
         <div className="products-root">
             <Sidebar />
-        <div className="modal-overlay">
-            <div className="modal" style={{ maxWidth: '700px', width: '90%' }}>
-                <header className="modal-header">
-                    <h2>{mode === 'edit' ? `Edit Order #${formData.poNumber}` : 'Create Purchase Order'}</h2>
-                    <button className="modal-close" onClick={() => navigate('/purchase-order/list')}>&times;</button>
-                </header>
+            <div className="modal-overlay">
+                <div className="modal" style={{ maxWidth: '700px', width: '90%' }}>
+                    <header className="modal-header">
+                        <h2>{mode === 'edit' ? `Edit Order #${formData.poNumber}` : 'Create Purchase Order'}</h2>
+                    </header>
 
-                {error && <div className="alert-error">{error} <button onClick={() => setError(null)}>&times;</button></div>}
+                    <form className="modal-form" onSubmit={handleSubmit}>
+                        {/* Header Row 1 */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                            <div className="field-group">
+                                <label>PO NUMBER</label>
+                                <input type="number" value={formData.poNumber} onChange={e => setFormData({...formData, poNumber: e.target.value})} required />
+                            </div>
 
-                <form className="modal-form" onSubmit={handleSubmit}>
-
-                    {/* Header Details */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                        <div className="field-group">
-                            <label>PO NUMBER</label>
-                            <input
-                                type="number"
-                                value={formData.poNumber}
-                                onChange={e => setFormData({...formData, poNumber: e.target.value})}
-                                required
-                                placeholder="e.g. 5001"
-                            />
+                            <div className="field-group">
+                                <label>COMPANY</label>
+                                <select value={formData.companyId} onChange={handleCompanyChange} required>
+                                    <option value="">Select Company</option>
+                                    {masterLists.companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                </select>
+                            </div>
                         </div>
 
-                        <div className="field-group">
-                            <label>DESTINATION WAREHOUSE</label>
-                            <input
-                                type="text"
-                                value={formData.warehouseId}
-                                onChange={e => setFormData({...formData, warehouseId: e.target.value})}
-                                required
-                                placeholder="Warehouse Name/ID"
-                            />
+                        {/* Header Row 2: Filtered Dropdowns */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                            <div className="field-group">
+                                <label>SUPPLIER (Filtered)</label>
+                                <select 
+                                    value={formData.supplierId} 
+                                    onChange={e => setFormData({...formData, supplierId: e.target.value})} 
+                                    required 
+                                    disabled={!formData.companyId}
+                                >
+                                    <option value="">{formData.companyId ? "Select Supplier" : "Select Company First"}</option>
+                                    {filteredSuppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                                </select>
+                            </div>
+
+                            <div className="field-group">
+                                <label>WAREHOUSE (Filtered)</label>
+                                <select 
+                                    value={formData.warehouseId} 
+                                    onChange={e => setFormData({...formData, warehouseId: e.target.value})} 
+                                    required
+                                    disabled={!formData.companyId}
+                                >
+                                    <option value="">{formData.companyId ? "Select Warehouse" : "Select Company First"}</option>
+                                    {filteredWarehouses.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                        <div className="field-group">
-                            <label>COMPANY</label>
-                            <select
-                                value={formData.companyId}
-                                onChange={e => setFormData({...formData, companyId: e.target.value})}
-                                required
-                            >
-                                <option value="">Select Company</option>
-                                {dropdowns.companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                            </select>
-                        </div>
+                        <hr style={{ borderColor: '#1e1e24', margin: '1rem 0' }} />
 
-                        <div className="field-group">
-                            <label>SUPPLIER</label>
-                            <select
-                                value={formData.supplierId}
-                                onChange={e => setFormData({...formData, supplierId: e.target.value})}
-                                required
-                            >
-                                <option value="">Select Supplier</option>
-                                {dropdowns.suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-                            </select>
-                        </div>
-                    </div>
-
-                    <hr style={{ borderColor: '#1e1e24', margin: '1rem 0' }} />
-
-                    {/* Dynamic Items List */}
-                    <label style={{ fontSize: '0.65rem', letterSpacing: '0.15em', color: '#71717a' }}>ORDER ITEMS</label>
-                    <div style={{ maxHeight: '250px', overflowY: 'auto', paddingRight: '5px' }}>
+                        {/* Items Section */}
+                        <label>ORDER ITEMS</label>
                         {formData.items.map((item, index) => (
-                            <div key={index} className="item-row" style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                                <div style={{ flex: 2 }}>
-                                    <select
-                                        value={item.productId}
-                                        onChange={e => handleItemChange(index, 'productId', e.target.value)}
-                                        required
-                                    >
-                                        <option value="">Select Product</option>
-                                        {dropdowns.products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-                                    </select>
-                                </div>
-                                <div style={{ flex: 1 }}>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        value={item.quantity}
-                                        onChange={e => handleItemChange(index, 'quantity', e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                {formData.items.length > 1 && (
-                                    <button type="button" className="del-btn" onClick={() => removeItem(index)}>Remove</button>
-                                )}
+                            <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                                <select style={{ flex: 3 }} value={item.productId} onChange={e => handleItemChange(index, 'productId', e.target.value)} required>
+                                    <option value="">Select Product</option>
+                                    {masterLists.products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                                </select>
+                                <input style={{ flex: 1 }} type="number" min="1" value={item.quantity} onChange={e => handleItemChange(index, 'quantity', e.target.value)} required />
+                                {formData.items.length > 1 && <button type="button" className="del-btn" onClick={() => removeItem(index)}>Remove</button>}
                             </div>
                         ))}
-                    </div>
 
-                    <button type="button" className="btn-add" onClick={addItem}>
-                        + Add Another Item
-                    </button>
+                        <button type="button" className="btn-add" onClick={addItem}>+ Add Item</button>
 
-                    <div className="modal-actions">
-                        <button type="button" className="cancel-btn" onClick={() => navigate('/purchase-order/list')}>
-                            Cancel
-                        </button>
-                        <button type="submit" className="submit-btn" disabled={loading}>
-                            {loading ? <span className="spinner"></span> : (mode === 'edit' ? 'Update Order' : 'Create Order')}
-                        </button>
-                    </div>
-                </form>
+                        <div className="modal-actions">
+                            <button type="button" className="cancel-btn" onClick={() => navigate('/purchase-order/list')}>Cancel</button>
+                            <button type="submit" className="submit-btn">Save Order</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
         </div>
     );
 };
