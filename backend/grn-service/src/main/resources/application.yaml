@@ -1,11 +1,11 @@
 server:
-  port: 8086
+  port: 8041
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/grn?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://mysql:3306/grn_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
     username: root
-    password:
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -13,8 +13,9 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
+    show-sql: true
+
 services:
   po: http://localhost:8081
   warehouse: http://localhost:8082

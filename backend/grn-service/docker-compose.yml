@@ -1,0 +1,32 @@
+services:
+  mysql:
+    image: mysql:8.3
+    container_name: grn-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: grn_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - grn_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  grn-service:
+    build: .
+    container_name: grn-service
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8041:8041"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/grn_db?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+volumes:
+  grn_mysql_data:
