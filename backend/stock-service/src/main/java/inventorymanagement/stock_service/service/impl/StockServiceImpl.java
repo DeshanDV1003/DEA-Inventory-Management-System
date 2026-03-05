@@ -9,6 +9,7 @@ import inventorymanagement.stock_service.model.Stock;
 import inventorymanagement.stock_service.repository.StockRepository;
 import inventorymanagement.stock_service.service.StockService;
 import inventorymanagement.stock_service.mapper.StockMapper;
+import inventorymanagement.stock_service.utill.AuthUtil;
 import inventorymanagement.stock_service.utill.StockValidationUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,16 @@ public class StockServiceImpl implements StockService {
     private final StockRepository stockRepository;
     private final StockMapper stockMapper;
     private final StockValidationUtil validationUtil;
+    private final AuthUtil authUtil;
 
     public StockServiceImpl(StockRepository stockRepository,
                             StockMapper stockMapper,
-                            StockValidationUtil validationUtil) {
+                            StockValidationUtil validationUtil,
+                            AuthUtil authUtil) {
         this.stockRepository = stockRepository;
         this.stockMapper = stockMapper;
         this.validationUtil = validationUtil;
+        this.authUtil = authUtil;
     }
 
     @Override
@@ -47,8 +51,11 @@ public class StockServiceImpl implements StockService {
                 requestDTO.getCompanyId(), requestDTO.getProductId(), requestDTO.getWarehouseId())) {
             throw new DuplicateStockException(AppConstants.STOCK_DUPLICATE);
         }
-
         Stock stock = stockMapper.toEntity(requestDTO);
+
+        String currentUser = authUtil.getCurrentUsername();
+        stock.setCreatedBy(currentUser);
+        stock.setUpdatedBy(currentUser);
         Stock saved = stockRepository.save(stock);
         return stockMapper.toResponseDTO(saved);
     }
@@ -107,6 +114,7 @@ public class StockServiceImpl implements StockService {
         validationUtil.validateStockLevels(requestDTO);
         Stock stock = findStockByIdOrThrow(stockId);
         stockMapper.updateEntityFromDTO(requestDTO, stock);
+        stock.setUpdatedBy(authUtil.getCurrentUsername());
         Stock updated = stockRepository.save(stock);
         return stockMapper.toResponseDTO(updated);
     }
