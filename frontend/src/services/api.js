@@ -8,6 +8,9 @@ const STOCK_SERVICE = import.meta.env.VITE_STOCK_SERVICE || "http://localhost:80
 const STOCK_TRANSFER_SERVICE = import.meta.env.VITE_STOCK_TRANSFER_SERVICE || "http://localhost:8052";
 const ASSET_SERVICE = import.meta.env.VITE_ASSET_SERVICE || "http://localhost:8012";
 const GRN_SERVICE = import.meta.env.VITE_GRN_SERVICE || "http://localhost:8032";
+const WAREHOUSE_SERVICE = import.meta.env.VITE_WAREHOUSE_SERVICE || "http://localhost:9012";
+const SUPPLIER_SERVICE = import.meta.env.VITE_SUPPLIER_SERVICE || "http://localhost:9022";
+
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 export const loginUser = (credentials) =>
@@ -15,6 +18,8 @@ export const loginUser = (credentials) =>
 
 export const registerUser = (data) =>
   axios.post(`${USER_SERVICE}/api/v1/auth/register`, data);
+
+
 
 // ── Users ─────────────────────────────────────────────────────────────────────
 const authHeader = () => ({
@@ -30,6 +35,8 @@ export const addUser = (data) =>
 export const deleteUser = (id) =>
     axios.delete(`${USER_SERVICE}/api/v1/users/deleteUser/${id}`, authHeader());
 
+
+
 // ── Products ─────────────────────────────────────────────────────────────────
 export const getAllProducts = () =>
   axios.get(`${PRODUCT_SERVICE}/api/v1/products`, authHeader());
@@ -44,16 +51,8 @@ export const deleteProduct = (id) =>
   });
 
 
-/* ─────────────────────────────────────────────────────────────
-   PURCHASE ORDER APIs
-───────────────────────────────────────────────────────────── */
 
-const PO_API_URL = `${PO_SERVICE}/api/v1/purchase-orders`;
-
-/* ─────────────────────────────────────────────────────────────
-   PURCHASE ORDER APIs
-───────────────────────────────────────────────────────────── */
-
+// ── PURCHASE ORDER  ─────────────────────────────────────────────────────────────────
 
 export const getAllPurchaseOrders = () =>
     axios.get(`${PO_SERVICE}/api/v1/purchase-orders`, authHeader());
@@ -139,6 +138,8 @@ export const updateStock = (stockId, data) =>
 export const deleteStock = (stockId) =>
     axios.delete(`${STOCK_SERVICE}/api/v1/stocks/${stockId}`, authHeader());
 
+
+
 // ── Stock Transfers ──────────────────────────────────────────────────────────
 export const getAllTransfers = () =>
     axios.get(`${STOCK_TRANSFER_SERVICE}/api/v1/transfers`, authHeader());
@@ -151,6 +152,8 @@ export const getTransferDetails = (transferNo) =>
 
 export const createTransfer = (data) =>
     axios.post(`${STOCK_TRANSFER_SERVICE}/api/v1/transfers`, data, authHeader());
+
+
 
 // ── Assets ───────────────────────────────────────────────────────────────────
 export const getAllAssets = () =>
@@ -167,6 +170,8 @@ export const updateAsset = (id, data) =>
 
 export const deleteAsset = (id) =>
     axios.delete(`${ASSET_SERVICE}/api/v1/assets/delete/${id}`, authHeader());
+
+
 
 // ── GRN (Goods Received Notes) ───────────────────────────────────────────────
 export const createGrn = (data) =>
@@ -186,3 +191,48 @@ export const cancelGrn = (grnNumber, cancelledBy) =>
         ...authHeader(),
         params: { cancelledBy },
     });
+
+
+
+// ── Warehouses ───────────────────────────────────────────────────────────────
+export const getAllWarehouses = () =>
+    axios.get(`${WAREHOUSE_SERVICE}/api/v1/warehouses`, authHeader());
+
+export const getWarehouseById = (id) =>
+    axios.get(`${WAREHOUSE_SERVICE}/api/v1/warehouses/${id}`, authHeader());
+
+export const getWarehousesByCompany = (companyId) =>
+    axios.get(`${WAREHOUSE_SERVICE}/api/v1/warehouses/company/${companyId}`, authHeader());
+
+export const createWarehouse = (data) =>
+    axios.post(`${WAREHOUSE_SERVICE}/api/v1/warehouses`, data, authHeader());
+
+export const updateWarehouse = (id, data) =>
+    axios.put(`${WAREHOUSE_SERVICE}/api/v1/warehouses/${id}`, data, authHeader());
+
+export const deleteWarehouse = (id) =>
+    axios.delete(`${WAREHOUSE_SERVICE}/api/v1/warehouses/${id}`, authHeader());
+
+
+
+// ── Suppliers ────────────────────────────────────────────────────────────────
+export const getAllSuppliers = () =>
+    axios.get(`${SUPPLIER_SERVICE}/api/v1/suppliers`, authHeader());
+
+export const getSupplierById = (id) =>
+    axios.get(`${SUPPLIER_SERVICE}/api/v1/suppliers/${id}`, authHeader());
+
+export const createSupplier = (data) =>
+    axios.post(`${SUPPLIER_SERVICE}/api/v1/suppliers`, data, authHeader());
+
+export const updateSupplier = (id, data) =>
+    axios.put(`${SUPPLIER_SERVICE}/api/v1/suppliers/${id}`, data, authHeader());
+
+export const deleteSupplier = (id) =>
+    axios.delete(`${SUPPLIER_SERVICE}/api/v1/suppliers/${id}`, authHeader());
+
+export const getProductsBySupplier = (id) =>
+    axios.get(`${SUPPLIER_SERVICE}/api/v1/suppliers/${id}/products`, authHeader());
+
+export const getPurchaseOrdersBySupplier = (id) =>
+    axios.get(`${SUPPLIER_SERVICE}/api/v1/suppliers/${id}/purchase-orders`, authHeader());
