@@ -26,7 +26,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/transfers")
-@CrossOrigin(origins = "*") // you can change to frontend URL later
 public class StockTransferController {
 
     private final StockTransferService service;
