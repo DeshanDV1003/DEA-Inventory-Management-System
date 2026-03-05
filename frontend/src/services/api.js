@@ -2,9 +2,9 @@ import axios from "axios";
 
 const USER_SERVICE = import.meta.env.VITE_USER_SERVICE || "http://localhost:8072";
 const PRODUCT_SERVICE = import.meta.env.VITE_PRODUCT_SERVICE || "http://localhost:8082";
-
 const PO_SERVICE = import.meta.env.VITE_PO_SERVICE || "http://localhost:8062";
 const COMPANY_SERVICE = import.meta.env.VITE_COMPANY_SERVICE || "http://localhost:8022";
+const STOCK_SERVICE = import.meta.env.VITE_STOCK_SERVICE || "http://localhost:8042";
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 export const loginUser = (credentials) =>
@@ -90,3 +90,38 @@ export const updateCompany = (id, data) =>
 
 export const deleteCompany = (id) =>
     axios.delete(`${COMPANY_SERVICE}/api/v1/companies/deleteCompany/${id}`, authHeader());
+
+
+// ── Stocks ───────────────────────────────────────────────────────────────────
+export const getAllStocks = () =>
+    axios.get(`${STOCK_SERVICE}/api/v1/stocks`, authHeader());
+
+export const getStockById = (stockId) =>
+    axios.get(`${STOCK_SERVICE}/api/v1/stocks/${stockId}`, authHeader());
+
+export const getStocksByCompany = (companyId) =>
+    axios.get(`${STOCK_SERVICE}/api/v1/stocks/company/${companyId}`, authHeader());
+
+export const getStocksByWarehouse = (warehouseId) =>
+    axios.get(`${STOCK_SERVICE}/api/v1/stocks/warehouse/${warehouseId}`, authHeader());
+
+export const getStocksByProduct = (productId) =>
+    axios.get(`${STOCK_SERVICE}/api/v1/stocks/product/${productId}`, authHeader());
+
+export const getStocksByCompanyAndWarehouse = (companyId, warehouseId) =>
+    axios.get(`${STOCK_SERVICE}/api/v1/stocks/company/${companyId}/warehouse/${warehouseId}`, authHeader());
+
+export const getLowStockByCompany = (companyId, threshold) =>
+    axios.get(`${STOCK_SERVICE}/api/v1/stocks/company/${companyId}/low`, {
+        ...authHeader(),
+        params: { threshold },
+    });
+
+export const createStock = (data) =>
+    axios.post(`${STOCK_SERVICE}/api/v1/stocks`, data, authHeader());
+
+export const updateStock = (stockId, data) =>
+    axios.put(`${STOCK_SERVICE}/api/v1/stocks/${stockId}`, data, authHeader());
+
+export const deleteStock = (stockId) =>
+    axios.delete(`${STOCK_SERVICE}/api/v1/stocks/${stockId}`, authHeader());
