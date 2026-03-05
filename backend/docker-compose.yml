@@ -72,6 +72,7 @@ services:
       - company-service
     networks:
       - inventory-network
+
   maintenance-service:
     build:
       context: ./maintenance-service
@@ -82,6 +83,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/MaintenanceDB
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+
     depends_on:
       mysql:
         condition: service_healthy
@@ -98,6 +101,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/PurchaseOrderDB
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
     depends_on:
       mysql:
         condition: service_healthy
@@ -114,6 +118,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/CompanyDB
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+
     depends_on:
       mysql:
         condition: service_healthy
