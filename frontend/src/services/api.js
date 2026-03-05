@@ -16,11 +16,21 @@ export const loginUser = (credentials) =>
 export const registerUser = (data) =>
   axios.post(`${USER_SERVICE}/api/v1/auth/register`, data);
 
-// ── Products ─────────────────────────────────────────────────────────────────
+// ── Users ─────────────────────────────────────────────────────────────────────
 const authHeader = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 });
 
+export const getAllUsers = () =>
+    axios.get(`${USER_SERVICE}/api/v1/users`, authHeader());
+
+export const addUser = (data) =>
+    axios.post(`${USER_SERVICE}/api/v1/users/addUser`, data, authHeader());
+
+export const deleteUser = (id) =>
+    axios.delete(`${USER_SERVICE}/api/v1/users/deleteUser/${id}`, authHeader());
+
+// ── Products ─────────────────────────────────────────────────────────────────
 export const getAllProducts = () =>
   axios.get(`${PRODUCT_SERVICE}/api/v1/products`, authHeader());
 
