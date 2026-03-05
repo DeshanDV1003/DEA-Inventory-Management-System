@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: supplier-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/SupplierDB
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  port: 9021
+
+jwt:
+  secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+
+services:
+  product:
+    url: http://localhost:8071
+  purchase-order:
+    url: http://localhost:8061
+  grn:
+    url: http://localhost:8031
+  company:
+    url: http://localhost:8021
