@@ -7,6 +7,7 @@ const COMPANY_SERVICE = import.meta.env.VITE_COMPANY_SERVICE || "http://localhos
 const STOCK_SERVICE = import.meta.env.VITE_STOCK_SERVICE || "http://localhost:8042";
 const STOCK_TRANSFER_SERVICE = import.meta.env.VITE_STOCK_TRANSFER_SERVICE || "http://localhost:8052";
 const ASSET_SERVICE = import.meta.env.VITE_ASSET_SERVICE || "http://localhost:8012";
+const GRN_SERVICE = import.meta.env.VITE_GRN_SERVICE || "http://localhost:8032";
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 export const loginUser = (credentials) =>
@@ -156,3 +157,22 @@ export const updateAsset = (id, data) =>
 
 export const deleteAsset = (id) =>
     axios.delete(`${ASSET_SERVICE}/api/v1/assets/delete/${id}`, authHeader());
+
+// ── GRN (Goods Received Notes) ───────────────────────────────────────────────
+export const createGrn = (data) =>
+    axios.post(`${GRN_SERVICE}/api/grns`, data, authHeader());
+
+export const getGrnByNumber = (grnNumber) =>
+    axios.get(`${GRN_SERVICE}/api/grns/${grnNumber}`, authHeader());
+
+export const filterGrns = (params) =>
+    axios.get(`${GRN_SERVICE}/api/grns`, { ...authHeader(), params });
+
+export const updateGrn = (grnNumber, data) =>
+    axios.put(`${GRN_SERVICE}/api/grns/${grnNumber}`, data, authHeader());
+
+export const cancelGrn = (grnNumber, cancelledBy) =>
+    axios.put(`${GRN_SERVICE}/api/grns/${grnNumber}/cancel`, null, {
+        ...authHeader(),
+        params: { cancelledBy },
+    });
