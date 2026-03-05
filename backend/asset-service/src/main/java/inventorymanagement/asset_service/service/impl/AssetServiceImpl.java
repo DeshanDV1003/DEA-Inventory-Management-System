@@ -3,6 +3,7 @@ package inventorymanagement.asset_service.service.impl;
 import inventorymanagement.asset_service.entity.Asset;
 import inventorymanagement.asset_service.repository.AssetRepository;
 import inventorymanagement.asset_service.service.AssetService;
+import inventorymanagement.asset_service.client.WarehouseClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -13,9 +14,16 @@ public class AssetServiceImpl implements AssetService {
 
     @Autowired
     private AssetRepository assetRepository;
+    @Autowired
+    private WarehouseClient warehouseClient;
 
     @Override
     public Asset addAsset(Asset asset) {
+        try {
+            warehouseClient.getWarehouseById(asset.getWarehouseId());
+        } catch (Exception e) {
+            throw new RuntimeException("Validation Failed: Warehouse ID " + asset.getWarehouseId() + " not found.");
+        }
 
         asset.setStatus("ACTIVE");
         asset.setCreatedDate(LocalDate.now());
@@ -37,6 +45,8 @@ public class AssetServiceImpl implements AssetService {
         asset.setStatus(details.getStatus());
         asset.setWarranty(details.getWarranty());
         asset.setWarehouseId(details.getWarehouseId());
+        asset.setModifiedBy("System_User");
+        asset.setModifiedDate(LocalDate.now());
 
         return assetRepository.save(asset);
     }

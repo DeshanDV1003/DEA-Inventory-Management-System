@@ -29,6 +29,8 @@ public class Asset {
     // Audit fields
     private String createdBy;
     private LocalDate createdDate;
+    private String modifiedBy;
+    private LocalDate modifiedDate;
 
     private boolean isDeleted = false; // For Soft Delete
 }
