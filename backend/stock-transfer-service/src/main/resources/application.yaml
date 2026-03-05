@@ -5,8 +5,7 @@ spring:
   application:
     name: stock-transfer
   datasource:
-    url: jdbc:mysql://localhost:3306/stock_transfer_db?createDatabaseIfNotExist=true
-    username: root
+    url: jdbc:mysql://localhost:3306/StockTransferDB
     password:
   jpa:
     hibernate:
@@ -14,5 +13,5 @@ spring:
     show-sql: true
 
 jwt:
-  secret: 9v7Kp3mZ2xQ1rT8yN6wL0sAa4dF9hJ5kP2uB7cE1mV3nX6zR8tQ0yS1wU5iO9pL
-  expirationMs: 86400000
+  secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+  expirationMs: 900000
