@@ -1,3 +1,29 @@
+/*
+ * Warehouse Entity
+ *
+ * This class represents the "warehouses" table in the warehouse_db database.
+ *
+ * Purpose:
+ * - Stores all warehouse records related to companies.
+ * - Each record contains warehouse details such as name, email, phone,
+ *   address, status, and references to company.
+ *
+ * Database Mapping:
+ * - @Entity tells JPA (Hibernate) that this class is mapped to a database table.
+ * - @Table(name = "warehouses") specifies the exact table name.
+ * - @Id defines the primary key.
+ * - @GeneratedValue(strategy = GenerationType.IDENTITY) enables auto-increment ID.
+ *
+ * Microservice Architecture:
+ * - companyId is a reference to the Company microservice.
+ * - Only IDs are stored (no direct entity relationship to other services).
+ * - This service is called by: PO Service, Stock Transfer Service, GRN Service, Stock Service.
+ *
+ * Audit Fields:
+ * - createdBy and createdDate store record creation details.
+ * - updatedBy and updatedDate store last update information.
+ */
+
 package inventorymanagement.warehouse_service.entity;
 
 import jakarta.persistence.*;
@@ -9,102 +35,105 @@ public class Warehouse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(name = "company_id", nullable = false)
-    private Long companyId;
-
-    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "phone", length = 20)
-    private String phone;
+    // Foreign key reference to Company microservice (ID only)
+    private Integer companyId;
 
-    @Column(name = "email", length = 100)
     private String email;
 
-    @Column(name = "address", length = 255)
-    private String address;
+    private String phone;
 
-    @Column(name = "status", length = 50)
     private String status;
 
-    @Column(name = "created_by", length = 100)
+    private String address;
+
     private String createdBy;
 
-    @Column(name = "created_date")
     private LocalDateTime createdDate;
 
-    @Column(name = "updated_by", length = 100)
     private String updatedBy;
 
-    @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
+    // Default constructor (required by JPA)
     public Warehouse() {
     }
 
-    // getters and setters
-    public Long getId() {
+    // Parameterized constructor
+    public Warehouse(Integer id, String name, Integer companyId, String email,
+                     String phone, String status, String address,
+                     String createdBy, LocalDateTime createdDate,
+                     String updatedBy, LocalDateTime updatedDate) {
+        this.id = id;
+        this.name = name;
+        this.companyId = companyId;
+        this.email = email;
+        this.phone = phone;
+        this.status = status;
+        this.address = address;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.updatedBy = updatedBy;
+        this.updatedDate = updatedDate;
+    }
+
+    // =================== Getters and Setters ===================
+
+    public Integer getId() {
         return id;
     }
-
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
     }
 
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getPhone() {
-        return phone;
+    public Integer getCompanyId() {
+        return companyId;
     }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getPhone() {
+        return phone;
     }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCreatedBy() {
         return createdBy;
     }
-
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
@@ -112,7 +141,6 @@ public class Warehouse {
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
-
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
@@ -120,7 +148,6 @@ public class Warehouse {
     public String getUpdatedBy() {
         return updatedBy;
     }
-
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
@@ -128,7 +155,6 @@ public class Warehouse {
     public LocalDateTime getUpdatedDate() {
         return updatedDate;
     }
-
     public void setUpdatedDate(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
     }

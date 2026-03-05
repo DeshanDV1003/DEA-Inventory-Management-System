@@ -1,13 +1,32 @@
+/*
+ * WarehouseServiceImpl (Service Implementation)
+ *
+ * Purpose:
+ * - Contains business logic related to Warehouse operations.
+ * - Handles DTO to Entity conversion.
+ * - Communicates with Repository layer.
+ *
+ * Responsibilities:
+ * - Convert RequestDTO → Entity
+ * - Save data to database
+ * - Convert Entity → ResponseDTO
+ * - Perform CRUD operations
+ *
+ * Architecture:
+ * - Acts as middle layer between Controller and Repository.
+ * - Called by: PO Service, Stock Transfer Service, GRN Service, Stock Service.
+ */
+
 package inventorymanagement.warehouse_service.service.impl;
 
-import inventorymanagement.warehouse_service.dto.WarehouseDTO;
+import inventorymanagement.warehouse_service.dto.WarehouseRequestDto;
+import inventorymanagement.warehouse_service.dto.WarehouseResponseDto;
 import inventorymanagement.warehouse_service.entity.Warehouse;
+import inventorymanagement.warehouse_service.exception.ResourceNotFoundException;
 import inventorymanagement.warehouse_service.repository.WarehouseRepository;
 import inventorymanagement.warehouse_service.service.WarehouseService;
-import inventorymanagement.warehouse_service.config.MyAPIConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,122 +38,106 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Autowired
     private WarehouseRepository warehouseRepository;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private MyAPIConfig apiConfig;
-
+    // Create new Warehouse record
     @Override
-    public WarehouseDTO createWarehouse(WarehouseDTO warehouseDTO) {
-        Warehouse entity = dtoToEntity(warehouseDTO);
-        entity.setCreatedDate(LocalDateTime.now());
-        Warehouse saved = warehouseRepository.save(entity);
-        return entityToDto(saved);
+    public WarehouseResponseDto createWarehouse(WarehouseRequestDto request) {
+
+        // Convert DTO to Entity
+        Warehouse warehouse = new Warehouse();
+        warehouse.setName(request.getName());
+        warehouse.setCompanyId(request.getCompanyId());
+        warehouse.setEmail(request.getEmail());
+        warehouse.setPhone(request.getPhone());
+        warehouse.setStatus(request.getStatus());
+        warehouse.setAddress(request.getAddress());
+        warehouse.setCreatedDate(LocalDateTime.now());
+
+        // Save to database
+        Warehouse savedWarehouse = warehouseRepository.save(warehouse);
+
+        // Convert Entity to ResponseDTO
+        return mapToResponseDto(savedWarehouse);
     }
 
+    // Get Warehouse by ID
     @Override
-    public List<WarehouseDTO> getAllWarehouses() {
+    public WarehouseResponseDto getWarehouseById(Integer id) {
+
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Warehouse not found with id: " + id));
+
+        return mapToResponseDto(warehouse);
+    }
+
+    // Get all Warehouse records
+    @Override
+    public List<WarehouseResponseDto> getAllWarehouses() {
+
         return warehouseRepository.findAll()
                 .stream()
-                .map(this::entityToDto)
+                .map(this::mapToResponseDto)
                 .collect(Collectors.toList());
     }
 
+    // Get Warehouses by Company ID
     @Override
-    public WarehouseDTO getWarehouseById(Long id) {
-        Warehouse w = warehouseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Warehouse not found"));
-        return entityToDto(w);
+    public List<WarehouseResponseDto> getWarehousesByCompanyId(Integer companyId) {
+
+        return warehouseRepository.findByCompanyId(companyId)
+                .stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
     }
 
+    // Update Warehouse record
     @Override
-    public WarehouseDTO updateWarehouse(Long id, WarehouseDTO warehouseDTO) {
-        Warehouse existing = warehouseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Warehouse not found"));
-        existing.setCompanyId(warehouseDTO.getCompanyId());
-        existing.setName(warehouseDTO.getName());
-        existing.setPhone(warehouseDTO.getPhone());
-        existing.setEmail(warehouseDTO.getEmail());
-        existing.setAddress(warehouseDTO.getAddress());
-        existing.setStatus(warehouseDTO.getStatus());
-        existing.setUpdatedBy(warehouseDTO.getUpdatedBy());
-        existing.setUpdatedDate(LocalDateTime.now());
-        Warehouse updated = warehouseRepository.save(existing);
-        return entityToDto(updated);
+    public WarehouseResponseDto updateWarehouse(Integer id, WarehouseRequestDto request) {
+
+        // Check if warehouse exists
+        Warehouse existingWarehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Warehouse not found with id: " + id));
+
+        // Update fields
+        existingWarehouse.setName(request.getName());
+        existingWarehouse.setCompanyId(request.getCompanyId());
+        existingWarehouse.setEmail(request.getEmail());
+        existingWarehouse.setPhone(request.getPhone());
+        existingWarehouse.setStatus(request.getStatus());
+        existingWarehouse.setAddress(request.getAddress());
+        existingWarehouse.setUpdatedDate(LocalDateTime.now());
+
+        // Save updated entity
+        Warehouse updatedWarehouse = warehouseRepository.save(existingWarehouse);
+
+        return mapToResponseDto(updatedWarehouse);
     }
 
+    // Delete Warehouse record
     @Override
-    public void deleteWarehouse(Long id) {
-        Warehouse existing = warehouseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Warehouse not found"));
-        warehouseRepository.delete(existing);
-    }
+    public void deleteWarehouse(Integer id) {
 
-    // cross-service calls
-    @Override
-    public Object getPurchaseOrdersByWarehouse(Long id) {
-        String url = apiConfig.getPoServiceUrl()+"/api/v1/purchase-orders/warehouse/"+id;
-        return restTemplate.getForObject(url, Object.class);
-    }
-
-    @Override
-    public Object getStockTransfersByWarehouse(Long id) {
-        String url = apiConfig.getStockTransferServiceUrl()+"/api/v1/stock-transfers/warehouse/"+id;
-        return restTemplate.getForObject(url, Object.class);
-    }
-
-    @Override
-    public Object getGRNsByWarehouse(Long id) {
-        String url = apiConfig.getGrnServiceUrl()+"/api/v1/grns/warehouse/"+id;
-        return restTemplate.getForObject(url, Object.class);
-    }
-
-    @Override
-    public Object getStockByWarehouse(Long id) {
-        String url = apiConfig.getStockServiceUrl()+"/api/v1/stocks/warehouse/"+id;
-        return restTemplate.getForObject(url, Object.class);
-    }
-
-    @Override
-    public Object getAllCompanies() {
-        String url = apiConfig.getCompanyServiceUrl()+"/api/v1/companies";
-        try {
-            return restTemplate.getForObject(url, Object.class);
-        } catch (Exception e) {
-            return List.of();
+        if (!warehouseRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    "Warehouse not found with id: " + id);
         }
+        warehouseRepository.deleteById(id);
     }
 
-    private Warehouse dtoToEntity(WarehouseDTO dto) {
-        Warehouse e = new Warehouse();
-        e.setId(dto.getId());
-        e.setCompanyId(dto.getCompanyId());
-        e.setName(dto.getName());
-        e.setPhone(dto.getPhone());
-        e.setEmail(dto.getEmail());
-        e.setAddress(dto.getAddress());
-        e.setStatus(dto.getStatus());
-        e.setCreatedBy(dto.getCreatedBy());
-        e.setCreatedDate(dto.getCreatedDate());
-        e.setUpdatedBy(dto.getUpdatedBy());
-        e.setUpdatedDate(dto.getUpdatedDate());
-        return e;
-    }
+    // Helper method: Convert Entity → ResponseDTO
+    private WarehouseResponseDto mapToResponseDto(Warehouse warehouse) {
 
-    private WarehouseDTO entityToDto(Warehouse e) {
-        WarehouseDTO d = new WarehouseDTO();
-        d.setId(e.getId());
-        d.setCompanyId(e.getCompanyId());
-        d.setName(e.getName());
-        d.setPhone(e.getPhone());
-        d.setEmail(e.getEmail());
-        d.setAddress(e.getAddress());
-        d.setStatus(e.getStatus());
-        d.setCreatedBy(e.getCreatedBy());
-        d.setCreatedDate(e.getCreatedDate());
-        d.setUpdatedBy(e.getUpdatedBy());
-        d.setUpdatedDate(e.getUpdatedDate());
-        return d;
+        return new WarehouseResponseDto(
+                warehouse.getId(),
+                warehouse.getName(),
+                warehouse.getCompanyId(),
+                warehouse.getEmail(),
+                warehouse.getPhone(),
+                warehouse.getStatus(),
+                warehouse.getAddress(),
+                warehouse.getCreatedDate(),
+                warehouse.getUpdatedDate()
+        );
     }
 }
