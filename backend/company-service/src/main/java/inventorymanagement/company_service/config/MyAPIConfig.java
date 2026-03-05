@@ -1,4 +1,4 @@
-package inventorymanagement.product_service.config;
+package inventorymanagement.company_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
