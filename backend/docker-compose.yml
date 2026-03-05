@@ -66,6 +66,7 @@ services:
       VITE_COMPANY_SERVICE: http://localhost:8022
       VITE_STOCK_SERVICE: http://localhost:8042
       VITE_STOCK_TRANSFER_SERVICE: http://localhost:8052
+      VITE_ASSET_SERVICE: http://localhost:8012
     depends_on:
       - user-service
       - product-service
@@ -74,6 +75,7 @@ services:
       - company-service
       - stock-service
       - stock-transfer-service
+      - asset-service
     networks:
       - inventory-network
 
@@ -155,6 +157,23 @@ services:
       - "8052:8051"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/StockTransferDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - inventory-network
+
+  asset-service:
+    build:
+      context: ./asset-service
+    container_name: asset-service
+    ports:
+      - "8012:8011"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/AssetDB
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
