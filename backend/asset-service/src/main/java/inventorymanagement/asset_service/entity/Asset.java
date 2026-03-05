@@ -21,16 +21,16 @@ public class Asset {
     private String warranty;
     private String status;
 
-    // Reference IDs for organizational hierarchy
+
     private Long companyId;
     private Long departmentId;
     private Long warehouseId;
 
-    // Audit fields
+
     private String createdBy;
     private LocalDate createdDate;
     private String modifiedBy;
     private LocalDate modifiedDate;
 
-    private boolean isDeleted = false; // For Soft Delete
+    private boolean isDeleted = false;
 }
