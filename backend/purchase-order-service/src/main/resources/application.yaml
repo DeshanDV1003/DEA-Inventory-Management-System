@@ -37,6 +37,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+server:
+  port: 8062
 
 server:
   port: 8061 
