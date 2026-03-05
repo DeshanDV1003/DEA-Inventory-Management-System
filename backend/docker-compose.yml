@@ -67,6 +67,9 @@ services:
       VITE_STOCK_SERVICE: http://localhost:8042
       VITE_STOCK_TRANSFER_SERVICE: http://localhost:8052
       VITE_ASSET_SERVICE: http://localhost:8012
+      VITE_WAREHOUSE_SERVICE: http://localhost:9012
+      VITE_SUPPLIER_SERVICE: http://localhost:9022
+      VITE_GRN_SERVICE: http://localhost:8032
     depends_on:
       - user-service
       - product-service
@@ -76,6 +79,9 @@ services:
       - stock-service
       - stock-transfer-service
       - asset-service
+      - warehouse-service
+      - supplier-service
+      - grn-service
     networks:
       - inventory-network
 
@@ -182,6 +188,62 @@ services:
         condition: service_healthy
     networks:
       - inventory-network
+
+  warehouse-service:
+    build:
+      context: ./warehouse-service
+    container_name: warehouse-service
+    ports:
+      - "9012:9011"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/WarehouseDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - inventory-network
+
+  supplier-service:
+    build:
+      context: ./supplier-service
+    container_name: supplier-service
+    ports:
+      - "9022:9021"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/SupplierDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+      SERVICES_PRODUCT_URL: http://product-service:8081
+      SERVICES_PURCHASE_ORDER_URL: http://purchase-order-service:8061
+      SERVICES_GRN_URL: http://grn-service:8031
+      SERVICES_COMPANY_URL: http://company-service:8021
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - inventory-network
+
+  grn-service:
+    build:
+      context: ./grn-service
+    container_name: grn-service
+    ports:
+      - "8032:8031"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/GrnDB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - inventory-network
+
 networks:
   inventory-network:
     driver: bridge
