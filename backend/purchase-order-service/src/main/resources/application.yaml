@@ -38,5 +38,8 @@ spring:
     hibernate:
       ddl-auto: update
 
+server:
+  port: 8061 
+
 jwt:
   secret: ${JWT_SECRET:a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8}
