@@ -15,14 +15,8 @@ spring:
 
 services:
   company:
-    url: http://localhost:8083
+    url: http://localhost:8080
   warehouse:
     url: http://localhost:8081
   product:
     url: http://localhost:8082
-
-server:
-  port: 8031
-
-jwt:
-  secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
