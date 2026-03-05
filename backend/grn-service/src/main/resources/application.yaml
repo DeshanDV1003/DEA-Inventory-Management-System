@@ -1,3 +1,26 @@
+server:
+  port: 8041
+
 spring:
-  application:
-    name: grn-service
+  datasource:
+    url: jdbc:mysql://mysql:3306/grn_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+services:
+  po: http://localhost:8081
+  warehouse: http://localhost:8082
+  stock: http://localhost:8083
+
+jwt:
+  secret: MySuperSecretKey12345
+  expiration: 3600000
