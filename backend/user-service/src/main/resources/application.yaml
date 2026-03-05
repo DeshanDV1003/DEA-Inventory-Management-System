@@ -15,3 +15,6 @@ spring:
 
 server:
   port: 8071
+
+jwt:
+  secret: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
