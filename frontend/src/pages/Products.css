@@ -1,0 +1,476 @@
+/* ── Products Page ──────────────────────────────────────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.products-root {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #0a0a0f;
+  color: #e4e4e7;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: 240px;
+  background: #111116;
+  border-right: 1px solid #1e1e24;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  color: #a78bfa;
+  margin-bottom: 2.5rem;
+}
+
+.brand-icon { font-size: 1.3rem; }
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #71717a;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.nav-item:hover { color: #e4e4e7; background: #1a1a22; }
+.nav-item.active { color: #f4f4f5; background: #1e1e28; }
+
+.nav-icon { font-size: 1rem; }
+
+.sidebar-footer {
+  border-top: 1px solid #1e1e24;
+  padding-top: 1rem;
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #a78bfa;
+  color: #0a0a0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.logout-btn {
+  width: 100%;
+  background: none;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 0.5rem;
+  color: #71717a;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.logout-btn:hover { color: #f87171; border-color: #f87171; }
+
+/* ── Main Content ────────────────────────────────────────────────────────────── */
+.main-content {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  overflow-y: auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.page-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: #71717a;
+  margin-bottom: 0.25rem;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.add-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #a78bfa;
+  color: #0a0a0f;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-btn:hover { background: #8b5cf6; }
+
+/* ── Alert ───────────────────────────────────────────────────────────────────── */
+.alert-error {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  color: #f87171;
+  font-size: 0.85rem;
+}
+
+.alert-error button {
+  background: none;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* ── Loading / Empty ─────────────────────────────────────────────────────────── */
+.loading-state, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  color: #52525b;
+}
+
+.loader {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #27272a;
+  border-top-color: #a78bfa;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+/* ── Product Table ───────────────────────────────────────────────────────────── */
+.product-table-wrap {
+  background: #111116;
+  border: 1px solid #1e1e24;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #52525b;
+  border-bottom: 1px solid #1e1e24;
+  font-weight: 600;
+}
+
+.product-table td {
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #1a1a20;
+}
+
+.product-table tr:last-child td { border-bottom: none; }
+.product-table tr:hover { background: #15151c; }
+
+.row-num { color: #3f3f46; font-size: 0.8rem; }
+.product-name { font-weight: 600; }
+.sku { color: #71717a; font-family: monospace; font-size: 0.8rem; }
+.price { font-weight: 600; color: #a78bfa; }
+
+/* ── Badges ──────────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.badge-active {
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+}
+
+.badge-inactive {
+  background: rgba(161, 161, 170, 0.1);
+  color: #a1a1aa;
+}
+
+/* ── Actions ─────────────────────────────────────────────────────────────────── */
+.actions { text-align: right; }
+
+.del-btn {
+  background: none;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  color: #71717a;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.del-btn:hover { color: #f87171; border-color: #f87171; }
+
+/* ── Modal ───────────────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background: #111116;
+  border: 1px solid #27272a;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 440px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h2 { font-size: 1.2rem; font-weight: 700; }
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #71717a;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.modal-close:hover { color: #f4f4f5; }
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-form .field-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.field-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.field-row .field-group { flex: 1; }
+
+.modal-form label {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #71717a;
+  font-weight: 600;
+}
+
+.modal-form input {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f4f4f5;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal-form input:focus, .modal-form select:focus { border-color: #a78bfa; }
+.modal-form input::placeholder { color: #3f3f46; }
+
+.modal-form select {
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #f4f4f5;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.cancel-btn {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  background: none;
+  color: #a1a1aa;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cancel-btn:hover { border-color: #3f3f46; color: #f4f4f5; }
+
+.submit-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #a78bfa;
+  color: #0a0a0f;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover { background: #8b5cf6; }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Delete Confirm Modal ────────────────────────────────────────────────────── */
+.confirm-modal {
+  text-align: center;
+  max-width: 360px;
+}
+
+.confirm-modal h2 { margin-bottom: 0.5rem; }
+.confirm-modal p { color: #71717a; font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+.delete-confirm-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #f87171;
+  color: #0a0a0f;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.delete-confirm-btn:hover { background: #ef4444; }
+
+/* ── Spinner (modal) ─────────────────────────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(10, 10, 15, 0.3);
+  border-top-color: #0a0a0f;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ── SKU Scan Button ────────────────────────────────────────────────────────── */
+.sku-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sku-input-row input { flex: 1; }
+
+.scan-btn {
+  padding: 0.75rem 1rem;
+  border: 1px solid #a78bfa;
+  border-radius: 8px;
+  background: transparent;
+  color: #a78bfa;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.scan-btn:hover { background: #a78bfa; color: #0a0a0f; }
+
+/* ── Barcode Scanner ────────────────────────────────────────────────────────── */
+.scanner-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.scanner-container {
+  background: #111116;
+  border: 1px solid #27272a;
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.scanner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.scanner-header h3 { font-size: 1rem; font-weight: 700; color: #f4f4f5; }
+
+.scanner-hint {
+  text-align: center;
+  color: #71717a;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
+
+#barcode-reader { border-radius: 8px; overflow: hidden; }
+#barcode-reader video { border-radius: 8px; }
