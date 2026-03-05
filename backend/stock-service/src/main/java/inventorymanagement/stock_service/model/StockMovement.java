@@ -3,51 +3,6 @@ package inventorymanagement.stock_service.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * =========================================================
- * Class Name: StockMovement
- * =========================================================
- * Purpose:
- * This entity records every change in stock quantity.
- * It acts as a transaction log for stock operations such as:
- *  - Stock increase (IN)
- *  - Stock decrease (OUT)
- *  - Stock transfer (TRANSFER)
- *
- * This helps in:
- *  - Auditing stock changes
- *  - Tracking stock history
- *  - Debugging incorrect stock updates
- *
- * =========================================================
- * Data Attributes:
- * ---------------------------------------------------------
- * movementId   : Unique identifier for each stock movement.
- * stockId      : ID of the related stock record.
- * movementType : Type of movement (IN, OUT, TRANSFER).
- * quantity     : Number of units moved.
- * reason       : Reason for movement (purchase, assignment,
- *                maintenance, damage, etc.).
- * movementTime : Timestamp of when the movement occurred.
- *
- * =========================================================
- * Methods:
- * ---------------------------------------------------------
- * setMovementTime(): Automatically sets the movementTime
- *                    when a new movement record is created.
- *
- * Getters & Setters:
- * Standard accessor and mutator methods for all attributes.
- *
- * =========================================================
- * Design Notes:
- * ---------------------------------------------------------
- * - stockId is stored as a simple Long value instead of a
- *   foreign key relationship to the Stock entity.
- * - This design avoids tight coupling and supports
- *   independent service scalability.
- * =========================================================
- */
 @Entity
     @Table(name = "stock_movements")
 
@@ -55,10 +10,10 @@ import java.time.LocalDateTime;
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long movementId;
+        private int movementId;
 
         @Column(name = "stock_id", nullable = false)
-        private Long stockId;
+        private int stockId;
 
         @Column(name = "movement_type", nullable = false)
         private String movementType; // IN, OUT, TRANSFER
@@ -76,7 +31,7 @@ import java.time.LocalDateTime;
         public StockMovement() {
         }
 
-        public StockMovement(Long stockId, String movementType, int quantity, String reason) {
+        public StockMovement(int stockId, String movementType, int quantity, String reason) {
             this.stockId = stockId;
             this.movementType = movementType;
             this.quantity = quantity;
@@ -91,19 +46,19 @@ import java.time.LocalDateTime;
 
         // Getters and Setters
 
-        public Long getMovementId() {
+        public int getMovementId() {
             return movementId;
         }
 
-        public void setMovementId(Long movementId) {
+        public void setMovementId(int movementId) {
             this.movementId = movementId;
         }
 
-        public Long getStockId() {
+        public int getStockId() {
             return stockId;
         }
 
-        public void setStockId(Long stockId) {
+        public void setStockId(int stockId) {
             this.stockId = stockId;
         }
 
