@@ -1,0 +1,55 @@
+#  /**
+#    * Docker Compose Configuration
+#    *
+#    * Purpose:
+#    * - Orchestrates the entire microservice ecosystem.
+#    * - Manages one MySQL instance containing userdb, productdb, and po_db.
+#    * - Ensures all services share the same JWT Secret automatically.
+#    *
+#    * Ports:
+#    * - MySQL: 3307 (Internal 3306) - avoids conflict with XAMPP.
+#    * - PO Service: 8081
+#    */
+
+      services:
+        mysql-db:
+          image: mysql:8.0
+          container_name: inventory-mysql
+          environment:
+            MYSQL_ROOT_PASSWORD: root
+          ports:
+            - "3307:3306"
+          volumes:
+            - mysql-data:/var/lib/mysql
+          networks:
+            - inventory-network
+          healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
+
+
+
+        purchase-order-service:
+          build: ./purchase-order-service
+          container_name: purchase-order-service
+          ports:
+            - "8081:8081"
+          environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/po_db?createDatabaseIfNotExist=true
+            SPRING_DATASOURCE_USERNAME: root
+            SPRING_DATASOURCE_PASSWORD: root
+            JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
+          depends_on:
+            mysql-db:
+              condition: service_healthy
+          networks:
+            - inventory-network
+
+      networks:
+        inventory-network:
+          driver: bridge
+
+      volumes:
+        mysql-data:
