@@ -6,7 +6,7 @@ import Warehouse from "./pages/Warehouse";
 import Suppliers from "./pages/Suppliers"; 
 import Stock from "./pages/Stock"; 
 import PurchaseOrderList from "./pages/purchase-order/PurchaseOrderList";
-
+import StockTransfer from "./pages/StockTransfer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Company from "./pages/Company";
 import Maintenance from "./pages/Maintenance";
@@ -54,6 +54,8 @@ function App() {
         <Route path="/maintenance" element={<ProtectedRoute><Maintenance /></ProtectedRoute>} />
 
         <Route path="/stock" element={<ProtectedRoute><Stock /></ProtectedRoute>} />
+
+        <Route path="/stock-transfers" element={<ProtectedRoute><StockTransfer /></ProtectedRoute>} />
 
         {/* Catch all - redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />

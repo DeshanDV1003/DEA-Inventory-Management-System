@@ -31,7 +31,7 @@ const Sidebar = () => {
                 </NavLink>
                 <NavLink to="/stock-transfers" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">🔄</span> Transfers
-                </NavLink>
+                </NavLink> 
 
                 {/* --- PROCUREMENT --- */}
                 <div className="nav-group-label" style={{ marginTop: '1.5rem' }}>PROCUREMENT</div>
