@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Company from "./pages/Company";
 import Maintenance from "./pages/Maintenance";
 import Assets from "./pages/Assets";
+import GRN from "./pages/GRN";
 
 function App() {
   return (
@@ -59,6 +60,8 @@ function App() {
         <Route path="/stock-transfers" element={<ProtectedRoute><StockTransfer /></ProtectedRoute>} />
 
         <Route path="/assets" element={<ProtectedRoute><Assets /></ProtectedRoute>} />
+
+        <Route path="/grn" element={<ProtectedRoute><GRN /></ProtectedRoute>} />
 
         {/* Catch all - redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />

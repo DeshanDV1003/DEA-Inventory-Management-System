@@ -190,14 +190,32 @@ export const deleteAsset = (id) =>
 
 
 // ── GRN (Goods Received Notes) ───────────────────────────────────────────────
+// export const createGrn = (data) =>
+//     axios.post(`${GRN_SERVICE}/api/grns`, data, authHeader());
+
+// export const getGrnByNumber = (grnNumber) =>
+//     axios.get(`${GRN_SERVICE}/api/grns/${grnNumber}`, authHeader());
+
+// export const filterGrns = (params) =>
+//     axios.get(`${GRN_SERVICE}/api/grns`, { ...authHeader(), params });
+
+// export const updateGrn = (grnNumber, data) =>
+//     axios.put(`${GRN_SERVICE}/api/grns/${grnNumber}`, data, authHeader());
+
+// export const cancelGrn = (grnNumber, cancelledBy) =>
+//     axios.put(`${GRN_SERVICE}/api/grns/${grnNumber}/cancel`, null, {
+//         ...authHeader(),
+//         params: { cancelledBy },
+//     });
+
+export const getAllGrns = () =>
+    axios.get(`${GRN_SERVICE}/api/grns`, authHeader());
+
 export const createGrn = (data) =>
     axios.post(`${GRN_SERVICE}/api/grns`, data, authHeader());
 
 export const getGrnByNumber = (grnNumber) =>
     axios.get(`${GRN_SERVICE}/api/grns/${grnNumber}`, authHeader());
-
-export const filterGrns = (params) =>
-    axios.get(`${GRN_SERVICE}/api/grns`, { ...authHeader(), params });
 
 export const updateGrn = (grnNumber, data) =>
     axios.put(`${GRN_SERVICE}/api/grns/${grnNumber}`, data, authHeader());
