@@ -1,14 +1,3 @@
-/**
- * Sidebar Component
- *
- * Purpose:
- * - Provides global navigation for the Inventory system.
- * - Features an expandable sub-menu for "Purchase Orders".
- * - Uses NavLink for automatic "active" styling.
- *
- * State Variables:
- * - poOpen (boolean): Controls the visibility of the Purchase Order sub-menu.
- */
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 
@@ -17,10 +6,10 @@ const Sidebar = () => {
     const location = useLocation();
     const username = localStorage.getItem("username") || "User";
 
-    // Menu toggle state
+    // Menu toggle state for Purchase Orders
     const [poOpen, setPoOpen] = useState(false);
 
-    // Automatically keep the menu open if we are on a purchase-order sub-page
+    // Automatically keep the PO menu open if we are on a purchase-order sub-page
     useEffect(() => {
         if (location.pathname.startsWith('/purchase-order')) {
             setPoOpen(true);
@@ -41,11 +30,27 @@ const Sidebar = () => {
             </div>
 
             <nav className="sidebar-nav">
+                {/* 1. Products */}
                 <NavLink to="/products" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">☰</span> Products
                 </NavLink>
 
-                {/* Expandable Purchase Order Section */}
+                {/* 2. Companies (Newly Added) */}
+                <NavLink to="/companies" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">▦</span> Companies
+                </NavLink>
+
+                {/* 3. Warehouse */}
+                <NavLink to="/warehouse" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">⫙</span> Warehouse
+                </NavLink>
+
+                {/* 4. Suppliers */}
+                <NavLink to="/suppliers" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">☷</span> Suppliers
+                </NavLink>
+
+                {/* 5. Expandable Purchase Order Section */}
                 <div>
                     <div
                         className={`nav-item ${location.pathname.startsWith('/purchase-order') ? 'active' : ''}`}
@@ -73,13 +78,8 @@ const Sidebar = () => {
                     )}
                 </div>
 
-                <NavLink to="/warehouse" className="nav-item">
-                    <span className="nav-icon">⫙</span> Warehouse
-                </NavLink>
-                <NavLink to="/suppliers" className="nav-item">
-                    <span className="nav-icon">☷</span> Suppliers
-                </NavLink>
-                <NavLink to="/reports" className="nav-item">
+                {/* 6. Reports */}
+                <NavLink to="/reports" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">⊞</span> Reports
                 </NavLink>
             </nav>

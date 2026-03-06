@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Products from "./pages/Products";
+import Warehouse from "./pages/Warehouse"; 
+import Suppliers from "./pages/Suppliers"; 
 
 import PurchaseOrderDashboard from "./pages/purchase-order/PurchaseOrderDashboard";
 import PurchaseOrderList from "./pages/purchase-order/PurchaseOrderList";
@@ -28,6 +30,11 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/warehouse" element={<ProtectedRoute><Warehouse /></ProtectedRoute>} />
+
+        <Route path="/suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
+
         <Route path="/company" element={<Navigate to="/companies" replace />} />
 
         {/* Protected: Products */}

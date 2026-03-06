@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { getAllCompanies, addCompany, updateCompany, deleteCompany } from "../services/api";
+import Sidebar from "../components/Sidebar.jsx";
 import "./Products.css";
 import "./Company.css";
 
@@ -143,38 +144,7 @@ export default function Company() {
 
   return (
     <div className="products-root">
-      <aside className="sidebar">
-        <div className="sidebar-brand">
-          <span className="brand-icon">⬡</span>
-          <span>INVNTRY</span>
-        </div>
-        <nav className="sidebar-nav">
-          <NavLink to="/products" className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}>
-            <span className="nav-icon">☰</span> Products
-          </NavLink>
-          <NavLink to="/companies" className={({ isActive }) => `nav-item${isActive ? " active" : ""}`}>
-            <span className="nav-icon">▦</span> Companies
-          </NavLink>
-          <span className="nav-item">
-            <span className="nav-icon">⫙</span> Warehouse
-          </span>
-          <span className="nav-item">
-            <span className="nav-icon">☷</span> Suppliers
-          </span>
-          <span className="nav-item">
-            <span className="nav-icon">⊞</span> Reports
-          </span>
-        </nav>
-        <div className="sidebar-footer">
-          <div className="user-pill">
-            <div className="user-avatar">{username[0].toUpperCase()}</div>
-            <span>{username}</span>
-          </div>
-          <button className="logout-btn" onClick={handleLogout}>
-            Sign out →
-          </button>
-        </div>
-      </aside>
+      <Sidebar />
 
       <main className="main-content">
         <header className="page-header">

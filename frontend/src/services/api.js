@@ -37,6 +37,8 @@ export const deleteUser = (id) =>
 
 
 
+
+
 // ── Products ─────────────────────────────────────────────────────────────────
 export const getAllProducts = () =>
   axios.get(`${PRODUCT_SERVICE}/api/v1/products`, authHeader());
@@ -49,6 +51,8 @@ export const deleteProduct = (id) =>
     ...authHeader(),
     data: id,
   });
+
+
 
 
 
@@ -90,6 +94,9 @@ export const deletePurchaseOrder = (id) =>
         authHeader()
     );
 
+
+
+
 // ── Companies ─────────────────────────────────────────────────────────────────
 export const getAllCompanies = () =>
     axios.get(`${COMPANY_SERVICE}/api/v1/companies`, authHeader());
@@ -102,6 +109,8 @@ export const updateCompany = (id, data) =>
 
 export const deleteCompany = (id) =>
     axios.delete(`${COMPANY_SERVICE}/api/v1/companies/deleteCompany/${id}`, authHeader());
+
+
 
 
 // ── Stocks ───────────────────────────────────────────────────────────────────
@@ -140,6 +149,8 @@ export const deleteStock = (stockId) =>
 
 
 
+
+
 // ── Stock Transfers ──────────────────────────────────────────────────────────
 export const getAllTransfers = () =>
     axios.get(`${STOCK_TRANSFER_SERVICE}/api/v1/transfers`, authHeader());
@@ -152,6 +163,8 @@ export const getTransferDetails = (transferNo) =>
 
 export const createTransfer = (data) =>
     axios.post(`${STOCK_TRANSFER_SERVICE}/api/v1/transfers`, data, authHeader());
+
+
 
 
 
@@ -170,6 +183,8 @@ export const updateAsset = (id, data) =>
 
 export const deleteAsset = (id) =>
     axios.delete(`${ASSET_SERVICE}/api/v1/assets/delete/${id}`, authHeader());
+
+
 
 
 
@@ -194,6 +209,8 @@ export const cancelGrn = (grnNumber, cancelledBy) =>
 
 
 
+
+
 // ── Warehouses ───────────────────────────────────────────────────────────────
 export const getAllWarehouses = () =>
     axios.get(`${WAREHOUSE_SERVICE}/api/v1/warehouses`, authHeader());
@@ -212,6 +229,8 @@ export const updateWarehouse = (id, data) =>
 
 export const deleteWarehouse = (id) =>
     axios.delete(`${WAREHOUSE_SERVICE}/api/v1/warehouses/${id}`, authHeader());
+
+
 
 
 
