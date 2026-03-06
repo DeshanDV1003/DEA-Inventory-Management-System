@@ -9,5 +9,6 @@ public interface ProductService {
     public List<Product> findAllProducts();
     public void saveProduct(AddProductRequestDto request);
     public void deleteProduct(Integer id);
+    public void updateProduct(Integer id, AddProductRequestDto request);
     public Product findProductById(Integer id);
 }
