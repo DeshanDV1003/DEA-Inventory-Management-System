@@ -50,7 +50,7 @@ export const deleteProduct = (id) =>
    PURCHASE ORDER APIs
 ───────────────────────────────────────────────────────────── */
 
-const PO_API_URL = `${PO_SERVICE}/api/v1/purchase-orders`;
+// const PO_API_URL = `${PO_SERVICE}/api/v1/purchase-orders`;
 
 /* ─────────────────────────────────────────────────────────────
    PURCHASE ORDER APIs
