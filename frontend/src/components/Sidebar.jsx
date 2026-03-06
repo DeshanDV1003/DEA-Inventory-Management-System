@@ -20,7 +20,9 @@ const Sidebar = () => {
             </div>
 
             <nav className="sidebar-nav" style={{ overflowY: 'auto', paddingRight: '5px' }}>
-                
+                <NavLink to="/" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">🏠</span> Dashboard
+                </NavLink>
                 {/* --- INVENTORY CORE --- */}
                 <div className="nav-group-label">INVENTORY</div>
                 <NavLink to="/products" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
