@@ -109,3 +109,25 @@
     color: #52525b;
     margin-top: -5px;
 }
+
+.status-select {
+    background: #18181b;
+    border: 1px solid #3f3f46;
+    border-radius: 6px;
+    padding: 4px 8px;
+    color: #a78bfa; /* Matches your purple theme */
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.status-select:hover {
+    border-color: #a78bfa;
+}
+
+.status-select option {
+    background: #18181b;
+    color: #fff;
+}
