@@ -4,7 +4,7 @@ import Register from "./pages/Register";
 import Products from "./pages/Products";
 import Warehouse from "./pages/Warehouse"; 
 import Suppliers from "./pages/Suppliers"; 
-
+import Stock from "./pages/Stock"; 
 import PurchaseOrderList from "./pages/purchase-order/PurchaseOrderList";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -52,6 +52,8 @@ function App() {
         <Route path="/purchase-order/list" element={<ProtectedRoute><PurchaseOrderList /></ProtectedRoute>} />
 
         <Route path="/maintenance" element={<ProtectedRoute><Maintenance /></ProtectedRoute>} />
+
+        <Route path="/stock" element={<ProtectedRoute><Stock /></ProtectedRoute>} />
 
         {/* Catch all - redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
