@@ -1,19 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllProducts, addProduct, deleteProduct } from "../services/api";
+import { 
+    getAllProducts, 
+    addProduct, 
+    deleteProduct, 
+    getAllCompanies, 
+    getAllWarehouses, 
+    getAllSuppliers 
+} from "../services/api";
 import BarcodeScanner from "../components/BarcodeScanner";
 import Sidebar from "../components/Sidebar";
 import "./Products.css";
 
-const Products = () => {
-  const navigate = useNavigate();
-  const username = localStorage.getItem("username") || "User";
-
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({
+const emptyForm = {
     name: "",
     price: "",
     sku: "",
@@ -22,308 +21,252 @@ const Products = () => {
     supplierId: "",
     imgPath: "",
     status: "Active",
-  });
-  const [saving, setSaving] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
-  const [showScanner, setShowScanner] = useState(false);
+};
 
-  const handleBarcodeScan = useCallback((barcode) => {
-    setForm((prev) => ({ ...prev, sku: barcode }));
-    setShowScanner(false);
-  }, []);
+const Products = () => {
+    const navigate = useNavigate();
+    const username = localStorage.getItem("username") || "User";
 
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const res = await getAllProducts();
-      setProducts(res.data);
-    } catch (err) {
-      if (err.response?.status === 401 || err.response?.status === 403) {
-        handleLogout();
-      } else {
-        setError("Failed to load products.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Data States
+    const [products, setProducts] = useState([]);
+    const [masterData, setMasterData] = useState({
+        companies: [],
+        warehouses: [],
+        suppliers: []
+    });
 
-  useEffect(() => { fetchProducts(); }, []);
+    // UI States
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
+    const [showScanner, setShowScanner] = useState(false);
+    const [form, setForm] = useState(emptyForm);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    navigate("/login");
-  };
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            // Fetch Products + All Reference Data
+            const [prodRes, compRes, whRes, supRes] = await Promise.all([
+                getAllProducts(),
+                getAllCompanies(),
+                getAllWarehouses(),
+                getAllSuppliers()
+            ]);
 
-  const handleAdd = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      await addProduct({
-        name: form.name,
-        price: form.price,
-        sku: parseInt(form.sku),
-        warehouseId: parseInt(form.warehouseId),
-        companyId: parseInt(form.companyId),
-        supplierId: parseInt(form.supplierId),
-        imgPath: form.imgPath,
-        status: form.status,
-        createdBy: username,
-        modifiedBy: username,
-      });
-      setShowModal(false);
-      setForm({
-        name: "",
-        price: "",
-        sku: "",
-        warehouseId: "",
-        companyId: "",
-        supplierId: "",
-        imgPath: "",
-        status: "Active",
-      });
-      fetchProducts();
-    } catch {
-      setError("Failed to add product.");
-    } finally {
-      setSaving(false);
-    }
-  };
+            setProducts(prodRes.data);
+            setMasterData({
+                companies: compRes.data,
+                warehouses: whRes.data,
+                suppliers: supRes.data
+            });
+        } catch (err) {
+            setError("Failed to load inventory data.");
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const handleDelete = async (id) => {
-    try {
-      await deleteProduct(id);
-      setDeleteId(null);
-      fetchProducts();
-    } catch {
-      setError("Failed to delete product.");
-    }
-  };
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-  return (
-    <div className="products-root">
-      <Sidebar />
+    const handleBarcodeScan = useCallback((barcode) => {
+        setForm((prev) => ({ ...prev, sku: barcode }));
+        setShowScanner(false);
+    }, []);
 
-      {/* Main */}
-      <main className="main-content">
-        <header className="page-header">
-          <div>
-            <p className="page-label">INVENTORY</p>
-            <h1 className="page-title">Products</h1>
-          </div>
-          <button className="add-btn" onClick={() => setShowModal(true)}>
-            + Add Product
-          </button>
-        </header>
+    const handleAdd = async (e) => {
+        e.preventDefault();
+        setSaving(true);
+        try {
+            await addProduct({
+                ...form,
+                sku: parseInt(form.sku),
+                warehouseId: parseInt(form.warehouseId),
+                companyId: parseInt(form.companyId),
+                supplierId: parseInt(form.supplierId),
+                createdBy: username,
+                modifiedBy: username,
+            });
+            setShowModal(false);
+            setForm(emptyForm);
+            fetchData();
+        } catch {
+            setError("Failed to add product. Check if SKU is unique.");
+        } finally {
+            setSaving(false);
+        }
+    };
 
-        {error && (
-          <div className="alert-error">
-            ⚠ {error}
-            <button onClick={() => setError("")}>✕</button>
-          </div>
-        )}
+    const handleDelete = async () => {
+        try {
+            await deleteProduct(deleteId);
+            setDeleteId(null);
+            fetchData();
+        } catch {
+            setError("Failed to delete product.");
+        }
+    };
 
-        {loading ? (
-          <div className="loading-state">
-            <div className="loader" />
-            <p>Loading products...</p>
-          </div>
-        ) : products.length === 0 ? (
-          <div className="empty-state">
-            <span className="empty-icon">☰</span>
-            <p>No products yet. Add your first one.</p>
-          </div>
-        ) : (
-          <div className="product-table-wrap">
-            <table className="product-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>SKU</th>
-                  <th>Price</th>
-                  <th>Warehouse</th>
-                  <th>Supplier</th>
-                  <th>Status</th>
-                  <th>Created By</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((p, i) => (
-                  <tr key={p.id}>
-                    <td className="row-num">{String(i + 1).padStart(2, "0")}</td>
-                    <td className="product-name">{p.name}</td>
-                    <td className="sku">{p.sku || "—"}</td>
-                    <td className="price">
-                      {p.price != null ? `$${Number(p.price).toFixed(2)}` : "—"}
-                    </td>
-                    <td>{p.warehouseId || "—"}</td>
-                    <td>{p.supplierId || "—"}</td>
-                    <td>
-                      <span className={`badge ${p.status === "Active" ? "badge-active" : "badge-inactive"}`}>
-                        {p.status || "—"}
-                      </span>
-                    </td>
-                    <td>{p.createdBy || "—"}</td>
-                    <td className="actions">
-                      <button
-                        className="del-btn"
-                        onClick={() => setDeleteId(p.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </main>
+    // Helper to find names for the table display
+    const getName = (list, id) => list.find(item => item.id === parseInt(id))?.name || "—";
 
-      {/* Add Product Modal */}
-      {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>New Product</h2>
-              <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
-            </div>
-            <form onSubmit={handleAdd} className="modal-form">
-              <div className="field-group">
-                <label>PRODUCT NAME</label>
-                <input
-                  required
-                  placeholder="e.g. Wireless Keyboard"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-              </div>
-              <div className="field-row">
-                <div className="field-group">
-                  <label>PRICE (USD)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    required
-                    placeholder="0.00"
-                    value={form.price}
-                    onChange={(e) => setForm({ ...form, price: e.target.value })}
-                  />
-                </div>
-                <div className="field-group">
-                  <label>SKU</label>
-                  <div className="sku-input-row">
-                    <input
-                      type="number"
-                      required
-                      placeholder="e.g. 1001"
-                      value={form.sku}
-                      onChange={(e) => setForm({ ...form, sku: e.target.value })}
-                    />
-                    <button
-                      type="button"
-                      className="scan-btn"
-                      onClick={() => setShowScanner(true)}
-                    >
-                      Scan
+    return (
+        <div className="products-root">
+            <Sidebar />
+
+            <main className="main-content">
+                <header className="page-header">
+                    <div>
+                        <p className="page-label">INVENTORY</p>
+                        <h1 className="page-title">Product Catalog</h1>
+                    </div>
+                    <button className="add-btn" onClick={() => setShowModal(true)}>
+                        + Add Product
                     </button>
-                  </div>
-                </div>
-              </div>
-              <div className="field-row">
-                <div className="field-group">
-                  <label>WAREHOUSE ID</label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="e.g. 1"
-                    value={form.warehouseId}
-                    onChange={(e) => setForm({ ...form, warehouseId: e.target.value })}
-                  />
-                </div>
-                <div className="field-group">
-                  <label>COMPANY ID</label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="e.g. 1"
-                    value={form.companyId}
-                    onChange={(e) => setForm({ ...form, companyId: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div className="field-row">
-                <div className="field-group">
-                  <label>SUPPLIER ID</label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="e.g. 1"
-                    value={form.supplierId}
-                    onChange={(e) => setForm({ ...form, supplierId: e.target.value })}
-                  />
-                </div>
-                <div className="field-group">
-                  <label>STATUS</label>
-                  <select
-                    value={form.status}
-                    onChange={(e) => setForm({ ...form, status: e.target.value })}
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                </div>
-              </div>
-              <div className="field-group">
-                <label>IMAGE PATH</label>
-                <input
-                  placeholder="e.g. /images/product.png"
-                  value={form.imgPath}
-                  onChange={(e) => setForm({ ...form, imgPath: e.target.value })}
-                />
-              </div>
-              <div className="modal-actions">
-                <button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>
-                  Cancel
-                </button>
-                <button type="submit" className="submit-btn" disabled={saving}>
-                  {saving ? <span className="spinner" /> : "Add Product"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+                </header>
 
-      {/* Barcode Scanner */}
-      {showScanner && (
-        <BarcodeScanner
-          onScan={handleBarcodeScan}
-          onClose={() => setShowScanner(false)}
-        />
-      )}
+                {error && <div className="alert-error">⚠ {error} <button onClick={() => setError("")}>✕</button></div>}
 
-      {/* Delete Confirm Modal */}
-      {deleteId && (
-        <div className="modal-overlay" onClick={() => setDeleteId(null)}>
-          <div className="modal confirm-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>Delete Product?</h2>
-            <p>This action cannot be undone.</p>
-            <div className="modal-actions">
-              <button className="cancel-btn" onClick={() => setDeleteId(null)}>Cancel</button>
-              <button className="delete-confirm-btn" onClick={() => handleDelete(deleteId)}>
-                Delete
-              </button>
-            </div>
-          </div>
+                {loading ? (
+                    <div className="loading-state"><div className="loader" /><p>Syncing product data...</p></div>
+                ) : products.length === 0 ? (
+                    <div className="empty-state"><span className="empty-icon">📦</span><p>No products found.</p></div>
+                ) : (
+                    <div className="product-table-wrap">
+                        <table className="product-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product Name</th>
+                                    <th>SKU</th>
+                                    <th>Price</th>
+                                    <th>Warehouse</th>
+                                    <th>Supplier</th>
+                                    <th>Status</th>
+                                    <th className="actions-col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map((p, i) => (
+                                    <tr key={p.id}>
+                                        <td className="row-num">{String(i + 1).padStart(2, "0")}</td>
+                                        <td className="product-name">{p.name}</td>
+                                        <td className="sku">{p.sku}</td>
+                                        <td className="price">${Number(p.price).toFixed(2)}</td>
+                                        <td>{getName(masterData.warehouses, p.warehouseId)}</td>
+                                        <td>{getName(masterData.suppliers, p.supplierId)}</td>
+                                        <td>
+                                            <span className={`badge ${p.status === "Active" ? "badge-active" : "badge-inactive"}`}>
+                                                {p.status}
+                                            </span>
+                                        </td>
+                                        <td className="actions">
+                                            <button className="icon-btn danger" onClick={() => setDeleteId(p.id)}>✕</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </main>
+
+            {/* Add Product Modal */}
+            {showModal && (
+                <div className="modal-overlay">
+                    <div className="modal company-modal">
+                        <div className="modal-header">
+                            <h2>New Product</h2>
+                            <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
+                        </div>
+                        <form onSubmit={handleAdd} className="modal-form">
+                            <div className="company-form-grid">
+                                <div className="company-field company-field-full">
+                                    <label>PRODUCT NAME</label>
+                                    <input required placeholder="Item name" value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
+                                </div>
+
+                                <div className="company-field">
+                                    <label>SKU (BARCODE)</label>
+                                    <div style={{ display: 'flex', gap: '5px' }}>
+                                        <input type="number" required value={form.sku} onChange={e => setForm({...form, sku: e.target.value})} />
+                                        <button type="button" className="scan-btn" onClick={() => setShowScanner(true)}>Scan</button>
+                                    </div>
+                                </div>
+
+                                <div className="company-field">
+                                    <label>PRICE (USD)</label>
+                                    <input type="number" step="0.01" required value={form.price} onChange={e => setForm({...form, price: e.target.value})} />
+                                </div>
+
+                                <div className="company-field">
+                                    <label>COMPANY</label>
+                                    <select required value={form.companyId} onChange={e => setForm({...form, companyId: e.target.value})}>
+                                        <option value="">Select Company</option>
+                                        {masterData.companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                    </select>
+                                </div>
+
+                                <div className="company-field">
+                                    <label>WAREHOUSE</label>
+                                    <select required value={form.warehouseId} onChange={e => setForm({...form, warehouseId: e.target.value})}>
+                                        <option value="">Select Location</option>
+                                        {masterData.warehouses.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
+                                    </select>
+                                </div>
+
+                                <div className="company-field">
+                                    <label>SUPPLIER</label>
+                                    <select required value={form.supplierId} onChange={e => setForm({...form, supplierId: e.target.value})}>
+                                        <option value="">Select Supplier</option>
+                                        {masterData.suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                                    </select>
+                                </div>
+
+                                <div className="company-field">
+                                    <label>STATUS</label>
+                                    <select value={form.status} onChange={e => setForm({...form, status: e.target.value})}>
+                                        <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="modal-actions">
+                                <button type="button" className="company-btn-light" onClick={() => setShowModal(false)}>Cancel</button>
+                                <button type="submit" className="company-submit-btn" disabled={saving}>
+                                    {saving ? "Saving..." : "Add Product"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Barcode Scanner Overlay */}
+            {showScanner && (
+                <BarcodeScanner onScan={handleBarcodeScan} onClose={() => setShowScanner(false)} />
+            )}
+
+            {/* Delete Modal */}
+            {deleteId && (
+                <div className="modal-overlay" onClick={() => setDeleteId(null)}>
+                    <div className="modal confirm-modal" onClick={(e) => e.stopPropagation()}>
+                        <h2>Delete Product?</h2>
+                        <p>This will remove the item from the catalog.</p>
+                        <div className="modal-actions">
+                            <button className="cancel-btn" onClick={() => setDeleteId(null)}>Cancel</button>
+                            <button className="delete-confirm-btn" onClick={handleDelete}>Delete</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Products;
