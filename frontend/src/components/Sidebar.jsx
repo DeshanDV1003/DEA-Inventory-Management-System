@@ -19,36 +19,49 @@ const Sidebar = () => {
                 <span>INVNTRY</span>
             </div>
 
-            <nav className="sidebar-nav">
-                {/* 1. Products */}
+            <nav className="sidebar-nav" style={{ overflowY: 'auto', paddingRight: '5px' }}>
+                
+                {/* --- INVENTORY CORE --- */}
+                <div className="nav-group-label">INVENTORY</div>
                 <NavLink to="/products" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">☰</span> Products
                 </NavLink>
-
-                {/* 2. Companies */}
-                <NavLink to="/companies" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
-                    <span className="nav-icon">▦</span> Companies
+                <NavLink to="/stock" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">📉</span> Stock levels
+                </NavLink>
+                <NavLink to="/stock-transfers" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">🔄</span> Transfers
                 </NavLink>
 
-                {/* 3. Warehouse */}
-                <NavLink to="/warehouse" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
-                    <span className="nav-icon">⫙</span> Warehouse
-                </NavLink>
-
-                {/* 4. Suppliers */}
+                {/* --- PROCUREMENT --- */}
+                <div className="nav-group-label" style={{ marginTop: '1.5rem' }}>PROCUREMENT</div>
                 <NavLink to="/suppliers" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">☷</span> Suppliers
                 </NavLink>
-
-                {/* 5. Purchase Orders - Now a single direct link to the List/Manager page */}
-                <NavLink 
-                    to="/purchase-order/list" 
-                    className={({ isActive }) => (isActive || location.pathname.startsWith('/purchase-order')) ? "nav-item active" : "nav-item"}
-                >
+                <NavLink to="/purchase-order/list" className={({ isActive }) => (isActive || location.pathname.startsWith('/purchase-order')) ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">📦</span> Purchase Orders
                 </NavLink>
+                <NavLink to="/grn" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">📜</span> GRN Records
+                </NavLink>
 
-                {/* 6. Reports */}
+                {/* --- INFRASTRUCTURE --- */}
+                <div className="nav-group-label" style={{ marginTop: '1.5rem' }}>INFRASTRUCTURE</div>
+                <NavLink to="/companies" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">▦</span> Companies
+                </NavLink>
+                <NavLink to="/warehouse" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">⫙</span> Warehouse
+                </NavLink>
+                <NavLink to="/assets" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">🛠️</span> Assets
+                </NavLink>
+
+                {/* --- SYSTEM --- */}
+                <div className="nav-group-label" style={{ marginTop: '1.5rem' }}>SYSTEM</div>
+                <NavLink to="/maintenance" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">⚙️</span> Maintenance
+                </NavLink>
                 <NavLink to="/reports" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">⊞</span> Reports
                 </NavLink>

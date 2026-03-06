@@ -9,6 +9,7 @@ import PurchaseOrderList from "./pages/purchase-order/PurchaseOrderList";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Company from "./pages/Company";
+import Maintenance from "./pages/Maintenance";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
         
         <Route path="/purchase-order/list" element={<ProtectedRoute><PurchaseOrderList /></ProtectedRoute>} />
 
+        <Route path="/maintenance" element={<ProtectedRoute><Maintenance /></ProtectedRoute>} />
 
         {/* Catch all - redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
