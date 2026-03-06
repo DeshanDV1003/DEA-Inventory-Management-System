@@ -5,10 +5,7 @@ import Products from "./pages/Products";
 import Warehouse from "./pages/Warehouse"; 
 import Suppliers from "./pages/Suppliers"; 
 
-import PurchaseOrderDashboard from "./pages/purchase-order/PurchaseOrderDashboard";
 import PurchaseOrderList from "./pages/purchase-order/PurchaseOrderList";
-import PurchaseOrderForm from "./pages/purchase-order/PurchaseOrderForm";
-import DeletePurchaseOrder from "./pages/purchase-order/DeletePurchaseOrder";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Company from "./pages/Company";
@@ -48,11 +45,11 @@ function App() {
         />
 
         {/* Protected: Purchase Order Routes */}
-        <Route path="/purchase-order" element={<ProtectedRoute><PurchaseOrderDashboard /></ProtectedRoute>} />
+        {/* Purchase Order Module */}
+        <Route path="/purchase-order" element={<Navigate to="/purchase-order/list" replace />} />
+        
         <Route path="/purchase-order/list" element={<ProtectedRoute><PurchaseOrderList /></ProtectedRoute>} />
-        <Route path="/purchase-order/create" element={<ProtectedRoute><PurchaseOrderForm mode="create" /></ProtectedRoute>} />
-        <Route path="/purchase-order/edit/:id" element={<ProtectedRoute><PurchaseOrderForm mode="edit" /></ProtectedRoute>} />
-        <Route path="/purchase-order/delete/:id" element={<ProtectedRoute><DeletePurchaseOrder /></ProtectedRoute>} />
+
 
         {/* Catch all - redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
