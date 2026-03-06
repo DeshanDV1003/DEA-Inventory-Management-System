@@ -24,10 +24,16 @@ public class ProductController {
         return "Product added successfully";
     }
 
-    @DeleteMapping("deleteProduct")
-    public String delete(@RequestBody Integer id) {
+    @DeleteMapping("deleteProduct/{id}")
+    public String delete(@PathVariable Integer id) {
         productService.deleteProduct(id);
         return "The product with id: " + id + " has been deleted";
+    }
+
+    @PutMapping("updateProduct/{id}")
+    public String update(@PathVariable Integer id, @RequestBody AddProductRequestDto request) {
+        productService.updateProduct(id, request);
+        return "Product updated successfully";
     }
 
     @GetMapping("getproduct")
