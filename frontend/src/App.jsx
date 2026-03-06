@@ -49,6 +49,9 @@ function App() {
         <Route path="/purchase-order/edit/:id" element={<ProtectedRoute><PurchaseOrderForm mode="edit" /></ProtectedRoute>} />
         <Route path="/purchase-order/delete/:id" element={<ProtectedRoute><DeletePurchaseOrder /></ProtectedRoute>} />
 
+        {/* Protected: Warehouse */}
+          <Route path="/warehouse" element={<ProtectedRoute><Warehouse /></ProtectedRoute>} />
+
         {/* Catch all - redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

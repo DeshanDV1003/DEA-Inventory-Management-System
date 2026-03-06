@@ -9,6 +9,7 @@ const STOCK_TRANSFER_SERVICE = import.meta.env.VITE_STOCK_TRANSFER_SERVICE || "h
 const ASSET_SERVICE = import.meta.env.VITE_ASSET_SERVICE || "http://localhost:8012";
 const GRN_SERVICE = import.meta.env.VITE_GRN_SERVICE || "http://localhost:8032";
 const WAREHOUSE_SERVICE = import.meta.env.VITE_WAREHOUSE_SERVICE || "http://localhost:8093";
+const SUPPLIER_SERVICE = import.meta.env.VITE_SUPPLIER_SERVICE || "http://localhost:8062";
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 export const loginUser = (credentials) =>
@@ -206,3 +207,7 @@ export const updateWarehouse = (id, data) =>
 
 export const deleteWarehouse = (id) =>
     axios.delete(`${WAREHOUSE_SERVICE}/api/v1/warehouses/${id}`, authHeader());
+
+// ── Suppliers ─────────────────────────────────────────────────────────────────
+export const getAllSuppliers = () =>
+    axios.get(`${SUPPLIER_SERVICE}/api/v1/suppliers`, authHeader());
