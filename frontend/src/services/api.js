@@ -176,7 +176,7 @@ export const getAllAssets = () =>
 export const getAssetsByWarehouse = (warehouseId) =>
     axios.get(`${ASSET_SERVICE}/api/v1/assets/warehouse/${warehouseId}`, authHeader());
 
-export const createAsset = (data) =>
+export const addAsset = (data) =>
     axios.post(`${ASSET_SERVICE}/api/v1/assets/add`, data, authHeader());
 
 export const updateAsset = (id, data) =>

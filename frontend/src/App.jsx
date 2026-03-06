@@ -10,6 +10,7 @@ import StockTransfer from "./pages/StockTransfer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Company from "./pages/Company";
 import Maintenance from "./pages/Maintenance";
+import Assets from "./pages/Assets";
 
 function App() {
   return (
@@ -56,6 +57,8 @@ function App() {
         <Route path="/stock" element={<ProtectedRoute><Stock /></ProtectedRoute>} />
 
         <Route path="/stock-transfers" element={<ProtectedRoute><StockTransfer /></ProtectedRoute>} />
+
+        <Route path="/assets" element={<ProtectedRoute><Assets /></ProtectedRoute>} />
 
         {/* Catch all - redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
