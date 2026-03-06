@@ -69,6 +69,17 @@ export default function Suppliers() {
         }
     };
 
+    const confirmDelete = async () => {
+    try {
+        await deleteSupplier(deleteId); // Calls the API function from your api.js
+        setDeleteId(null);              // Clear the selection
+        fetchData();                    // Refresh the list
+    } catch (err) {
+        setError("Failed to delete supplier. It might be linked to existing products.");
+        setDeleteId(null);
+    }
+};
+
     return (
         <div className="products-root">
             <Sidebar />
@@ -156,6 +167,19 @@ export default function Suppliers() {
                                 <button type="submit" className="company-submit-btn">Save Supplier</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+            {/* Add this after your Edit Modal inside the main div */}
+            {deleteId && (
+                <div className="modal-overlay" onClick={() => setDeleteId(null)}>
+                    <div className="modal confirm-modal" onClick={(e) => e.stopPropagation()}>
+                        <h2>Delete Supplier?</h2>
+                        <p>This action cannot be undone. Make sure this supplier is not linked to any products or orders.</p>
+                        <div className="modal-actions">
+                            <button className="cancel-btn" onClick={() => setDeleteId(null)}>Cancel</button>
+                            <button className="delete-confirm-btn" onClick={confirmDelete}>Delete</button>
+                        </div>
                     </div>
                 </div>
             )}
