@@ -28,6 +28,8 @@ package inventorymanagement.maintenance_service.entity;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
  // This class represents a database table.
 @Entity
@@ -51,7 +53,8 @@ public class MaintenanceStatus {
 
     //One MaintenanceStatus can have many Maintenance records, 1:M.
      // Using fetch - data will load only when needed
-    @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "status")
+    @JsonIgnore
     private List<Maintenance> maintenances;
 
 
@@ -98,6 +101,7 @@ public class MaintenanceStatus {
     public List<Maintenance> getMaintenances() {
         return maintenances;
     }
+
 
     public void setMaintenances(List<Maintenance> maintenances) {
         this.maintenances = maintenances;

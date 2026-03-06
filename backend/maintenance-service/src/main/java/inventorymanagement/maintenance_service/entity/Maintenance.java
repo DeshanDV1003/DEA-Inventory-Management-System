@@ -72,7 +72,7 @@ public class Maintenance {
     // Status ID (foreign key to maintenance_status table)
     //private Integer statusId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", nullable = false)
     private MaintenanceStatus status;
 
