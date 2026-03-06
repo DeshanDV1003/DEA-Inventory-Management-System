@@ -1,0 +1,128 @@
+/* ── Maintenance Page ───────────────────────────────────────────────────────── */
+
+.maintenance-table-wrap {
+background: #111116;
+border: 1px solid #1e1e24;
+border-radius: 12px;
+overflow: hidden;
+}
+
+.maintenance-table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.maintenance-table th {
+text-align: left;
+padding: 0.9rem 1rem;
+font-size: 0.65rem;
+letter-spacing: 0.15em;
+color: #52525b;
+border-bottom: 1px solid #1e1e24;
+font-weight: 600;
+}
+
+.maintenance-table td {
+padding: 0.85rem 1rem;
+font-size: 0.9rem;
+border-bottom: 1px solid #1a1a20;
+}
+
+.maintenance-table tr:last-child td {
+border-bottom: none;
+}
+
+.maintenance-table tr:hover {
+background: #15151c;
+}
+
+/* Row styling */
+
+.maintenance-number {
+font-weight: 600;
+}
+
+.maintenance-cost {
+font-weight: 600;
+color: #a78bfa;
+}
+
+/* ── Badge (Status) ────────────────────────────────────────────────────────── */
+
+.badge {
+display: inline-block;
+padding: 0.25rem 0.65rem;
+border-radius: 20px;
+font-size: 0.7rem;
+font-weight: 600;
+letter-spacing: 0.05em;
+}
+
+.badge-active {
+background: rgba(74, 222, 128, 0.1);
+color: #4ade80;
+}
+
+.badge-inactive {
+background: rgba(161, 161, 170, 0.1);
+color: #a1a1aa;
+}
+
+/* ── Actions ───────────────────────────────────────────────────────────────── */
+
+.actions {
+text-align: right;
+}
+
+.icon-btn {
+background: none;
+border: 1px solid #27272a;
+border-radius: 6px;
+padding: 0.35rem 0.75rem;
+color: #71717a;
+font-size: 0.75rem;
+cursor: pointer;
+transition: all 0.15s;
+}
+
+.icon-btn:hover {
+color: #a78bfa;
+border-color: #a78bfa;
+}
+
+.icon-btn.danger:hover {
+color: #f87171;
+border-color: #f87171;
+}
+
+/* ── Modal Customization ───────────────────────────────────────────────────── */
+
+.maintenance-modal input,
+.maintenance-modal textarea,
+.maintenance-modal select {
+background: #18181b;
+border: 1px solid #27272a;
+border-radius: 8px;
+padding: 0.75rem 1rem;
+font-size: 0.95rem;
+color: #f4f4f5;
+outline: none;
+transition: border-color 0.2s;
+width: 100%;
+}
+
+.maintenance-modal textarea {
+min-height: 80px;
+resize: none;
+}
+
+.maintenance-modal input:focus,
+.maintenance-modal textarea:focus,
+.maintenance-modal select:focus {
+border-color: #a78bfa;
+}
+
+.maintenance-modal input::placeholder,
+.maintenance-modal textarea::placeholder {
+color: #3f3f46;
+}

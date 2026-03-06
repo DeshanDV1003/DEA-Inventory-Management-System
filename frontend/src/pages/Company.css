@@ -206,3 +206,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+.nav-group-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #52525b; /* Dark grey */
+    letter-spacing: 0.12em;
+    padding: 0 1rem 0.5rem 1rem;
+    text-transform: uppercase;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 10px;
+}
