@@ -41,6 +41,21 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
+    public void updateProduct(Integer id, AddProductRequestDto request) {
+        Product product = productRepository.findProductById(id);
+        product.setWarehouseId(request.getWarehouseId());
+        product.setCompanyId(request.getCompanyId());
+        product.setSupplierId(request.getSupplierId());
+        product.setName(request.getName());
+        product.setSku(request.getSku());
+        product.setPrice(request.getPrice());
+        product.setImgPath(request.getImgPath());
+        product.setStatus(request.getStatus());
+        product.setModifiedBy(request.getModifiedBy());
+        product.setModifiedDate(LocalDateTime.now());
+        productRepository.save(product);
+    }
+
     public Product findProductById(Integer id) {
         return productRepository.findProductById(id);
     }
