@@ -46,11 +46,11 @@ export const getAllProducts = () =>
 export const addProduct = (product) =>
   axios.post(`${PRODUCT_SERVICE}/api/v1/products/addProduct`, product, authHeader());
 
+export const updateProduct = (id, product) =>
+  axios.put(`${PRODUCT_SERVICE}/api/v1/products/updateProduct/${id}`, product, authHeader());
+
 export const deleteProduct = (id) =>
-  axios.delete(`${PRODUCT_SERVICE}/api/v1/products/deleteProduct`, {
-    ...authHeader(),
-    data: id,
-  });
+  axios.delete(`${PRODUCT_SERVICE}/api/v1/products/deleteProduct/${id}`, authHeader());
 
 
 
