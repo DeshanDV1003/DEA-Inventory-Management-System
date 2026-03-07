@@ -88,6 +88,7 @@ public class GrnService {
         for (GrnDetail d : details) {
             if (d.getReceivedQty() != null && d.getReceivedQty() > 0) {
                 stockClient.adjust(StockAdjustRequest.builder()
+                        .companyId(saved.getCompanyId())
                         .warehouseId(saved.getWarehouseId())
                         .productId(d.getProductId())
                         .qty(d.getReceivedQty()) // + increase
@@ -159,6 +160,7 @@ public class GrnService {
 
             if (diff != 0) {
                 stockClient.adjust(StockAdjustRequest.builder()
+                        .companyId(req.getCompanyId())
                         .warehouseId(req.getWarehouseId())
                         .productId(productId)
                         .qty(diff) // + increase / - decrease
@@ -206,6 +208,7 @@ public class GrnService {
             int received = safeInt(d.getReceivedQty());
             if (received > 0) {
                 stockClient.adjust(StockAdjustRequest.builder()
+                        .companyId(header.getCompanyId())
                         .warehouseId(header.getWarehouseId())
                         .productId(d.getProductId())
                         .qty(-received) // reverse

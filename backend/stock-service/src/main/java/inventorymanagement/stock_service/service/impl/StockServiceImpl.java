@@ -134,12 +134,20 @@ public class StockServiceImpl implements StockService {
         Stock stock = stocks.stream()
                 .filter(s -> s.getProductId() == request.getProductId().intValue())
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Stock not found for product " + request.getProductId() +
-                        " in warehouse " + request.getWarehouseId()));
+                .orElse(null);
 
-        stock.setQuantity(stock.getQuantity() + request.getQty());
-        stock.setUpdatedBy("GRN-SYSTEM");
+        if (stock == null) {
+            stock = new Stock();
+            stock.setCompanyId(request.getCompanyId().intValue());
+            stock.setWarehouseId(request.getWarehouseId().intValue());
+            stock.setProductId(request.getProductId().intValue());
+            stock.setQuantity(request.getQty());
+            stock.setCreatedBy("GRN-SYSTEM");
+            stock.setUpdatedBy("GRN-SYSTEM");
+        } else {
+            stock.setQuantity(stock.getQuantity() + request.getQty());
+            stock.setUpdatedBy("GRN-SYSTEM");
+        }
         stockRepository.save(stock);
     }
 

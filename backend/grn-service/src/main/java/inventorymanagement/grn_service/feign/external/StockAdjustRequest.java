@@ -15,6 +15,8 @@ Cancelling a GRN (reverse stock)
 @AllArgsConstructor
 @Builder
 public class StockAdjustRequest {
+    //Company identifier
+    private Long companyId;
     //Warehouse where stock is stored
     private Long warehouseId;
     //Product identifier

@@ -1,12 +1,16 @@
 package inventorymanagement.stock_service.dto;
 
 public class StockAdjustRequestDTO {
+    private Long companyId;
     private Long warehouseId;
     private Long productId;
     private Integer qty;
     private String reference;
 
     public StockAdjustRequestDTO() {}
+
+    public Long getCompanyId() { return companyId; }
+    public void setCompanyId(Long companyId) { this.companyId = companyId; }
 
     public Long getWarehouseId() { return warehouseId; }
     public void setWarehouseId(Long warehouseId) { this.warehouseId = warehouseId; }
