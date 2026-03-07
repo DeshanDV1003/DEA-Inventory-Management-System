@@ -123,7 +123,7 @@ DEA-Inventory-Management-System/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/<your-username>/DEA-Inventory-Management-System.git
+   git clone https://github.com/DeshanDV1003/DEA-Inventory-Management-System.git
    cd DEA-Inventory-Management-System
    ```
 
