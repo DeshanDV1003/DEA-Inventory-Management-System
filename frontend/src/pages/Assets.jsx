@@ -90,9 +90,13 @@ export default function Assets() {
     setSaving(true);
     try {
       const payload = {
-        ...form,
+        name: form.name,
+        assetTag: form.assetTag,
         companyId: form.companyId ? Number(form.companyId) : null,
         warehouseId: form.warehouseId ? Number(form.warehouseId) : null,
+        purchaseDate: form.purchaseDate || null,
+        warranty: form.warranty || null,
+        status: form.status,
       };
       if (editingId) await updateAsset(editingId, payload);
       else await addAsset(payload);

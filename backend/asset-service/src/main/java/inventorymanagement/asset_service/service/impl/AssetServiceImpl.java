@@ -19,12 +19,6 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public Asset addAsset(Asset asset) {
-        try {
-            warehouseClient.getWarehouseById(asset.getWarehouseId());
-        } catch (Exception e) {
-            throw new RuntimeException("Validation Failed: Warehouse ID " + asset.getWarehouseId() + " not found.");
-        }
-
         asset.setStatus("ACTIVE");
         asset.setCreatedDate(LocalDate.now());
         return assetRepository.save(asset);
