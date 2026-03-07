@@ -86,7 +86,7 @@ const Products = () => {
         try {
             await addProduct({
                 ...form,
-                sku: parseInt(form.sku),
+                sku: form.sku ? parseInt(form.sku) : null,
                 warehouseId: parseInt(form.warehouseId),
                 companyId: parseInt(form.companyId),
                 supplierId: parseInt(form.supplierId),
@@ -124,7 +124,7 @@ const Products = () => {
         try {
             await updateProduct(editId, {
                 ...form,
-                sku: parseInt(form.sku),
+                sku: form.sku ? parseInt(form.sku) : null,
                 warehouseId: parseInt(form.warehouseId),
                 companyId: parseInt(form.companyId),
                 supplierId: parseInt(form.supplierId),
@@ -241,7 +241,7 @@ const Products = () => {
                                 <div className="company-field">
                                     <label>SKU (BARCODE)</label>
                                     <div style={{ display: 'flex', gap: '5px' }}>
-                                        <input type="number" required value={form.sku} onChange={e => setForm({...form, sku: e.target.value})} />
+                                        <input type="number" value={form.sku} onChange={e => setForm({...form, sku: e.target.value})} />
                                         <button type="button" className="scan-btn" onClick={() => setShowScanner(true)}>Scan</button>
                                     </div>
                                 </div>
