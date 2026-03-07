@@ -21,7 +21,7 @@ const emptyForm = {
   date: "",
   cost: "",
   description: "",
-  statusId: "PENDING" // Default status
+  statusId: "1"
 };
 
 export default function Maintenance() {
@@ -119,8 +119,18 @@ export default function Maintenance() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (editingId) await updateMaintenance(editingId, form);
-      else await addMaintenance(form);
+      const payload = {
+        maintenanceNumber: form.maintenanceNumber,
+        companyId: form.companyId ? Number(form.companyId) : null,
+        warehouseId: form.warehouseId ? Number(form.warehouseId) : null,
+        assetId: form.assetId ? Number(form.assetId) : null,
+        date: form.date || null,
+        cost: form.cost ? Number(form.cost) : null,
+        description: form.description || null,
+        statusId: form.statusId ? Number(form.statusId) : 1,
+      };
+      if (editingId) await updateMaintenance(editingId, payload);
+      else await addMaintenance(payload);
       setShowModal(false);
       fetchData();
     } catch {
@@ -178,7 +188,9 @@ export default function Maintenance() {
                   <td>{getName(masterData.assets, m.assetId)}</td>
                   <td>{new Date(m.date).toLocaleDateString()}</td>
                   <td style={{ color: '#4ade80', fontWeight: '600' }}>${m.cost}</td>
-                  <td><span className="badge-active">{m.statusId}</span></td>
+                  <td><span className={`badge ${m.statusId === 3 ? 'badge-active' : 'badge-inactive'}`}>
+                    {({1:'PENDING',2:'IN PROGRESS',3:'COMPLETED',4:'CANCELLED'})[m.statusId] || m.statusId}
+                  </span></td>
                   <td className="actions">
                     <button className="icon-btn" onClick={() => openEdit(m)}>✎</button>
                     <button className="icon-btn danger" onClick={() => setDeleteId(m.id)}>✕</button>
@@ -241,10 +253,10 @@ export default function Maintenance() {
                 <div className="company-field">
                   <label>CURRENT STATUS</label>
                   <select value={form.statusId} onChange={e => setForm({ ...form, statusId: e.target.value })}>
-                    <option value="PENDING">PENDING</option>
-                    <option value="IN_PROGRESS">IN PROGRESS</option>
-                    <option value="COMPLETED">COMPLETED</option>
-                    <option value="CANCELLED">CANCELLED</option>
+                    <option value="1">PENDING</option>
+                    <option value="2">IN PROGRESS</option>
+                    <option value="3">COMPLETED</option>
+                    <option value="4">CANCELLED</option>
                   </select>
                 </div>
               </div>
