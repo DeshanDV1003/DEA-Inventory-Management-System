@@ -1,4 +1,4 @@
-package inventorymanagement.grn_service.config;
+package inventorymanagement.stock_service.config;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
