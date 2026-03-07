@@ -24,10 +24,6 @@ public class CreateGrnRequest {
     @NotNull (message = "Company ID is required")
     private Long companyId;
 
-    //Department identifier within the company
-    @NotNull (message = "Department ID is required")
-    private Long departmentId;
-
     //Warehouse where goods are received
     @NotNull (message = "Warehouse ID is required")
     private Long warehouseId;

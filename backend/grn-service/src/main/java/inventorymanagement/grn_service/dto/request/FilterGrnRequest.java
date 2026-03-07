@@ -18,9 +18,6 @@ public class FilterGrnRequest {
     //filter by company id
     private Long companyId;
 
-    //filter by department id
-    private Long departmentId;
-
     //filter by warehouse id
     private Long warehouseId;
 }

@@ -14,7 +14,7 @@ import java.util.List;
 *This controller exposes APIs to:
 * create a new GRN,
 * Retrieve a GRN by GRN number,
-* Filter GRNs by company / department / warehouse,
+* Filter GRNs by company / warehouse,
 * Update an existing GRN,
 * Cancel a GRN,
 *
@@ -41,14 +41,13 @@ public class GrnController {
         return grnService.getByGrnNumber(grnNumber);
     }
 
-    // Filter GRNs based on optional parameters: companyId, departmentId, warehouseId
+    // Filter GRNs based on optional parameters: companyId, warehouseId
     @GetMapping
     public List<GrnResponse> filter(
             @RequestParam(required = false) Long companyId,
-            @RequestParam(required = false) Long departmentId,
             @RequestParam(required = false) Long warehouseId
     ) {
-        return grnService.filter(companyId, departmentId, warehouseId);
+        return grnService.filter(companyId, warehouseId);
     }
 
     // Edit GRN(update an existing GRN, recalculates totals and adjusts stock differences)

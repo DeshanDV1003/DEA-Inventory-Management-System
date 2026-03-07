@@ -65,7 +65,6 @@ public class GrnService {
         // 5) Build header
         GrnHeader header = GrnHeader.builder()
                 .companyId(req.getCompanyId())
-                .departmentId(req.getDepartmentId())
                 .warehouseId(req.getWarehouseId())
                 .supplierId(req.getSupplierId())
                 .poNumber(req.getPoNumber())
@@ -112,16 +111,14 @@ public class GrnService {
     }
 
     // ---------------- FILTER ----------------
-    public List<GrnResponse> filter(Long companyId, Long departmentId, Long warehouseId) {
+    public List<GrnResponse> filter(Long companyId, Long warehouseId) {
 
         List<GrnHeader> list;
 
-        if (companyId != null && departmentId != null && warehouseId != null) {
-            list = headerRepo.findByCompanyIdAndDepartmentIdAndWarehouseId(companyId, departmentId, warehouseId);
+        if (companyId != null && warehouseId != null) {
+            list = headerRepo.findByCompanyIdAndWarehouseId(companyId, warehouseId);
         } else if (companyId != null) {
             list = headerRepo.findByCompanyId(companyId);
-        } else if (departmentId != null) {
-            list = headerRepo.findByDepartmentId(departmentId);
         } else if (warehouseId != null) {
             list = headerRepo.findByWarehouseId(warehouseId);
         } else {
@@ -178,7 +175,6 @@ public class GrnService {
         Totals totals = calculateTotals(req.getItems());
 
         header.setCompanyId(req.getCompanyId());
-        header.setDepartmentId(req.getDepartmentId());
         header.setWarehouseId(req.getWarehouseId());
         header.setSupplierId(req.getSupplierId());
         header.setDate(req.getDate());
@@ -287,7 +283,6 @@ public class GrnService {
                 .grnNumber(header.getGrnNumber())
                 .poNumber(header.getPoNumber())
                 .companyId(header.getCompanyId())
-                .departmentId(header.getDepartmentId())
                 .warehouseId(header.getWarehouseId())
                 .supplierId(header.getSupplierId())
                 .date(header.getDate())

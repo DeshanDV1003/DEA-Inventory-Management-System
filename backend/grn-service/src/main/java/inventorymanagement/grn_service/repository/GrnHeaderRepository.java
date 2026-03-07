@@ -26,12 +26,10 @@ public interface GrnHeaderRepository extends JpaRepository<GrnHeader, Long> {
      */
     boolean existsByGrnNumber(String grnNumber);
 
-    //Filter GRNs by company, department, and warehouse
-    List<GrnHeader> findByCompanyIdAndDepartmentIdAndWarehouseId(Long companyId, Long departmentId, Long warehouseId);
+    //Filter GRNs by company and warehouse
+    List<GrnHeader> findByCompanyIdAndWarehouseId(Long companyId, Long warehouseId);
     //Filter GRNs by company
     List<GrnHeader> findByCompanyId(Long companyId);
-    //Filter GRNs by department
-    List<GrnHeader> findByDepartmentId(Long departmentId);
     //Filter GRNs by warehouse
     List<GrnHeader> findByWarehouseId(Long warehouseId);
 }

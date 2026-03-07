@@ -12,7 +12,7 @@ import java.util.List;
 
 /*Entity representing the header (summary) of a GRN
 This table stores high-level information about the GRN such as:
-Company, Department, Warehouse,
+Company, Warehouse,
 Supplier and Purchase Order
 Total amounts
 Status
@@ -37,8 +37,6 @@ public class GrnHeader {
 
     //Company identifier
     private Long companyId;
-    //Department identifier
-    private Long departmentId;
     //Warehouse identifier
     private Long warehouseId;
     //Supplier identifier

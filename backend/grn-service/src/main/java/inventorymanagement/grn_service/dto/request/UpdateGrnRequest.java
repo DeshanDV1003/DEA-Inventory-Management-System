@@ -28,10 +28,6 @@ public class UpdateGrnRequest {
     @NotNull (message = "Company ID is required")
     private Long companyId;
 
-    // Department identifier
-    @NotNull (message = "Department ID is required")
-    private Long departmentId;
-
     //Warehouse identifier where goods are stored
     @NotNull (message = "Warehouse ID is required")
     private Long warehouseId;

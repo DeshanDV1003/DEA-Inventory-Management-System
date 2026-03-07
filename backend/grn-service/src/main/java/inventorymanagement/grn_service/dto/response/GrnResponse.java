@@ -31,8 +31,6 @@ public class GrnResponse {
     private String poNumber;
     //Company identifier
     private Long companyId;
-    //Department identifier
-    private Long departmentId;
     //Warehouse identifier
     private Long warehouseId;
     //Supplier identifier
