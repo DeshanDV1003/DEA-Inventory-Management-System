@@ -24,6 +24,6 @@ public interface StockClient {
      @param request contains warehouseId, productId,quantity adjustment, and reference number
      */
 
-    @PostMapping("/api/stocks/adjust")
+    @PostMapping("/api/v1/stocks/adjust")
     void adjust(@RequestBody StockAdjustRequest request);
 }

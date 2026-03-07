@@ -19,6 +19,6 @@ public interface WarehouseClient {
     @param id warehouse identifier
     @return WarehouseResponse containing warehouse details
      */
-    @GetMapping("/api/warehouses/{id}")
+    @GetMapping("/api/v1/warehouses/{id}")
     WarehouseResponse getWarehouse(@PathVariable Long id);
 }

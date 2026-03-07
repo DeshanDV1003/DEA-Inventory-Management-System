@@ -2,6 +2,7 @@ package inventorymanagement.stock_service.controller;
 
 import inventorymanagement.stock_service.constants.AppConstants;
 import inventorymanagement.stock_service.dto.ApiResponseDTO;
+import inventorymanagement.stock_service.dto.StockAdjustRequestDTO;
 import inventorymanagement.stock_service.dto.StockRequestDTO;
 import inventorymanagement.stock_service.dto.StockResponseDTO;
 import inventorymanagement.stock_service.service.StockService;
@@ -98,6 +99,13 @@ public class StockController {
     public ResponseEntity<ApiResponseDTO<Void>> deleteStock(@PathVariable int stockId) {
         stockService.deleteStock(stockId);
         return ResponseEntity.ok(new ApiResponseDTO<>(true, AppConstants.STOCK_DELETED, null));
+    }
+
+    @PostMapping("/adjust")
+    public ResponseEntity<ApiResponseDTO<Void>> adjustStock(
+            @RequestBody StockAdjustRequestDTO request) {
+        stockService.adjustStock(request);
+        return ResponseEntity.ok(new ApiResponseDTO<>(true, "Stock adjusted successfully", null));
     }
 
 }

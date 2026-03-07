@@ -18,6 +18,6 @@ public interface PoClient {
     @param poNumber unique purchase order number
     @return PoResponse containing PO details
      */
-    @GetMapping("/api/pos/{poNumber}")
+    @GetMapping("/api/v1/purchase-orders/{poNumber}")
     PoResponse getPo(@PathVariable String poNumber);
 }

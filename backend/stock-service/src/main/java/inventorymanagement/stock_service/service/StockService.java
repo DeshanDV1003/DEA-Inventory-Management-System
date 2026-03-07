@@ -1,8 +1,8 @@
 package inventorymanagement.stock_service.service;
 
+import inventorymanagement.stock_service.dto.StockAdjustRequestDTO;
 import inventorymanagement.stock_service.dto.StockRequestDTO;
 import inventorymanagement.stock_service.dto.StockResponseDTO;
-import inventorymanagement.stock_service.model.Stock;
 
 import java.util.List;
 
@@ -26,5 +26,7 @@ public interface StockService {
     StockResponseDTO updateStock(int stockId, StockRequestDTO requestDTO);
 
     void deleteStock(int stockId);
+
+    void adjustStock(StockAdjustRequestDTO request);
 
 }

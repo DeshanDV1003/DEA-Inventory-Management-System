@@ -1,6 +1,7 @@
 package inventorymanagement.stock_service.service.impl;
 
 import inventorymanagement.stock_service.constants.AppConstants;
+import inventorymanagement.stock_service.dto.StockAdjustRequestDTO;
 import inventorymanagement.stock_service.dto.StockRequestDTO;
 import inventorymanagement.stock_service.dto.StockResponseDTO;
 import inventorymanagement.stock_service.exception.DuplicateStockException;
@@ -124,6 +125,22 @@ public class StockServiceImpl implements StockService {
     public void deleteStock(int stockId) {
         Stock stock = findStockByIdOrThrow(stockId);
         stockRepository.delete(stock);
+    }
+
+    @Override
+    @Transactional
+    public void adjustStock(StockAdjustRequestDTO request) {
+        List<Stock> stocks = stockRepository.findByWarehouseId(request.getWarehouseId().intValue());
+        Stock stock = stocks.stream()
+                .filter(s -> s.getProductId() == request.getProductId().intValue())
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Stock not found for product " + request.getProductId() +
+                        " in warehouse " + request.getWarehouseId()));
+
+        stock.setQuantity(stock.getQuantity() + request.getQty());
+        stock.setUpdatedBy("GRN-SYSTEM");
+        stockRepository.save(stock);
     }
 
     private Stock findStockByIdOrThrow(int stockId) {

@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "warehouse-service", url = "${services.warehouse.url}")
 public interface WarehouseClient {
 
-    @GetMapping("/api/warehouses/{warehouseId}")
+    @GetMapping("/api/v1/warehouses/{warehouseId}")
     WarehouseResponseDTO getWarehouseById(@PathVariable("warehouseId") int warehouseId);
 }
