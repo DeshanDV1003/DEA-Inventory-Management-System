@@ -241,7 +241,26 @@
 }
 
 /* ── Actions ─────────────────────────────────────────────────────────────────── */
-.actions { text-align: right; }
+.actions { text-align: right; display: flex; gap: 0.5rem; justify-content: flex-end; }
+
+.icon-btn {
+  background: none;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #71717a;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.icon-btn:hover { color: #e4e4e7; border-color: #3f3f46; }
+.icon-btn.edit:hover { color: #a78bfa; border-color: #a78bfa; }
+.icon-btn.danger:hover { color: #f87171; border-color: #f87171; }
 
 .del-btn {
   background: none;

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-    getAllProducts, 
-    addProduct, 
-    deleteProduct, 
-    getAllCompanies, 
-    getAllWarehouses, 
-    getAllSuppliers 
+import {
+    getAllProducts,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    getAllCompanies,
+    getAllWarehouses,
+    getAllSuppliers
 } from "../services/api";
 import BarcodeScanner from "../components/BarcodeScanner";
 import Sidebar from "../components/Sidebar";
@@ -41,6 +42,7 @@ const Products = () => {
     const [showModal, setShowModal] = useState(false);
     const [saving, setSaving] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
+    const [editId, setEditId] = useState(null);
     const [showScanner, setShowScanner] = useState(false);
     const [form, setForm] = useState(emptyForm);
 
@@ -101,6 +103,51 @@ const Products = () => {
         }
     };
 
+    const openEdit = (product) => {
+        setEditId(product.id);
+        setForm({
+            name: product.name || "",
+            price: product.price || "",
+            sku: product.sku || "",
+            warehouseId: product.warehouseId || "",
+            companyId: product.companyId || "",
+            supplierId: product.supplierId || "",
+            imgPath: product.imgPath || "",
+            status: product.status || "Active",
+        });
+        setShowModal(true);
+    };
+
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        setSaving(true);
+        try {
+            await updateProduct(editId, {
+                ...form,
+                sku: parseInt(form.sku),
+                warehouseId: parseInt(form.warehouseId),
+                companyId: parseInt(form.companyId),
+                supplierId: parseInt(form.supplierId),
+                createdBy: username,
+                modifiedBy: username,
+            });
+            setShowModal(false);
+            setEditId(null);
+            setForm(emptyForm);
+            fetchData();
+        } catch {
+            setError("Failed to update product.");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setEditId(null);
+        setForm(emptyForm);
+    };
+
     const handleDelete = async () => {
         try {
             await deleteProduct(deleteId);
@@ -124,7 +171,7 @@ const Products = () => {
                         <p className="page-label">INVENTORY</p>
                         <h1 className="page-title">Product Catalog</h1>
                     </div>
-                    <button className="add-btn" onClick={() => setShowModal(true)}>
+                    <button className="add-btn" onClick={() => { setEditId(null); setForm(emptyForm); setShowModal(true); }}>
                         + Add Product
                     </button>
                 </header>
@@ -165,7 +212,8 @@ const Products = () => {
                                             </span>
                                         </td>
                                         <td className="actions">
-                                            <button className="icon-btn danger" onClick={() => setDeleteId(p.id)}>✕</button>
+                                            <button className="icon-btn edit" onClick={() => openEdit(p)}>&#9998;</button>
+                                            <button className="icon-btn danger" onClick={() => setDeleteId(p.id)}>&#10005;</button>
                                         </td>
                                     </tr>
                                 ))}
@@ -180,10 +228,10 @@ const Products = () => {
                 <div className="modal-overlay">
                     <div className="modal company-modal">
                         <div className="modal-header">
-                            <h2>New Product</h2>
-                            <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
+                            <h2>{editId ? "Edit Product" : "New Product"}</h2>
+                            <button className="modal-close" onClick={closeModal}>&#10005;</button>
                         </div>
-                        <form onSubmit={handleAdd} className="modal-form">
+                        <form onSubmit={editId ? handleEdit : handleAdd} className="modal-form">
                             <div className="company-form-grid">
                                 <div className="company-field company-field-full">
                                     <label>PRODUCT NAME</label>
@@ -237,9 +285,9 @@ const Products = () => {
                             </div>
 
                             <div className="modal-actions">
-                                <button type="button" className="company-btn-light" onClick={() => setShowModal(false)}>Cancel</button>
+                                <button type="button" className="company-btn-light" onClick={closeModal}>Cancel</button>
                                 <button type="submit" className="company-submit-btn" disabled={saving}>
-                                    {saving ? "Saving..." : "Add Product"}
+                                    {saving ? "Saving..." : editId ? "Update Product" : "Add Product"}
                                 </button>
                             </div>
                         </form>
