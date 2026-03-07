@@ -83,10 +83,7 @@ const Login = () => {
           </form>
 
           <div className="login-footer">
-            <p>Don't have an account?</p>
-            <button className="register-redirect-btn" onClick={() => navigate("/register")}>
-              CREATE ACCOUNT
-            </button>
+            <p>Admin Inventory Management System</p>
           </div>
         </div>
       </div>
