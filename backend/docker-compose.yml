@@ -59,17 +59,17 @@ services:
     ports:
       - "3001:3000"
     environment:
-      VITE_USER_SERVICE: http://localhost:8072
-      VITE_PRODUCT_SERVICE: http://localhost:8082
-      VITE_PO_SERVICE: http://localhost:8062
-      VITE_MAINTENANCE_SERVICE: http://localhost:8092
-      VITE_COMPANY_SERVICE: http://localhost:8022
-      VITE_STOCK_SERVICE: http://localhost:8042
-      VITE_STOCK_TRANSFER_SERVICE: http://localhost:8052
-      VITE_ASSET_SERVICE: http://localhost:8012
-      VITE_WAREHOUSE_SERVICE: http://localhost:9012
-      VITE_SUPPLIER_SERVICE: http://localhost:9022
-      VITE_GRN_SERVICE: http://localhost:8032
+      VITE_USER_SERVICE: http://16.16.127.75:8072
+      VITE_PRODUCT_SERVICE: http://16.16.127.75:8082
+      VITE_PO_SERVICE: http://16.16.127.75:8062
+      VITE_MAINTENANCE_SERVICE: http://16.16.127.75:8092
+      VITE_COMPANY_SERVICE: http://16.16.127.75:8022
+      VITE_STOCK_SERVICE: http://16.16.127.75:8042
+      VITE_STOCK_TRANSFER_SERVICE: http://16.16.127.75:8052
+      VITE_ASSET_SERVICE: http://16.16.127.75:8012
+      VITE_WAREHOUSE_SERVICE: http://16.16.127.75:9012
+      VITE_SUPPLIER_SERVICE: http://16.16.127.75:9022
+      VITE_GRN_SERVICE: http://16.16.127.75:8032
     depends_on:
       - user-service
       - product-service
