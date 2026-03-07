@@ -1,5 +1,6 @@
 package inventorymanagement.asset_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "asset")
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +34,6 @@ public class Asset {
     private String modifiedBy;
     private LocalDate modifiedDate;
 
-    private boolean isDeleted = false; // For Soft Delete
+    @Column(name = "is_deleted")
+    private boolean deleted = false; // For Soft Delete
 }

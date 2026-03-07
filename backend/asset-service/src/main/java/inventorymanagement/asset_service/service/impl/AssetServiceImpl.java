@@ -27,7 +27,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public List<Asset> getAssetsByWarehouse(Long warehouseId) {
 
-        return assetRepository.findByWarehouseIdAndIsDeletedFalse(warehouseId);
+        return assetRepository.findByWarehouseIdAndDeletedFalse(warehouseId);
     }
 
     @Override
@@ -57,6 +57,6 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public List<Asset> getAllAssets() {
-        return assetRepository.findByIsDeletedFalse();
+        return assetRepository.findByDeletedFalse();
     }
 }
