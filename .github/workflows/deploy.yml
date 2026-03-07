@@ -1,0 +1,111 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.changes.outputs.services }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect changed services
+        id: changes
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD)
+          SERVICES=""
+
+          if echo "$CHANGED" | grep -q "^frontend/"; then
+            SERVICES="frontend"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/user-service/"; then
+            SERVICES="$SERVICES user-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/product-service/"; then
+            SERVICES="$SERVICES product-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/company-service/"; then
+            SERVICES="$SERVICES company-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/purchase-order-service/"; then
+            SERVICES="$SERVICES purchase-order-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/stock-service/"; then
+            SERVICES="$SERVICES stock-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/stock-transfer-service/"; then
+            SERVICES="$SERVICES stock-transfer-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/asset-service/"; then
+            SERVICES="$SERVICES asset-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/grn-service/"; then
+            SERVICES="$SERVICES grn-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/warehouse-service/"; then
+            SERVICES="$SERVICES warehouse-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/supplier-service/"; then
+            SERVICES="$SERVICES supplier-service"
+          fi
+
+          if echo "$CHANGED" | grep -q "^backend/maintenance-service/"; then
+            SERVICES="$SERVICES maintenance-service"
+          fi
+
+          # If docker-compose.yml changed, rebuild all
+          if echo "$CHANGED" | grep -q "^backend/docker-compose.yml"; then
+            SERVICES="all"
+          fi
+
+          SERVICES=$(echo "$SERVICES" | xargs)
+          echo "services=$SERVICES" >> "$GITHUB_OUTPUT"
+          echo "Changed services: $SERVICES"
+
+  deploy:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.services != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy changed services
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ec2-user/DEA-Inventory-Management-System
+            git pull origin dev
+
+            cd backend
+            SERVICES="${{ needs.detect-changes.outputs.services }}"
+
+            if [ "$SERVICES" = "all" ]; then
+              echo "Rebuilding all services..."
+              docker compose down
+              docker compose up -d --build
+            else
+              echo "Rebuilding: $SERVICES"
+              for SERVICE in $SERVICES; do
+                echo "Rebuilding $SERVICE..."
+                docker compose up -d --build --no-deps $SERVICE
+              done
+            fi
+
+            echo "Deployment completed at $(date)"
