@@ -216,13 +216,9 @@ Tables are auto-created by Hibernate (`ddl-auto: update`).
 
 ## API Authentication
 
-All endpoints (except login/register) require a JWT token in the `Authorization` header:
-
-```
-Authorization: Bearer <jwt_token>
-```
-
-Tokens are obtained via the User Service login endpoint.
+~ All endpoints (except login/register) require a JWT token in the `Authorization` header:
+~ Authorization: Bearer <jwt_token>
+~ Tokens are obtained via the User Service login endpoint.
 
 ## Key Design Decisions
 
@@ -232,6 +228,4 @@ Tokens are obtained via the User Service login endpoint.
 - **GRN Auto-Stock**: Creating a GRN automatically adjusts stock levels; cancelling reverses them
 - **Smart CI/CD**: Only changed services are rebuilt to minimize deployment time
 
-## Team
 
-DEA Group - University Project

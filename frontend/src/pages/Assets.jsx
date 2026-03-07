@@ -89,8 +89,13 @@ export default function Assets() {
     e.preventDefault();
     setSaving(true);
     try {
-      if (editingId) await updateAsset(editingId, form);
-      else await addAsset(form);
+      const payload = {
+        ...form,
+        companyId: form.companyId ? Number(form.companyId) : null,
+        warehouseId: form.warehouseId ? Number(form.warehouseId) : null,
+      };
+      if (editingId) await updateAsset(editingId, payload);
+      else await addAsset(payload);
       setShowModal(false);
       fetchData();
     } catch {
