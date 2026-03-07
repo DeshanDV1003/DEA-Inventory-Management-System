@@ -231,7 +231,7 @@ export default function Assets() {
 
                 <div className="company-field">
                   <label>PURCHASE VALUE ($)</label>
-                  <input type="number" step="0.01" value={form.purchaseValue} onChange={e => setForm({...form, purchaseValue: e.target.value})} />
+                  <input type="number" step="0.00" value={form.purchaseValue} onChange={e => setForm({...form, purchaseValue: e.target.value})} />
                 </div>
 
                 <div className="company-field">
