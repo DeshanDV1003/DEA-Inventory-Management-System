@@ -90,7 +90,7 @@ export default function GRN() {
   };
 
   const addItemToList = () => {
-    if (!currentItem.productId || !currentItem.receivedQty) return;
+    if (!currentItem.productId || !currentItem.receivedQty || !currentItem.requestedQty || !currentItem.unitPrice) return;
     setForm(prev => ({ ...prev, items: [...prev.items, { ...currentItem }] }));
     setCurrentItem({ productId: "", requestedQty: "", receivedQty: "", unitPrice: "", discountAmount: 0 });
   };
@@ -100,7 +100,8 @@ export default function GRN() {
     if (form.items.length === 0) return alert("Add at least one item.");
     setSaving(true);
     try {
-      await createGrn(form);
+      const username = localStorage.getItem("username") || "admin";
+      await createGrn({ ...form, createdBy: username });
       setShowModal(false);
       setForm(emptyForm);
       fetchData();
