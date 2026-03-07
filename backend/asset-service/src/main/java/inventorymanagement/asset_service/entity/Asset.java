@@ -20,6 +20,7 @@ public class Asset {
     private String assetTag;
 
     private LocalDate purchaseDate;
+    private Double purchaseValue;
     private String warranty;
     private String status;
 

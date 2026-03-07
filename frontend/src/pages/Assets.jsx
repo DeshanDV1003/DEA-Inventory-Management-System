@@ -94,6 +94,7 @@ export default function Assets() {
         assetTag: form.assetTag,
         companyId: form.companyId ? Number(form.companyId) : null,
         warehouseId: form.warehouseId ? Number(form.warehouseId) : null,
+        purchaseValue: form.purchaseValue ? Number(form.purchaseValue) : null,
         purchaseDate: form.purchaseDate || null,
         warranty: form.warranty || null,
         status: form.status,
