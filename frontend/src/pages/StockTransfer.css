@@ -1,0 +1,16 @@
+.transfer-items-box select, .transfer-items-box input {
+    background: #09090b !important;
+    border: 1px solid #27272a !important;
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.large-modal {
+  max-width: 750px !important;
+}
+
+.add-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

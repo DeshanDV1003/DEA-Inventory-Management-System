@@ -4,14 +4,15 @@ import Register from "./pages/Register";
 import Products from "./pages/Products";
 import Warehouse from "./pages/Warehouse"; 
 import Suppliers from "./pages/Suppliers"; 
-
-import PurchaseOrderDashboard from "./pages/purchase-order/PurchaseOrderDashboard";
+import Stock from "./pages/Stock"; 
 import PurchaseOrderList from "./pages/purchase-order/PurchaseOrderList";
-import PurchaseOrderForm from "./pages/purchase-order/PurchaseOrderForm";
-import DeletePurchaseOrder from "./pages/purchase-order/DeletePurchaseOrder";
-
+import StockTransfer from "./pages/StockTransfer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Company from "./pages/Company";
+import Maintenance from "./pages/Maintenance";
+import Assets from "./pages/Assets";
+import GRN from "./pages/GRN";
+import Dashboard from "./pages/Dashboard"; // Import the new Dashboard
 
 function App() {
   return (
@@ -21,41 +22,26 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected: Company selection (after login) */}
-        <Route
-          path="/companies"
-          element={
-            <ProtectedRoute>
-              <Company />
-            </ProtectedRoute>
-          }
-        />
+        {/* Protected Dashboard - The Main Entrance */}
+        <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 
+        {/* Protected: Core Modules */}
+        <Route path="/companies" element={<ProtectedRoute><Company /></ProtectedRoute>} />
         <Route path="/warehouse" element={<ProtectedRoute><Warehouse /></ProtectedRoute>} />
-
         <Route path="/suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
+        <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
+        <Route path="/maintenance" element={<ProtectedRoute><Maintenance /></ProtectedRoute>} />
+        <Route path="/stock" element={<ProtectedRoute><Stock /></ProtectedRoute>} />
+        <Route path="/stock-transfers" element={<ProtectedRoute><StockTransfer /></ProtectedRoute>} />
+        <Route path="/assets" element={<ProtectedRoute><Assets /></ProtectedRoute>} />
+        <Route path="/grn" element={<ProtectedRoute><GRN /></ProtectedRoute>} />
 
-        <Route path="/company" element={<Navigate to="/companies" replace />} />
-
-        {/* Protected: Products */}
-        <Route
-          path="/products"
-          element={
-            <ProtectedRoute>
-              <Products />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Protected: Purchase Order Routes */}
-        <Route path="/purchase-order" element={<ProtectedRoute><PurchaseOrderDashboard /></ProtectedRoute>} />
+        {/* Purchase Order Redirect */}
+        <Route path="/purchase-order" element={<Navigate to="/purchase-order/list" replace />} />
         <Route path="/purchase-order/list" element={<ProtectedRoute><PurchaseOrderList /></ProtectedRoute>} />
-        <Route path="/purchase-order/create" element={<ProtectedRoute><PurchaseOrderForm mode="create" /></ProtectedRoute>} />
-        <Route path="/purchase-order/edit/:id" element={<ProtectedRoute><PurchaseOrderForm mode="edit" /></ProtectedRoute>} />
-        <Route path="/purchase-order/delete/:id" element={<ProtectedRoute><DeletePurchaseOrder /></ProtectedRoute>} />
 
-        {/* Catch all - redirect to login */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Catch all - redirect to dashboard if logged in, else login */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

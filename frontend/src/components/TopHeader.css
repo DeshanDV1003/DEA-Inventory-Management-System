@@ -1,0 +1,38 @@
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 20px;
+  color: #a78bfa;
+}
+
+.search {
+  background: #18181b;
+  border: 1px solid #27272a;
+  padding: 8px 12px;
+  border-radius: 8px;
+  width: 300px;
+  color: white;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile img {
+  border-radius: 50%;
+  width: 35px;
+}

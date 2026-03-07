@@ -1,0 +1,54 @@
+
+.dashboard-root{
+display:flex;
+background:#0a0a0f;
+color:#e4e4e7;
+min-height:100vh;
+}
+
+.dashboard-main{
+flex:1;
+padding:2rem 2.5rem;
+}
+
+.welcome{
+margin-bottom:20px;
+font-size:22px;
+font-weight:700;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-bottom:30px;
+}
+
+.card{
+background:#111116;
+border:1px solid #1e1e24;
+padding:18px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+font-weight:600;
+}
+
+.card span{
+color:#a78bfa;
+font-size:18px;
+}
+
+.charts{
+display:flex;
+gap:30px;
+}
+
+.chart{
+background:#111116;
+border:1px solid #1e1e24;
+padding:20px;
+border-radius:10px;
+}
+
+

@@ -10,6 +10,7 @@ const ASSET_SERVICE = import.meta.env.VITE_ASSET_SERVICE || "http://localhost:80
 const GRN_SERVICE = import.meta.env.VITE_GRN_SERVICE || "http://localhost:8032";
 const WAREHOUSE_SERVICE = import.meta.env.VITE_WAREHOUSE_SERVICE || "http://localhost:9012";
 const SUPPLIER_SERVICE = import.meta.env.VITE_SUPPLIER_SERVICE || "http://localhost:9022";
+const MAINTENANCE_SERVICE = import.meta.env.VITE_MAINTENANCE_SERVICE || "http://localhost:8092";
 
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
@@ -175,7 +176,7 @@ export const getAllAssets = () =>
 export const getAssetsByWarehouse = (warehouseId) =>
     axios.get(`${ASSET_SERVICE}/api/v1/assets/warehouse/${warehouseId}`, authHeader());
 
-export const createAsset = (data) =>
+export const addAsset = (data) =>
     axios.post(`${ASSET_SERVICE}/api/v1/assets/add`, data, authHeader());
 
 export const updateAsset = (id, data) =>
@@ -189,14 +190,32 @@ export const deleteAsset = (id) =>
 
 
 // ── GRN (Goods Received Notes) ───────────────────────────────────────────────
+// export const createGrn = (data) =>
+//     axios.post(`${GRN_SERVICE}/api/grns`, data, authHeader());
+
+// export const getGrnByNumber = (grnNumber) =>
+//     axios.get(`${GRN_SERVICE}/api/grns/${grnNumber}`, authHeader());
+
+// export const filterGrns = (params) =>
+//     axios.get(`${GRN_SERVICE}/api/grns`, { ...authHeader(), params });
+
+// export const updateGrn = (grnNumber, data) =>
+//     axios.put(`${GRN_SERVICE}/api/grns/${grnNumber}`, data, authHeader());
+
+// export const cancelGrn = (grnNumber, cancelledBy) =>
+//     axios.put(`${GRN_SERVICE}/api/grns/${grnNumber}/cancel`, null, {
+//         ...authHeader(),
+//         params: { cancelledBy },
+//     });
+
+export const getAllGrns = () =>
+    axios.get(`${GRN_SERVICE}/api/grns`, authHeader());
+
 export const createGrn = (data) =>
     axios.post(`${GRN_SERVICE}/api/grns`, data, authHeader());
 
 export const getGrnByNumber = (grnNumber) =>
     axios.get(`${GRN_SERVICE}/api/grns/${grnNumber}`, authHeader());
-
-export const filterGrns = (params) =>
-    axios.get(`${GRN_SERVICE}/api/grns`, { ...authHeader(), params });
 
 export const updateGrn = (grnNumber, data) =>
     axios.put(`${GRN_SERVICE}/api/grns/${grnNumber}`, data, authHeader());
@@ -255,3 +274,20 @@ export const getProductsBySupplier = (id) =>
 
 export const getPurchaseOrdersBySupplier = (id) =>
     axios.get(`${SUPPLIER_SERVICE}/api/v1/suppliers/${id}/purchase-orders`, authHeader());
+
+
+// ── Maintenance ──────────────────────────────────────────────────────────────
+export const getAllMaintenances = () =>
+    axios.get(`${MAINTENANCE_SERVICE}/api/v1/maintenances`, authHeader());
+
+export const getMaintenanceById = (id) =>
+    axios.get(`${MAINTENANCE_SERVICE}/api/v1/maintenances/${id}`, authHeader());
+
+export const addMaintenance = (data) =>
+    axios.post(`${MAINTENANCE_SERVICE}/api/v1/maintenances`, data, authHeader());
+
+export const updateMaintenance = (id, data) =>
+    axios.put(`${MAINTENANCE_SERVICE}/api/v1/maintenances/${id}`, data, authHeader());
+
+export const deleteMaintenance = (id) =>
+    axios.delete(`${MAINTENANCE_SERVICE}/api/v1/maintenances/${id}`, authHeader());

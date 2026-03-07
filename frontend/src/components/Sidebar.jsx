@@ -1,20 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const username = localStorage.getItem("username") || "User";
-
-    // Menu toggle state for Purchase Orders
-    const [poOpen, setPoOpen] = useState(false);
-
-    // Automatically keep the PO menu open if we are on a purchase-order sub-page
-    useEffect(() => {
-        if (location.pathname.startsWith('/purchase-order')) {
-            setPoOpen(true);
-        }
-    }, [location]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -29,56 +19,51 @@ const Sidebar = () => {
                 <span>INVNTRY</span>
             </div>
 
-            <nav className="sidebar-nav">
-                {/* 1. Products */}
+            <nav className="sidebar-nav" style={{ overflowY: 'auto', paddingRight: '5px' }}>
+                <NavLink to="/" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">🏠</span> Dashboard
+                </NavLink>
+                {/* --- INVENTORY CORE --- */}
+                <div className="nav-group-label">INVENTORY</div>
                 <NavLink to="/products" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">☰</span> Products
                 </NavLink>
-
-                {/* 2. Companies (Newly Added) */}
-                <NavLink to="/companies" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
-                    <span className="nav-icon">▦</span> Companies
+                <NavLink to="/stock" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">📉</span> Stock levels
                 </NavLink>
+                <NavLink to="/stock-transfers" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">🔄</span> Transfers
+                </NavLink> 
 
-                {/* 3. Warehouse */}
-                <NavLink to="/warehouse" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
-                    <span className="nav-icon">⫙</span> Warehouse
-                </NavLink>
-
-                {/* 4. Suppliers */}
+                {/* --- PROCUREMENT --- */}
+                <div className="nav-group-label" style={{ marginTop: '1.5rem' }}>PROCUREMENT</div>
                 <NavLink to="/suppliers" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">☷</span> Suppliers
                 </NavLink>
+                <NavLink to="/purchase-order/list" className={({ isActive }) => (isActive || location.pathname.startsWith('/purchase-order')) ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">📦</span> Purchase Orders
+                </NavLink>
+                <NavLink to="/grn" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">📜</span> GRN Records
+                </NavLink>
 
-                {/* 5. Expandable Purchase Order Section */}
-                <div>
-                    <div
-                        className={`nav-item ${location.pathname.startsWith('/purchase-order') ? 'active' : ''}`}
-                        onClick={() => setPoOpen(!poOpen)}
-                        style={{ cursor: 'pointer', justifyContent: 'space-between' }}
-                    >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                            <span className="nav-icon">📦</span> Purchase Orders
-                        </div>
-                        <span style={{ fontSize: '0.7rem', transform: poOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: '0.2s' }}>▼</span>
-                    </div>
+                {/* --- INFRASTRUCTURE --- */}
+                <div className="nav-group-label" style={{ marginTop: '1.5rem' }}>INFRASTRUCTURE</div>
+                <NavLink to="/companies" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">▦</span> Companies
+                </NavLink>
+                <NavLink to="/warehouse" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">⫙</span> Warehouse
+                </NavLink>
+                <NavLink to="/assets" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">🛠️</span> Assets
+                </NavLink>
 
-                    {poOpen && (
-                        <div className="sidebar-submenu" style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.25rem' }}>
-                            <NavLink to="/purchase-order" end className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
-                                ⬩ Overview
-                            </NavLink>
-                            <NavLink to="/purchase-order/list" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
-                                ⬩ Order List
-                            </NavLink>
-                            <NavLink to="/purchase-order/create" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
-                                ⬩ New Order
-                            </NavLink>
-                        </div>
-                    )}
-                </div>
-
-                {/* 6. Reports */}
+                {/* --- SYSTEM --- */}
+                <div className="nav-group-label" style={{ marginTop: '1.5rem' }}>SYSTEM</div>
+                <NavLink to="/maintenance" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+                    <span className="nav-icon">⚙️</span> Maintenance
+                </NavLink>
                 <NavLink to="/reports" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                     <span className="nav-icon">⊞</span> Reports
                 </NavLink>
