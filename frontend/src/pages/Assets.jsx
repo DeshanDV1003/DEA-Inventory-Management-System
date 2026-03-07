@@ -14,12 +14,13 @@ import "./Company.css";
 
 const emptyForm = {
   name: "",
-  company_id: "",
-  warehouse_id: "",
+  companyId: "",
+  warehouseId: "",
   location: "",
-  asset_tag: "",
-  purchase_value: "",
-  purchase_date: "",
+  assetTag: "",
+  purchaseValue: "",
+  purchaseDate: "",
+  warranty: "",
   status: "ACTIVE"
 };
 
@@ -71,7 +72,7 @@ export default function Assets() {
   // --- Cascading Logic ---
   const handleCompanyChange = (id) => {
     const compId = String(id);
-    setForm({ ...form, company_id: compId, warehouse_id: "" });
+    setForm({ ...form, companyId: compId, warehouseId: "" });
     setFilteredWarehouses(masterData.warehouses.filter(w => String(w.companyId) === compId));
   };
 
@@ -80,7 +81,7 @@ export default function Assets() {
     setEditingId(a.id);
     setForm(a);
     // Pre-filter warehouses for the selected company
-    setFilteredWarehouses(masterData.warehouses.filter(w => String(w.companyId) === String(a.company_id)));
+    setFilteredWarehouses(masterData.warehouses.filter(w => String(w.companyId) === String(a.companyId)));
     setShowModal(true);
   };
 
@@ -116,7 +117,7 @@ export default function Assets() {
     const q = query.toLowerCase();
     return assets.filter(a => 
         a.name?.toLowerCase().includes(q) || 
-        a.asset_tag?.toLowerCase().includes(q)
+        a.assetTag?.toLowerCase().includes(q)
     );
   }, [assets, query]);
 
@@ -161,11 +162,11 @@ export default function Assets() {
             <tbody>
               {filteredAssets.map((a) => (
                 <tr key={a.id}>
-                  <td className="cell-name" style={{color: '#a78bfa'}}>#{a.asset_tag}</td>
+                  <td className="cell-name" style={{color: '#a78bfa'}}>#{a.assetTag}</td>
                   <td style={{fontWeight: '600'}}>{a.name}</td>
-                  <td>{getName(masterData.companies, a.company_id)}</td>
-                  <td>{getName(masterData.warehouses, a.warehouse_id)}</td>
-                  <td>${Number(a.purchase_value).toLocaleString()}</td>
+                  <td>{getName(masterData.companies, a.companyId)}</td>
+                  <td>{getName(masterData.warehouses, a.warehouseId)}</td>
+                  <td>${Number(a.purchaseValue).toLocaleString()}</td>
                   <td>
                     <span className={`badge ${a.status === 'ACTIVE' ? 'badge-active' : 'badge-inactive'}`}>
                         {a.status}
@@ -199,12 +200,12 @@ export default function Assets() {
 
                 <div className="company-field">
                     <label>ASSET TAG / SN</label>
-                    <input required value={form.asset_tag} onChange={e => setForm({...form, asset_tag: e.target.value})} placeholder="e.g. AST-9901" />
+                    <input required value={form.assetTag} onChange={e => setForm({...form, assetTag: e.target.value})} placeholder="e.g. AST-9901" />
                 </div>
 
                 <div className="company-field">
                   <label>OWNING COMPANY</label>
-                  <select required value={form.company_id} onChange={e => handleCompanyChange(e.target.value)}>
+                  <select required value={form.companyId} onChange={e => handleCompanyChange(e.target.value)}>
                     <option value="">Select Company</option>
                     {masterData.companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
@@ -212,7 +213,7 @@ export default function Assets() {
 
                 <div className="company-field">
                   <label>WAREHOUSE LOCATION</label>
-                  <select required value={form.warehouse_id} onChange={e => setForm({...form, warehouse_id: e.target.value})} disabled={!form.company_id}>
+                  <select required value={form.warehouseId} onChange={e => setForm({...form, warehouseId: e.target.value})} disabled={!form.companyId}>
                     <option value="">Select Warehouse</option>
                     {filteredWarehouses.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
                   </select>
@@ -220,12 +221,12 @@ export default function Assets() {
 
                 <div className="company-field">
                   <label>PURCHASE VALUE ($)</label>
-                  <input type="number" step="0.01" value={form.purchase_value} onChange={e => setForm({...form, purchase_value: e.target.value})} />
+                  <input type="number" step="0.01" value={form.purchaseValue} onChange={e => setForm({...form, purchaseValue: e.target.value})} />
                 </div>
 
                 <div className="company-field">
                   <label>PURCHASE DATE</label>
-                  <input type="date" value={form.purchase_date} onChange={e => setForm({...form, purchase_date: e.target.value})} />
+                  <input type="date" value={form.purchaseDate} onChange={e => setForm({...form, purchaseDate: e.target.value})} />
                 </div>
 
                 <div className="company-field">
