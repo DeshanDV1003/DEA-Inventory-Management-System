@@ -83,5 +83,6 @@ public class GrnHeader {
     // Cascade ensures details are saved/deleted with header,
     // Orphan removal ensures removed items are deleted from DB
     @OneToMany(mappedBy = "header", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<GrnDetail> details = new ArrayList<>();
 }
