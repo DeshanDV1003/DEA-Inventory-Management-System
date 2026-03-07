@@ -18,11 +18,11 @@ import java.util.List;
 * Update an existing GRN,
 * Cancel a GRN,
 *
-* Base URL: /api/grns
+* Base URL: /api/v1/grns
 *  */
 
 @RestController
-@RequestMapping("/api/grns")
+@RequestMapping("/api/v1/grns")
 @RequiredArgsConstructor
 @CrossOrigin
 public class GrnController {
