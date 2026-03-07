@@ -149,7 +149,9 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
-      SERVICES_PRODUCT_URL: product-service:8081
+      SERVICES_WAREHOUSE_URL: http://warehouse-service:9011
+      SERVICES_COMPANY_URL: http://company-service:8021
+      SERVICES_PRODUCT_URL: http://product-service:8081
     depends_on:
       mysql:
         condition: service_healthy
@@ -239,7 +241,9 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       JWT_SECRET: a8F3kLm9PqR2sT7uVxY4zB6nM1cD5eH8
-      SERVICES_PURCHASE_ORDER_URL: purchase-order-service:8061
+      SERVICES_WAREHOUSE: http://warehouse-service:9011
+      SERVICES_PO: http://purchase-order-service:8061
+      SERVICES_STOCK: http://stock-service:8041
     depends_on:
       mysql:
         condition: service_healthy
