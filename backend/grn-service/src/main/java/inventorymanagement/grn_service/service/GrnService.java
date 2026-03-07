@@ -43,11 +43,7 @@ public class GrnService {
     @Transactional
     public GrnResponse create(CreateGrnRequest req) {
 
-        // 1) Validate PO
-        PoResponse po = safeGetPo(req.getPoNumber());
-        if (po == null) throw new BadRequestException("PO not found: " + req.getPoNumber());
-
-        // 2) Validate Warehouse
+        // 1) Validate Warehouse
         WarehouseResponse wh = safeGetWarehouse(req.getWarehouseId());
         if (wh == null) throw new BadRequestException("Warehouse not found: " + req.getWarehouseId());
 
