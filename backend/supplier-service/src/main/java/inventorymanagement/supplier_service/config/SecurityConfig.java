@@ -49,7 +49,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Specifically allow your frontend
-        configuration.setAllowedOrigins(List.of("http://localhost:3001", "http://localhost:5173", "http://16.16.127.75:3001"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         // Allowing "*" for headers is safer for development
         configuration.setAllowedHeaders(List.of("*")); 

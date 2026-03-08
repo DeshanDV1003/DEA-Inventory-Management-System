@@ -1,16 +1,16 @@
 import axios from "axios";
 
-const USER_SERVICE = import.meta.env.VITE_USER_SERVICE || "http://16.16.127.75:8072";
-const PRODUCT_SERVICE = import.meta.env.VITE_PRODUCT_SERVICE || "http://16.16.127.75:8082";
-const PO_SERVICE = import.meta.env.VITE_PO_SERVICE || "http://16.16.127.75:8062";
-const COMPANY_SERVICE = import.meta.env.VITE_COMPANY_SERVICE || "http://16.16.127.75:8022";
-const STOCK_SERVICE = import.meta.env.VITE_STOCK_SERVICE || "http://16.16.127.75:8042";
-const STOCK_TRANSFER_SERVICE = import.meta.env.VITE_STOCK_TRANSFER_SERVICE || "http://16.16.127.75:8052";
-const ASSET_SERVICE = import.meta.env.VITE_ASSET_SERVICE || "http://16.16.127.75:8012";
-const GRN_SERVICE = import.meta.env.VITE_GRN_SERVICE || "http://16.16.127.75:8032";
-const WAREHOUSE_SERVICE = import.meta.env.VITE_WAREHOUSE_SERVICE || "http://16.16.127.75:9012";
-const SUPPLIER_SERVICE = import.meta.env.VITE_SUPPLIER_SERVICE || "http://16.16.127.75:9022";
-const MAINTENANCE_SERVICE = import.meta.env.VITE_MAINTENANCE_SERVICE || "http://16.16.127.75:8092";
+const USER_SERVICE = import.meta.env.VITE_USER_SERVICE || "http://localhost:8072";
+const PRODUCT_SERVICE = import.meta.env.VITE_PRODUCT_SERVICE || "http://localhost:8082";
+const PO_SERVICE = import.meta.env.VITE_PO_SERVICE || "http://localhost:8062";
+const COMPANY_SERVICE = import.meta.env.VITE_COMPANY_SERVICE || "http://localhost:8022";
+const STOCK_SERVICE = import.meta.env.VITE_STOCK_SERVICE || "http://localhost:8042";
+const STOCK_TRANSFER_SERVICE = import.meta.env.VITE_STOCK_TRANSFER_SERVICE || "http://localhost:8052";
+const ASSET_SERVICE = import.meta.env.VITE_ASSET_SERVICE || "http://localhost:8012";
+const GRN_SERVICE = import.meta.env.VITE_GRN_SERVICE || "http://localhost:8032";
+const WAREHOUSE_SERVICE = import.meta.env.VITE_WAREHOUSE_SERVICE || "http://localhost:9012";
+const SUPPLIER_SERVICE = import.meta.env.VITE_SUPPLIER_SERVICE || "http://localhost:9022";
+const MAINTENANCE_SERVICE = import.meta.env.VITE_MAINTENANCE_SERVICE || "http://localhost:8092";
 
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
